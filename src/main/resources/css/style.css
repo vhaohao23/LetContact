@@ -1,0 +1,54 @@
+#pnLogin {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+}
+
+#tfUsername, #pfPassword,#tfPassword,#tfEmail,
+#tfConfirm,#pfConfirm ,
+#tfFirstName,#tfLastName,#tfPhone,#tfAddress,#tfGender,#dpDoB{
+    -fx-background-color: #ffffff; /* Optional: Flat background */
+    -fx-border-color: #aaa;
+    -fx-border-width: 0 0 1 0;
+    -fx-prompt-text-fill: #aaa;
+    -fx-font-weight: bold;
+    -fx-font-size: 16;
+}
+
+#pfPassword:focused,#tfUsername:focused,#tfPassword:focused,#tfEmail:focused
+,#tfConfirm:focused,#pfConfirm:focused
+,#tfFirstName:focused,#tfLastName:focused,#tfPhone:focused,#tfAddress:focused,#tfGender:focused,#dpDoB:focused{
+    -fx-border-color: #4a90e2;
+}
+
+#lblRegister,#lblLogin {
+    -fx-text-fill: blue;
+}
+
+#btnLogin, #btnNext1,#btnNext2{
+    -fx-background-color: #2D2D65;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 22;
+    -fx-border-width: 3;
+    -fx-border-color: #2D2D65;
+}
+
+
+#btnLogin:hover, #btnNext1:hover, #btnNext2:hover {
+    -fx-background-color: white;
+    -fx-text-fill: #2D2D65;
+    -fx-border-color: #2D2D65;
+}
+
+#btnLogin:pressed, #btnNext1:pressed, #btnNext2:pressed {
+    -fx-background-color: #2D2D65;
+    -fx-scale-x: 0.95;
+    -fx-scale-y: 0.95;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 5, 0, 0, 1);
+}
+
+#pnNext1,#pnNext2 {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+}
+
