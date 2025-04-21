@@ -43,12 +43,12 @@
                     <groupId>org.hibernate.orm</groupId>
                     <artifactId>hibernate-core</artifactId>
                     <version>6.6.13.Final</version>
-                </dependency>
-                <dependency>
+        </dependency>
+        <dependency>
                     <groupId>mysql</groupId>
                     <artifactId>mysql-connector-java</artifactId>
                     <version>8.0.33</version>
-                </dependency>
+        </dependency>
     </dependencies>
 
     <build>

@@ -2,6 +2,8 @@ module org.example.letcontact {
     requires javafx.controls;
     requires javafx.fxml;
     requires jakarta.persistence;
+    requires org.hibernate.orm.core;
+    requires java.naming;
     exports application;
     opens application to javafx.fxml;
     exports application.controller;
