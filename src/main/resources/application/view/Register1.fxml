@@ -24,9 +24,9 @@
                </font>
             </Label>
             <TextField fx:id="tfEmail" layoutX="101.0" layoutY="154.0" prefHeight="42.0" prefWidth="208.0" promptText="Email address" />
-            <Button fx:id="btnNext1" layoutX="99.0" layoutY="426.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="455.0" text="Next" />
+            <Button fx:id="btnNext1" layoutX="99.0" layoutY="426.0" mnemonicParsing="false" onMouseClicked="#gotoRegister2" prefHeight="30.0" prefWidth="455.0" text="Next" />
             <Label layoutX="361.0" layoutY="502.0" text="Already have an account ?" />
-            <Label fx:id="lblLogin" layoutX="509.0" layoutY="502.0" text="Login" />
+            <Label fx:id="lblLogin" layoutX="509.0" layoutY="502.0" onMouseClicked="#gotoLogin" text="Login" />
             <TextField fx:id="tfUsername" layoutX="346.0" layoutY="154.0" prefHeight="42.0" prefWidth="208.0" promptText="Username" />
             <TextField fx:id="tfPassword" layoutX="101.0" layoutY="238.0" prefHeight="42.0" prefWidth="455.0" promptText="Password" />
             <PasswordField fx:id="pfPassword" layoutX="101.0" layoutY="238.0" prefHeight="42.0" prefWidth="455.0" promptText="Password" />

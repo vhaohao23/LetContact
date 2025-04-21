@@ -9,9 +9,10 @@ import javafx.stage.Stage;
 public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(Main.class.getResource("Register1.fxml"));
+        FXMLLoader loader = new FXMLLoader(Main.class.getResource("view/Login.fxml"));
+        Parent root = loader.load();
         Scene scene=new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
+        scene.getStylesheets().add(Main.class.getResource("/application/css/style.css").toExternalForm());
         stage.setScene(scene);
         stage.show();
     }

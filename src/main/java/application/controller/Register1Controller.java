@@ -1,12 +1,16 @@
 package application.controller;
 
+import application.util.SwitchSceneUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+
+import java.io.IOException;
 
 public class Register1Controller {
     @FXML
@@ -27,7 +31,10 @@ public class Register1Controller {
     private TextField tfConfirm;
 
     @FXML
-    private Button btnLogin;
+    private Button btnNext1;
+
+    @FXML
+    private Label lblLogin;
 
     public void initialize() {
         // By default, show the PasswordField and hide the TextField.
@@ -53,7 +60,7 @@ public class Register1Controller {
             pfPassword.setManaged(false);
             pfPassword.setVisible(false);
 
-            eye.setImage(new Image(getClass().getResource("/img/eye.png").toExternalForm()));
+            eye.setImage(new Image(getClass().getResource("/application/img/eye.png").toExternalForm()));
             isHide = false;
             tfPassword.requestFocus();
             tfPassword.positionCaret(tfPassword.getText().length());
@@ -63,7 +70,7 @@ public class Register1Controller {
             tfPassword.setManaged(false);
             tfPassword.setVisible(false);
 
-            eye.setImage(new Image(getClass().getResource("/img/hideEye.png").toExternalForm()));
+            eye.setImage(new Image(getClass().getResource("/application/img/hideEye.png").toExternalForm()));
             isHide = true;
             pfPassword.requestFocus();
             pfPassword.positionCaret(pfPassword.getText().length());
@@ -77,7 +84,7 @@ public class Register1Controller {
             pfConfirm.setManaged(false);
             pfConfirm.setVisible(false);
 
-            confirmEye.setImage(new Image(getClass().getResource("/img/eye.png").toExternalForm()));
+            confirmEye.setImage(new Image(getClass().getResource("/application/img/eye.png").toExternalForm()));
             isConfirmHide = false;
             tfConfirm.requestFocus();
             tfConfirm.positionCaret(tfConfirm.getText().length());
@@ -87,10 +94,18 @@ public class Register1Controller {
             tfConfirm.setManaged(false);
             tfConfirm.setVisible(false);
 
-            confirmEye.setImage(new Image(getClass().getResource("/img/hideEye.png").toExternalForm()));
+            confirmEye.setImage(new Image(getClass().getResource("/application/img/hideEye.png").toExternalForm()));
             isConfirmHide = true;
             pfConfirm.requestFocus();
             pfConfirm.positionCaret(tfConfirm.getText().length());
         }
+    }
+
+    public void gotoLogin(MouseEvent e) throws IOException {
+        SwitchSceneUtil.switchScene("view/Login.fxml", e);
+    }
+
+    public void gotoRegister2(MouseEvent e) throws IOException {
+        SwitchSceneUtil.switchScene("view/Register2.fxml", e);
     }
 }

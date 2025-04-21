@@ -40,7 +40,7 @@
                </font>
             </Button>
             <Label layoutX="222.0" layoutY="502.0" text="Don't have account ?" />
-            <Label fx:id="lblRegister" layoutX="343.0" layoutY="502.0" text="Register" />
+            <Label fx:id="lblRegister" layoutX="343.0" layoutY="502.0" onMouseClicked="#gotoRegister" text="Register" />
             <TextField fx:id="tfPassword" layoutX="56.0" layoutY="274.0" prefHeight="46.0" prefWidth="332.0" promptText="Password" />
             <PasswordField fx:id="pfPassword" layoutX="56.0" layoutY="274.0" prefHeight="46.0" prefWidth="332.0" promptText="Password" />
             <ImageView fx:id="eye" fitHeight="34.0" fitWidth="53.0" layoutX="333.0" layoutY="283.0" onMouseClicked="#HideShowPassword" pickOnBounds="true" preserveRatio="true">

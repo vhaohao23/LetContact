@@ -1,13 +1,17 @@
 // Java
 package application.controller;
 
+import application.util.SwitchSceneUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+
+import java.io.IOException;
 
 public class LoginController {
     @FXML
@@ -22,6 +26,9 @@ public class LoginController {
 
     @FXML
     private Button btnLogin;
+
+    @FXML
+    private Label lblRegister;
 
     public void initialize() {
         // By default, show the PasswordField and hide the TextField.
@@ -41,7 +48,7 @@ public class LoginController {
             pfPassword.setManaged(false);
             pfPassword.setVisible(false);
 
-            eye.setImage(new Image(getClass().getResource("/img/eye.png").toExternalForm()));
+            eye.setImage(new Image(getClass().getResource("/application/img/eye.png").toExternalForm()));
             isHide = false;
             tfPassword.requestFocus();
             tfPassword.positionCaret(tfPassword.getText().length());
@@ -51,10 +58,14 @@ public class LoginController {
             tfPassword.setManaged(false);
             tfPassword.setVisible(false);
 
-            eye.setImage(new Image(getClass().getResource("/img/hideEye.png").toExternalForm()));
+            eye.setImage(new Image(getClass().getResource("/application/img/hideEye.png").toExternalForm()));
             isHide = true;
             pfPassword.requestFocus();
             pfPassword.positionCaret(pfPassword.getText().length());
         }
+    }
+
+    public void gotoRegister(MouseEvent e) throws IOException {
+        SwitchSceneUtil.switchScene("view/Register1.fxml", e);
     }
 }
