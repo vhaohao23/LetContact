@@ -13,7 +13,7 @@
    <children>
       <ImageView fitHeight="662.0" fitWidth="1160.0" layoutX="-3.0" layoutY="-5.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@img/LoginBackground.jpg" />
+            <Image url="@../img/LoginBackground.jpg" />
          </image>
       </ImageView>
       <AnchorPane fx:id="pnNext2" layoutX="222.0" layoutY="30.0" prefHeight="582.0" prefWidth="710.0">
@@ -23,7 +23,7 @@
                   <Font size="45.0" />
                </font>
             </Label>
-            <Button fx:id="btnNext2" layoutX="79.0" layoutY="447.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="583.0" text="Next" />
+            <Button fx:id="btnNext2" layoutX="79.0" layoutY="447.0" mnemonicParsing="false" onMouseClicked="#gotoRegister3" prefHeight="30.0" prefWidth="583.0" text="Next" />
             <Label layoutX="476.0" layoutY="510.0" text="Already have an account ?" />
             <Label fx:id="lblLogin" layoutX="624.0" layoutY="510.0" onMouseClicked="#gotoLogin" text="Login" />
             <TextField fx:id="tfFirstName" layoutX="79.0" layoutY="146.0" prefHeight="42.0" prefWidth="266.0" promptText="First name" />

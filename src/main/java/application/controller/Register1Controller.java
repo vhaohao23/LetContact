@@ -102,10 +102,10 @@ public class Register1Controller {
     }
 
     public void gotoLogin(MouseEvent e) throws IOException {
-        SwitchSceneUtil.switchScene("Login.fxml", e);
+        SwitchSceneUtil.switchScene("view/Login.fxml", e);
     }
 
     public void gotoRegister2(MouseEvent e) throws IOException {
-        SwitchSceneUtil.switchScene("Register2.fxml", e);
+        SwitchSceneUtil.switchScene("view/Register2.fxml", e);
     }
 }

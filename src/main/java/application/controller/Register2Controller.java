@@ -20,6 +20,10 @@ public class Register2Controller {
     private Label lblLogin;
 
     public void gotoLogin(MouseEvent e) throws IOException {
-        SwitchSceneUtil.switchScene("Login.fxml", e);
+        SwitchSceneUtil.switchScene("view/Login.fxml", e);
+    }
+
+    public void gotoRegister3(MouseEvent e) throws IOException {
+        SwitchSceneUtil.switchScene("view/Register3.fxml", e);
     }
 }

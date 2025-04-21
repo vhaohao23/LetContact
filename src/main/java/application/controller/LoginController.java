@@ -66,6 +66,6 @@ public class LoginController {
     }
 
     public void gotoRegister(MouseEvent e) throws IOException {
-        SwitchSceneUtil.switchScene("Register1.fxml", e);
+        SwitchSceneUtil.switchScene("view/Register1.fxml", e);
     }
 }
