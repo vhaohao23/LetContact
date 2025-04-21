@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(Main.class.getResource("Register2.fxml"));
+        Parent root = FXMLLoader.load(Main.class.getResource("Register1.fxml"));
         Scene scene=new Scene(root);
         scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
         stage.setScene(scene);

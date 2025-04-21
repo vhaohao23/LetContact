@@ -1,4 +1,4 @@
-package application;
+package application.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -89,8 +89,8 @@ public class Register1Controller {
 
             confirmEye.setImage(new Image(getClass().getResource("/img/hideEye.png").toExternalForm()));
             isConfirmHide = true;
-            tfConfirm.requestFocus();
-            tfConfirm.positionCaret(tfConfirm.getText().length());
+            pfConfirm.requestFocus();
+            pfConfirm.positionCaret(tfConfirm.getText().length());
         }
     }
 }
