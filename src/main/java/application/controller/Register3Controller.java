@@ -5,8 +5,10 @@ import application.dao.UserDAO;
 import application.session_management.UserSession;
 import application.util.AvatarDisplayUtil;
 import application.util.ImageUtil;
+import application.util.SwitchSceneUtil;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -57,5 +59,13 @@ public class Register3Controller {
         UserSession.getInstance().getUser().setAvatar(imageData);
         UserDAO userDAO=new UserDAO();
         userDAO.insert(UserSession.getInstance().getUser());
+
+        Alert alert=new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Registration Successful");
+        alert.setHeaderText("Registration Successful");
+        alert.setContentText("You have successfully registered. You can now login.");
+        alert.showAndWait();
+
+        SwitchSceneUtil.switchScene("view/Login.fxml",e);
     }
 }

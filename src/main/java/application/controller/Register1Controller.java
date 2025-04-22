@@ -3,10 +3,7 @@ package application.controller;
 import application.session_management.UserSession;
 import application.util.SwitchSceneUtil;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -115,6 +112,11 @@ public class Register1Controller {
 
     public void gotoRegister2(MouseEvent e) throws IOException {
         if (pfConfirm.getText().equals(pfPassword.getText())==false) {
+            Alert alert=new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Confirmation Error");
+            alert.setHeaderText("Password and Confirm Password do not match");
+            alert.setContentText("Please check your password and confirm password");
+            alert.showAndWait();
             return;
         }
 
