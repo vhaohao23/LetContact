@@ -27,7 +27,7 @@
                   <Font size="14.0" />
                </font></Label>
             <Button fx:id="btnChoseFile" layoutX="300.0" layoutY="378.0" mnemonicParsing="false" onMouseClicked="#setAvatarImage" prefHeight="26.0" prefWidth="75.0" text="Choose file" />
-            <Button fx:id="btnRegister" layoutX="148.0" layoutY="450.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="230.0" text="Register">
+            <Button fx:id="btnRegister" layoutX="148.0" layoutY="450.0" mnemonicParsing="false" onMouseClicked="#letRegister" prefHeight="26.0" prefWidth="230.0" text="Register">
                <font>
                   <Font size="16.0" />
                </font>

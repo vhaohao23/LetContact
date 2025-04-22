@@ -1,6 +1,8 @@
 package application.controller;
 
 import application.Main;
+import application.dao.UserDAO;
+import application.session_management.UserSession;
 import application.util.AvatarDisplayUtil;
 import application.util.ImageUtil;
 import javafx.fxml.FXML;
@@ -15,6 +17,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 public class Register3Controller {
     @FXML
@@ -25,8 +28,14 @@ public class Register3Controller {
 
     private static Stage stage;
 
-    public void initialize(){
-        AvatarDisplayUtil.avatarDisplay(avatarImageView, imageContainer,new Image(Main.class.getResource("/application/img/DefaultAvatar.png").toExternalForm()));
+    byte[] imageData;
+
+    Image image;
+
+    public void initialize() throws IOException, URISyntaxException {
+        imageData=ImageUtil.getImageData(new File(Main.class.getResource("/application/img/DefaultAvatar.png").toURI()));
+        image=ImageUtil.getImage(imageData);
+        AvatarDisplayUtil.avatarDisplay(avatarImageView, imageContainer,image);
     }
 
     public void setAvatarImage(MouseEvent e) throws IOException {
@@ -38,10 +47,15 @@ public class Register3Controller {
         stage=(Stage)((Node)e.getSource()).getScene().getWindow();
         File file =fc.showOpenDialog(stage);
 
-        byte[] imageData =ImageUtil.getImageData(file);
-
-        Image image=ImageUtil.getImage(imageData);
+        imageData =ImageUtil.getImageData(file);
+        image=ImageUtil.getImage(imageData);
 
         AvatarDisplayUtil.avatarDisplay(avatarImageView, imageContainer,image);
+    }
+
+    public void letRegister(MouseEvent e) throws IOException {
+        UserSession.getInstance().getUser().setAvatar(imageData);
+        UserDAO userDAO=new UserDAO();
+        userDAO.insert(UserSession.getInstance().getUser());
     }
 }

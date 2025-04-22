@@ -1,5 +1,6 @@
 package application.controller;
 
+import application.session_management.UserSession;
 import application.util.SwitchSceneUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -9,6 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -35,6 +37,12 @@ public class Register1Controller {
 
     @FXML
     private Label lblLogin;
+
+    @FXML
+    private TextField tfEmail;
+
+    @FXML
+    private TextField tfUsername;
 
     public void initialize() {
         // By default, show the PasswordField and hide the TextField.
@@ -106,6 +114,14 @@ public class Register1Controller {
     }
 
     public void gotoRegister2(MouseEvent e) throws IOException {
+        if (pfConfirm.getText().equals(pfPassword.getText())==false) {
+            return;
+        }
+
+        UserSession.getInstance().getUser().setEmail(tfEmail.getText());
+        UserSession.getInstance().getUser().setUserName(tfUsername.getText());
+        UserSession.getInstance().getUser().setPassword(pfPassword.getText());
+
         SwitchSceneUtil.switchScene("view/Register2.fxml", e);
     }
 }
