@@ -8,4 +8,5 @@ module org.example.letcontact {
     opens application to javafx.fxml;
     exports application.controller;
     opens application.controller to javafx.fxml;
+    opens  application.model to org.hibernate.orm.core;
 }

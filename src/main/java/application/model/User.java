@@ -41,13 +41,22 @@ public class User {
     private String password;
 
     @Column(name = "Status", length = 50, nullable = false)
-    private String status;
+    private String status="NOTACTIVE";
 
     @Lob
-    @Column(name = "Avatar")
+    @Column(name = "Avatar",columnDefinition = "LONGBLOB")
     private byte[] avatar;
 
     public User() {
+    }
+
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 
     public String getUserName() {
