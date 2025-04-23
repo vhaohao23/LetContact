@@ -1,6 +1,10 @@
 // Java
 package application.controller;
 
+import application.dao.UserDAO;
+import application.model.User;
+import application.session_management.UserSession;
+import application.util.BcrypyUtil;
 import application.util.SwitchSceneUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -29,6 +33,9 @@ public class LoginController {
 
     @FXML
     private Label lblRegister;
+
+    @FXML
+    private TextField tfUsername;
 
     public void initialize() {
         // By default, show the PasswordField and hide the TextField.
@@ -67,5 +74,23 @@ public class LoginController {
 
     public void gotoRegister(MouseEvent e) throws IOException {
         SwitchSceneUtil.switchScene("view/Register1.fxml", e);
+    }
+
+    public void letLogin(MouseEvent e) throws IOException {
+        UserDAO userDAO=new UserDAO();
+
+        User exampleUser = userDAO.selectByUsername(tfUsername.getText());
+
+        if (exampleUser != null) {
+            if (tfUsername.getText().equals(exampleUser.getUserName())){
+                System.out.println(exampleUser.getPassword());
+                if (BcrypyUtil.verifyPassword(tfPassword.getText(),exampleUser.getPassword())==true) {
+                    UserSession.getInstance().setUser(exampleUser);
+                    SwitchSceneUtil.switchScene("view/HomePage.fxml", e);
+                }
+            }
+        }
+
+
     }
 }

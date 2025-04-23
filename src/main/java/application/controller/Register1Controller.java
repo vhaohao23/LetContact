@@ -1,6 +1,7 @@
 package application.controller;
 
 import application.session_management.UserSession;
+import application.util.BcrypyUtil;
 import application.util.SwitchSceneUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -122,8 +123,7 @@ public class Register1Controller {
 
         UserSession.getInstance().getUser().setEmail(tfEmail.getText());
         UserSession.getInstance().getUser().setUserName(tfUsername.getText());
-        UserSession.getInstance().getUser().setPassword(pfPassword.getText());
-
+        UserSession.getInstance().getUser().setPassword(BcrypyUtil.hashPassword(tfPassword.getText()));
         SwitchSceneUtil.switchScene("view/Register2.fxml", e);
     }
 }

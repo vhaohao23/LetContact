@@ -42,7 +42,7 @@ public class UserDAO implements DAOInterface<User> {
             Session session=sessionFactory.openSession();
             Transaction tx=session.beginTransaction();
 
-            String hql="from User";
+            String hql="from User u where u.id = :id";
             Query query=session.createQuery(hql);
             rs= (User) query.getSingleResult();
 
@@ -111,6 +111,49 @@ public class UserDAO implements DAOInterface<User> {
             tx.commit();
             session.close();
             rs=true;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return rs;
+    }
+
+    public User selectByUsernameAndPassword(String username,String password) {
+        User rs=null;
+
+        try{
+            SessionFactory sessionFactory= HibernateUtil.getSessionFactory();
+            Session session=sessionFactory.openSession();
+            Transaction tx=session.beginTransaction();
+
+            String hql="from User u where u.userName=:username and u.password=:password";
+            Query query=session.createQuery(hql);
+            query.setParameter("username", username);
+            query.setParameter("password", password);
+            rs= (User) query.getSingleResult();
+
+            tx.commit();
+            session.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return rs;
+    }
+
+    public User selectByUsername(String username) {
+        User rs=null;
+
+        try{
+            SessionFactory sessionFactory= HibernateUtil.getSessionFactory();
+            Session session=sessionFactory.openSession();
+            Transaction tx=session.beginTransaction();
+
+            String hql="from User u where u.userName=:username";
+            Query query=session.createQuery(hql);
+            query.setParameter("username", username);
+            rs= (User) query.getSingleResult();
+
+            tx.commit();
+            session.close();
         }catch (Exception e){
             e.printStackTrace();
         }

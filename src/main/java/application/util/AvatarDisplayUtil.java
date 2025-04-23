@@ -13,11 +13,11 @@ public class AvatarDisplayUtil {
         double w=image.getWidth();
         double h=image.getHeight();
         if (w>h) {
-            avatarImageView.setFitHeight(210);
+            avatarImageView.setFitHeight(avatarImageView.getFitWidth());
             avatarImageView.setFitWidth(0);
         }
         else {
-            avatarImageView.setFitWidth(210);
+            avatarImageView.setFitWidth(avatarImageView.getFitWidth());
             avatarImageView.setFitHeight(0);
         }
 
@@ -25,7 +25,7 @@ public class AvatarDisplayUtil {
         avatarImageView.setPreserveRatio(true);
         avatarImageView.setImage(image);
 
-        Circle clip = new Circle(imageContainer.getPrefWidth()/2,imageContainer.getPrefHeight()/2, 100);
+        Circle clip = new Circle(imageContainer.getPrefWidth()/2,imageContainer.getPrefHeight()/2, imageContainer.getPrefWidth()/2);
         imageContainer.setClip(clip);
     }
 }

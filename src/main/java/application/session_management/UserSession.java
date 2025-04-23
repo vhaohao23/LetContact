@@ -13,7 +13,9 @@ public class UserSession {
     public static UserSession getInstance() {
         if (instance == null) {
             instance = new UserSession();
-             user = new User();
+        }
+        if (user == null){
+            user = new User();
         }
         return instance;
     }
