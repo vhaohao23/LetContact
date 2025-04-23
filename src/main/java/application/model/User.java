@@ -3,6 +3,8 @@ package application.model;
 import jakarta.persistence.*;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "user")
@@ -49,7 +51,6 @@ public class User {
 
     public User() {
     }
-
 
     public String getUserID() {
         return userID;

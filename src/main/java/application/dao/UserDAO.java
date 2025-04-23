@@ -42,8 +42,9 @@ public class UserDAO implements DAOInterface<User> {
             Session session=sessionFactory.openSession();
             Transaction tx=session.beginTransaction();
 
-            String hql="from User u where u.id = :id";
+            String hql="from User u where u.userID = :id";
             Query query=session.createQuery(hql);
+            query.setParameter("id",t);
             rs= (User) query.getSingleResult();
 
             tx.commit();
