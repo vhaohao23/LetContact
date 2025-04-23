@@ -5,6 +5,11 @@ module org.example.letcontact {
     requires org.hibernate.orm.core;
     requires java.naming;
     requires jbcrypt;
+    requires java.desktop;
+    requires jdk.jdi;
+    requires TimingFramework;
+    requires miglayout;
+    requires swingx.all;
     exports application;
     opens application to javafx.fxml;
     exports application.controller;

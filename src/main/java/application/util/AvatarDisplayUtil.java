@@ -13,11 +13,11 @@ public class AvatarDisplayUtil {
         double w=image.getWidth();
         double h=image.getHeight();
         if (w>h) {
-            avatarImageView.setFitHeight(avatarImageView.getFitWidth());
+            avatarImageView.setFitHeight(imageContainer.getPrefWidth());
             avatarImageView.setFitWidth(0);
         }
         else {
-            avatarImageView.setFitWidth(avatarImageView.getFitWidth());
+            avatarImageView.setFitWidth(imageContainer.getPrefHeight());
             avatarImageView.setFitHeight(0);
         }
 
