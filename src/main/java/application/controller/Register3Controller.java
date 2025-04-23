@@ -53,6 +53,7 @@ public class Register3Controller {
         image=ImageUtil.getImage(imageData);
 
         AvatarDisplayUtil.avatarDisplay(avatarImageView, imageContainer,image);
+        System.out.println(imageData);
     }
 
     public void letRegister(MouseEvent e) throws IOException {
