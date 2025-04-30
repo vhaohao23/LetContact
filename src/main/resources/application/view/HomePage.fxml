@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.StackPane?>
 
 <AnchorPane prefHeight="617.0" prefWidth="844.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.HomePageController">
    <children>
-      <StackPane fx:id="yourAvatarContainer" layoutX="14.0" layoutY="36.0" prefHeight="58.0" prefWidth="53.0">
+      <StackPane fx:id="yourAvatarContainer" layoutX="692.0" layoutY="26.0" prefHeight="60.0" prefWidth="58.0">
          <children>
             <ImageView fx:id="yourAvatarImageView" fitHeight="70.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true" />
          </children></StackPane>
-      <Label fx:id="yourUsername" layoutX="104.0" layoutY="62.0" text="Label" />
+      <Label fx:id="yourUsername" layoutX="783.0" layoutY="44.0" text="Label" />
+      <ListView fx:id="FriendList" layoutX="31.0" layoutY="157.0" prefHeight="451.0" prefWidth="262.0" />
    </children>
 </AnchorPane>

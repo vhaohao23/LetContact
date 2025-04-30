@@ -7,8 +7,8 @@ module org.example.letcontact {
     requires jbcrypt;
     requires java.desktop;
     requires jdk.jdi;
-    requires TimingFramework;
     requires miglayout;
+    requires TimingFramework;
     requires swingx.all;
     exports application;
     opens application to javafx.fxml;

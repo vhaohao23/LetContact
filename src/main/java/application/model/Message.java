@@ -15,7 +15,7 @@ public class Message {
 
     @ManyToOne
     @JoinColumn(name = "ParticipantID")
-    private Participant participantId;
+    private Participant participant;
 
     @Lob
     @Column(name = "Content")
@@ -39,12 +39,12 @@ public class Message {
         this.messageId = messageId;
     }
 
-    public Participant getParticipantId() {
-        return participantId;
+    public Participant getParticipant() {
+        return participant;
     }
 
-    public void setParticipantId(Participant participantId) {
-        this.participantId = participantId;
+    public void setParticipant(Participant participant) {
+        this.participant = participant;
     }
 
     public byte[] getContent() {
