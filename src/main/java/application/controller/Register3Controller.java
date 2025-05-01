@@ -2,6 +2,7 @@ package application.controller;
 
 import application.Main;
 import application.dao.UserDAO;
+import application.session_management.SessionManagement;
 import application.session_management.UserSession;
 import application.util.AvatarDisplayUtil;
 import application.util.ImageUtil;
@@ -13,7 +14,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
-import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 

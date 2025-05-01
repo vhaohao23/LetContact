@@ -1,5 +1,6 @@
 package application.controller;
 
+import application.session_management.SessionManagement;
 import application.session_management.UserSession;
 import application.util.BcrypyUtil;
 import application.util.SwitchSceneUtil;
@@ -8,7 +9,6 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 

@@ -42,8 +42,9 @@ public class UserDAO implements DAOInterface<User> {
             Session session=sessionFactory.openSession();
             Transaction tx=session.beginTransaction();
 
-            String hql="from User u where u.id = :id";
+            String hql="from User u where u.userID = :id";
             Query query=session.createQuery(hql);
+            query.setParameter("id",t);
             rs= (User) query.getSingleResult();
 
             tx.commit();
@@ -158,5 +159,28 @@ public class UserDAO implements DAOInterface<User> {
             e.printStackTrace();
         }
         return rs;
+    }
+
+    public List<User> selectFriend(User user) {
+        List<User> rss=null;
+
+        try{
+            SessionFactory sessionFactory= HibernateUtil.getSessionFactory();
+            Session session=sessionFactory.openSession();
+            Transaction tx=session.beginTransaction();
+
+            String hql = "select distinct r.user2 from User u join u.relationships1 r where u.userID = :userId and r.rStatus = 'accepted' \n" +
+                    "union \n" +
+                    "select distinct r.user1 from User u join u.relationships2 r where u.userID = :userId and r.rStatus = 'accepted'";
+            Query query=session.createQuery(hql);
+            query.setParameter("userId", user.getUserID());
+            rss= query.getResultList();
+
+            tx.commit();
+            session.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return rss;
     }
 }
