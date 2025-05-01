@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "sessions")
-public class Sessions {
+public class LoginSession {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -14,12 +14,15 @@ public class Sessions {
 
     @ManyToOne
     @JoinColumn(name = "UserID")
-    @Column
-    private User userID;
+    private User user;
 
+    @Column(name = "IPAddress")
     private String ipAddress;
 
-    public Sessions() {
+    @Column(name = "Port")
+    private int port;
+
+    public LoginSession() {
     }
 
     public String getSessionID() {
@@ -30,12 +33,12 @@ public class Sessions {
         this.sessionID = sessionID;
     }
 
-    public User getUserID() {
-        return userID;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserID(User userID) {
-        this.userID = userID;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getIpAddress() {
@@ -44,5 +47,13 @@ public class Sessions {
 
     public void setIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
     }
 }

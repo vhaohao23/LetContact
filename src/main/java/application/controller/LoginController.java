@@ -3,7 +3,7 @@ package application.controller;
 
 import application.dao.UserDAO;
 import application.model.User;
-import application.session_management.UserSession;
+import application.session_management.SessionManagement;
 import application.util.BcrypyUtil;
 import application.util.SwitchSceneUtil;
 import javafx.fxml.FXML;
@@ -85,7 +85,7 @@ public class LoginController {
             if (tfUsername.getText().equals(exampleUser.getUserName())){
                 System.out.println(exampleUser.getPassword());
                 if (BcrypyUtil.verifyPassword(tfPassword.getText(),exampleUser.getPassword())==true) {
-                    UserSession.getInstance().setUser(exampleUser);
+                    SessionManagement.getInstance().getLoginSession().setUser(exampleUser);
                     SwitchSceneUtil.switchScene("view/HomePage.fxml", e);
                 }
             }

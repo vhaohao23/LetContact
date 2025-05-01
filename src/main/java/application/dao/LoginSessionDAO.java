@@ -1,7 +1,7 @@
 package application.dao;
 
-import application.model.Sessions;
-import application.model.Sessions;
+import application.model.LoginSession;
+import application.model.LoginSession;
 import application.util.HibernateUtil;
 import jakarta.persistence.Query;
 import org.hibernate.Session;
@@ -11,17 +11,17 @@ import org.hibernate.Transaction;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SessionsDAO implements DAOInterface<Sessions> {
+public class LoginSessionDAO implements DAOInterface<LoginSession> {
     @Override
-    public List<Sessions> getAll() {
-        List<Sessions> rss=new ArrayList<>();
+    public List<LoginSession> getAll() {
+        List<LoginSession> rss=new ArrayList<>();
 
         try{
             SessionFactory sessionFactory= HibernateUtil.getSessionFactory();
             Session session=sessionFactory.openSession();
             Transaction tx=session.beginTransaction();
 
-            String hql="from Sessions";
+            String hql="from LoginSession";
             Query query=session.createQuery(hql);
             rss=query.getResultList();
 
@@ -34,18 +34,18 @@ public class SessionsDAO implements DAOInterface<Sessions> {
     }
 
     @Override
-    public Sessions selectById(String t) {
-        Sessions rs=null;
+    public LoginSession selectById(String t) {
+        LoginSession rs=null;
 
         try{
             SessionFactory sessionFactory= HibernateUtil.getSessionFactory();
             Session session=sessionFactory.openSession();
             Transaction tx=session.beginTransaction();
 
-            String hql="from Sessions u where u.sessionID = :id";
+            String hql="from LoginSession u where u.sessionID = :id";
             Query query=session.createQuery(hql);
             query.setParameter("id",t);
-            rs= (Sessions) query.getSingleResult();
+            rs= (LoginSession) query.getSingleResult();
 
             tx.commit();
             session.close();
@@ -56,7 +56,7 @@ public class SessionsDAO implements DAOInterface<Sessions> {
     }
 
     @Override
-    public boolean insert(Sessions Sessions) {
+    public boolean insert(LoginSession LoginSession) {
         boolean rs=false;
 
         try{
@@ -65,7 +65,7 @@ public class SessionsDAO implements DAOInterface<Sessions> {
                 Session session=sessionFactory.openSession();
                 Transaction tx=session.beginTransaction();
 
-                session.save(Sessions);
+                session.save(LoginSession);
 
                 tx.commit();
                 session.close();
@@ -79,7 +79,7 @@ public class SessionsDAO implements DAOInterface<Sessions> {
     }
 
     @Override
-    public boolean update(Sessions Sessions) {
+    public boolean update(LoginSession LoginSession) {
         boolean rs=false;
 
         try{
@@ -87,7 +87,7 @@ public class SessionsDAO implements DAOInterface<Sessions> {
             Session session=sessionFactory.openSession();
             Transaction tx=session.beginTransaction();
 
-            session.update(Sessions);
+            session.update(LoginSession);
 
             tx.commit();
             session.close();
@@ -99,7 +99,7 @@ public class SessionsDAO implements DAOInterface<Sessions> {
     }
 
     @Override
-    public boolean delete(Sessions Sessions) {
+    public boolean delete(LoginSession LoginSession) {
         boolean rs=false;
 
         try{
@@ -107,7 +107,7 @@ public class SessionsDAO implements DAOInterface<Sessions> {
             Session session=sessionFactory.openSession();
             Transaction tx=session.beginTransaction();
 
-            session.delete(Sessions);
+            session.delete(LoginSession);
 
             tx.commit();
             session.close();
@@ -117,6 +117,4 @@ public class SessionsDAO implements DAOInterface<Sessions> {
         }
         return rs;
     }
-
-    public getIPAdress
 }
