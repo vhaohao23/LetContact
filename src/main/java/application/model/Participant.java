@@ -13,11 +13,11 @@ public class Participant {
 
     @ManyToOne
     @JoinColumn(name = "UserID")
-    private User userId;
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "ConversationID")
-    private Conversation conversationId;
+    private Conversation conversation;
 
     @Column(name = "Role", length = 200)
     private String role = "member";
@@ -33,20 +33,20 @@ public class Participant {
         this.participantId = participantId;
     }
 
-    public User getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(User userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public Conversation getConversationId() {
-        return conversationId;
+    public Conversation getConversation() {
+        return conversation;
     }
 
-    public void setConversationId(Conversation conversationId) {
-        this.conversationId = conversationId;
+    public void setConversation(Conversation conversation) {
+        this.conversation = conversation;
     }
 
     public String getRole() {

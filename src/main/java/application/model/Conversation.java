@@ -8,7 +8,7 @@ public class Conversation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "ConversationID", length = 50)
+    @Column(name = "ConversationID", length = 200)
     private String conversationID;
 
     @Column(name = "Type", length = 50)

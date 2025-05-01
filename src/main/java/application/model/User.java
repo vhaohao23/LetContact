@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "user")
@@ -48,6 +50,12 @@ public class User {
     @Lob
     @Column(name = "Avatar",columnDefinition = "LONGBLOB")
     private byte[] avatar;
+
+    @OneToMany(mappedBy = "user1", cascade = CascadeType.ALL)
+    private List<Relationship> relationships1 = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user2", cascade = CascadeType.ALL)
+    private List<Relationship> relationships2 = new ArrayList<>();
 
     public User() {
     }
@@ -146,5 +154,21 @@ public class User {
 
     public void setAvatar(byte[] avatar) {
         this.avatar = avatar;
+    }
+
+    public List<Relationship> getRelationships1() {
+        return relationships1;
+    }
+
+    public void setRelationships1(List<Relationship> relationships1) {
+        this.relationships1 = relationships1;
+    }
+
+    public List<Relationship> getRelationships2() {
+        return relationships2;
+    }
+
+    public void setRelationships2(List<Relationship> relationships2) {
+        this.relationships2 = relationships2;
     }
 }

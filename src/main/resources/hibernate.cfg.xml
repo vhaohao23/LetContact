@@ -14,5 +14,10 @@
         <property name="show_sql">true</property>
 
         <mapping class="application.model.User"/>
+        <mapping class="application.model.Relationship"/>
+        <mapping class="application.model.Participant"/>
+        <mapping class="application.model.Conversation"/>
+        <mapping class="application.model.Message"/>
+
     </session-factory>
 </hibernate-configuration>
