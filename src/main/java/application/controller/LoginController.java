@@ -2,8 +2,12 @@
 package application.controller;
 
 import application.dao.UserDAO;
+import application.dto.BaseUserRequest;
+import application.dto.UserSessionResponse;
+import application.model.LoginSession;
 import application.model.User;
 import application.session_management.SessionManagement;
+import application.session_management.TCPSocketSession;
 import application.util.BcrypyUtil;
 import application.util.SwitchSceneUtil;
 import javafx.fxml.FXML;
@@ -16,6 +20,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
 import java.io.IOException;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
 
 public class LoginController {
     @FXML
@@ -83,14 +90,22 @@ public class LoginController {
 
         if (exampleUser != null) {
             if (tfUsername.getText().equals(exampleUser.getUserName())){
-                System.out.println(exampleUser.getPassword());
                 if (BcrypyUtil.verifyPassword(tfPassword.getText(),exampleUser.getPassword())==true) {
-                    SessionManagement.getInstance().getLoginSession().setUser(exampleUser);
+                    BaseUserRequest loginRequest = new BaseUserRequest("login",exampleUser,"attempt to login");
+                    TCPSocketSession.getInstance().out.writeObject(loginRequest);
+                    TCPSocketSession.getInstance().out.flush();
+
+                    try {
+                        UserSessionResponse userSessionResponse = (UserSessionResponse) TCPSocketSession.getInstance().in.readObject();
+                        SessionManagement.getInstance().setLoginSession(userSessionResponse.getLoginSession());
+                    } catch (ClassNotFoundException ex) {
+                        throw new RuntimeException(ex);
+                    }
+
                     SwitchSceneUtil.switchScene("view/HomePage.fxml", e);
+
                 }
             }
         }
-
-
     }
 }

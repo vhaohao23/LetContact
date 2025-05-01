@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 
 public class FriendListCellController {
@@ -30,6 +31,9 @@ public class FriendListCellController {
 
         Image image= ImageUtil.getImage(friend.getAvatar());
         AvatarDisplayUtil.avatarDisplay(friendAvatar, friendAvatarContainer, image);
+    }
 
+    public void letCall(MouseEvent e){
+        System.out.println("Calling " + friend.getUserName());
     }
 }

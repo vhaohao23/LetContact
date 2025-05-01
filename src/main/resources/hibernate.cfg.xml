@@ -18,6 +18,6 @@
         <mapping class="application.model.Participant"/>
         <mapping class="application.model.Conversation"/>
         <mapping class="application.model.Message"/>
-
+        <mapping class="application.model.LoginSession"/>
     </session-factory>
 </hibernate-configuration>
