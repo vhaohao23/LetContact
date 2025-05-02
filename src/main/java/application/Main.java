@@ -2,6 +2,7 @@ package application;
 
 import application.client.ClientListenner;
 import application.client.ClientSender;
+import application.session_management.MainApplicationSession;
 import application.session_management.TCPSocketSession;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -38,5 +39,8 @@ public class Main extends Application {
         scene.getStylesheets().add(Main.class.getResource("/application/css/style.css").toExternalForm());
         stage.setScene(scene);
         stage.show();
+
+        MainApplicationSession.getInstance().scene=scene;
+        MainApplicationSession.getInstance().stage=stage;
     }
 }

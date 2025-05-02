@@ -95,6 +95,7 @@ public class LoginController {
                     LoginRequest loginRequest = new LoginRequest(MessageType.LOGIN,exampleUser,"attempt to login");
                     TCPSocketSession.getInstance().out.writeObject(loginRequest);
                     TCPSocketSession.getInstance().out.flush();
+                    System.out.println("flush success");
                 }
             }
         }

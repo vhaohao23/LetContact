@@ -3,8 +3,10 @@ package application.client;
 import application.Main;
 import application.controller.LoginController;
 import application.dto.BaseMessage;
+import application.dto.CallRequest;
 import application.dto.LoginSuccessResponse;
 import application.dto.MessageType;
+import application.session_management.MainApplicationSession;
 import application.session_management.SessionManagement;
 import application.session_management.TCPSocketSession;
 import javafx.fxml.FXMLLoader;
@@ -41,6 +43,9 @@ public class ClientListenner implements Runnable{
             LoginSuccessResponse loginSuccessResponse = (LoginSuccessResponse) baseResponse;
             System.out.println("Login successful: " + loginSuccessResponse.getLoginSession());
             loginHandler(loginSuccessResponse);
+        }else if (baseResponse.getType() == MessageType.CALL_REQUEST){
+            CallRequest callRequest=(CallRequest)baseResponse;
+            handleCallRequest(callRequest);
         }
     }
 
@@ -49,7 +54,7 @@ public class ClientListenner implements Runnable{
 
         javafx.application.Platform.runLater(() -> {
             try {
-                Scene scene = ((Stage) Stage.getWindows().get(0)).getScene();
+                Scene scene = MainApplicationSession.getInstance().scene;
                 LoginController controller = (LoginController) scene.lookup("#loginController").getUserData();
                 if (controller != null) {
                     controller.onLoginSuccess();
@@ -60,4 +65,10 @@ public class ClientListenner implements Runnable{
         });
     }
 
+    public void handleCallRequest(CallRequest callRequest){
+        System.out.println("Call request received from: " + callRequest.getCaller().getUserName());
+
+
+
+    }
 }

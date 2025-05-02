@@ -5,5 +5,10 @@ public enum MessageType {
     LOGIN_SUCCESS,
     LOGIN_FAILURE,
     LOGOUT,
-    REGISTER
+    REGISTER,
+    REGISTER_SUCCESS,
+    REGISTER_FAILURE,
+    CALL_REQUEST,
+    CALL_ACCEPT,
+    CALL_REJECT,
 }
