@@ -11,4 +11,5 @@ public enum MessageType {
     CALL_REQUEST,
     CALL_ACCEPT,
     CALL_REJECT,
+    START_CALL,
 }

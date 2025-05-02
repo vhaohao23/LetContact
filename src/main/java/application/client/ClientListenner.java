@@ -1,21 +1,20 @@
 package application.client;
 
 import application.Main;
+import application.controller.CallNotificationController;
 import application.controller.LoginController;
-import application.dto.BaseMessage;
-import application.dto.CallRequest;
-import application.dto.LoginSuccessResponse;
-import application.dto.MessageType;
+import application.dto.*;
 import application.session_management.MainApplicationSession;
 import application.session_management.SessionManagement;
 import application.session_management.TCPSocketSession;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.net.Socket;
 
 public class ClientListenner implements Runnable{
     @Override
@@ -46,6 +45,8 @@ public class ClientListenner implements Runnable{
         }else if (baseResponse.getType() == MessageType.CALL_REQUEST){
             CallRequest callRequest=(CallRequest)baseResponse;
             handleCallRequest(callRequest);
+        }else if (baseResponse.getType()==MessageType.START_CALL){
+            handleCallVideo((OtherInfomationCallVideo)baseResponse);
         }
     }
 
@@ -66,9 +67,27 @@ public class ClientListenner implements Runnable{
     }
 
     public void handleCallRequest(CallRequest callRequest){
-        System.out.println("Call request received from: " + callRequest.getCaller().getUserName());
+        Platform.runLater(()-> {
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("view/CallNotification.fxml"));
+            Parent root = null;
+            try {
+                root = loader.load();
 
+                CallNotificationController callNotificationController=loader.getController();
+                callNotificationController.init(callRequest.getCaller(),callRequest.getCallee());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Scene scene=new Scene(root);
+            scene.getStylesheets().add(Main.class.getResource("/application/css/style.css").toExternalForm());
+            Stage stage=new Stage();
+            stage.setScene(scene);
+            stage.setTitle("Call");
+            stage.show();
+        });
+    }
 
-
+    public void handleCallVideo(OtherInfomationCallVideo otherInfomationCallVideo){
+        System.out.println(otherInfomationCallVideo.getLoginSession().getUser().getUserName()+" is calling you");
     }
 }
