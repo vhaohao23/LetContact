@@ -1,5 +1,7 @@
 package application;
 
+import application.client.ClientListenner;
+import application.client.ClientSender;
 import application.session_management.TCPSocketSession;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -19,21 +21,12 @@ public class Main extends Application {
         try{
             TCPSocketSession.getInstance().socket=new Socket("127.0.0.1", 5000);
 
-            new Thread(()->{
-                try {
-                    TCPSocketSession.getInstance().in=new ObjectInputStream(TCPSocketSession.getInstance().socket.getInputStream());
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }).start();
+            ClientListenner clientListenner = new ClientListenner();
+            new Thread(clientListenner).start();
 
-            new Thread(()->{
-                try {
-                    TCPSocketSession.getInstance().out=new ObjectOutputStream(TCPSocketSession.getInstance().socket.getOutputStream());
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }).start();
+            ClientSender clientSender=new ClientSender();
+            new Thread(clientSender).start();
+
             System.out.println("Connected to server");
         } catch (Exception e) {
             e.printStackTrace();

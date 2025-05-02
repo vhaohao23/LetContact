@@ -4,23 +4,14 @@ import application.model.LoginSession;
 
 import java.io.Serializable;
 
-public class UserSessionResponse implements Serializable {
-    private String type;
+public class LoginSuccessResponse extends BaseMessage implements Serializable {
     private LoginSession loginSession;
     private String content;
 
-    public UserSessionResponse(String type, LoginSession loginSession, String content) {
-        this.type = type;
+    public LoginSuccessResponse(MessageType type, LoginSession loginSession, String content) {
+        super(type);
         this.loginSession = loginSession;
         this.content = content;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public LoginSession getLoginSession() {

@@ -2,9 +2,10 @@
 package application.controller;
 
 import application.dao.UserDAO;
-import application.dto.BaseUserRequest;
-import application.dto.UserSessionResponse;
-import application.model.LoginSession;
+import application.dto.BaseMessage;
+import application.dto.LoginRequest;
+import application.dto.LoginSuccessResponse;
+import application.dto.MessageType;
 import application.model.User;
 import application.session_management.SessionManagement;
 import application.session_management.TCPSocketSession;
@@ -20,11 +21,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
 import java.io.IOException;
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
 
 public class LoginController {
+    private MouseEvent lastEvent;
+
     @FXML
     private ImageView eye;
     boolean isHide = true;
@@ -91,21 +91,23 @@ public class LoginController {
         if (exampleUser != null) {
             if (tfUsername.getText().equals(exampleUser.getUserName())){
                 if (BcrypyUtil.verifyPassword(tfPassword.getText(),exampleUser.getPassword())==true) {
-                    BaseUserRequest loginRequest = new BaseUserRequest("login",exampleUser,"attempt to login");
+                    lastEvent=e;
+                    LoginRequest loginRequest = new LoginRequest(MessageType.LOGIN,exampleUser,"attempt to login");
                     TCPSocketSession.getInstance().out.writeObject(loginRequest);
                     TCPSocketSession.getInstance().out.flush();
-
-                    try {
-                        UserSessionResponse userSessionResponse = (UserSessionResponse) TCPSocketSession.getInstance().in.readObject();
-                        SessionManagement.getInstance().setLoginSession(userSessionResponse.getLoginSession());
-                    } catch (ClassNotFoundException ex) {
-                        throw new RuntimeException(ex);
-                    }
-
-                    SwitchSceneUtil.switchScene("view/HomePage.fxml", e);
-
                 }
             }
         }
     }
+
+    public void onLoginSuccess() {
+        try {
+            if (lastEvent != null) {
+                SwitchSceneUtil.switchScene("view/HomePage.fxml", lastEvent);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
