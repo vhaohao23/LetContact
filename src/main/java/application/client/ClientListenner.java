@@ -2,6 +2,7 @@ package application.client;
 
 import application.Main;
 import application.controller.CallNotificationController;
+import application.controller.CallVideoController;
 import application.controller.LoginController;
 import application.dto.*;
 import application.session_management.MainApplicationSession;
@@ -82,12 +83,29 @@ public class ClientListenner implements Runnable{
             scene.getStylesheets().add(Main.class.getResource("/application/css/style.css").toExternalForm());
             Stage stage=new Stage();
             stage.setScene(scene);
-            stage.setTitle("Call");
+            stage.setTitle("Call notification");
             stage.show();
         });
     }
-
     public void handleCallVideo(OtherInfomationCallVideo otherInfomationCallVideo){
-        System.out.println(otherInfomationCallVideo.getLoginSession().getUser().getUserName()+" is calling you");
+        System.out.println("You are in a call with: "+otherInfomationCallVideo.getLoginSession().getUser().getUserName());
+        Platform.runLater(()-> {
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("view/CallVideo.fxml"));
+            Parent root = null;
+            try {
+                root = loader.load();
+
+                CallVideoController CallVideoController=loader.getController();
+                CallVideoController.init(otherInfomationCallVideo);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Scene scene=new Scene(root);
+            scene.getStylesheets().add(Main.class.getResource("/application/css/style.css").toExternalForm());
+            Stage stage=new Stage();
+            stage.setScene(scene);
+            stage.setTitle("Call Video");
+            stage.show();
+        });
     }
 }

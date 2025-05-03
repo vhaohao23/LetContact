@@ -8,11 +8,13 @@ import application.session_management.TCPSocketSession;
 import application.util.AvatarDisplayUtil;
 import application.util.ImageUtil;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -53,5 +55,8 @@ public class CallNotificationController {
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
+
+        Stage stage=(Stage)((Node)e.getSource()).getScene().getWindow();
+        stage.close();
     }
 }
