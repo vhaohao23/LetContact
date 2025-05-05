@@ -11,6 +11,7 @@ module org.example.letcontact {
     requires TimingFramework;
     requires swingx.all;
     requires opencv;
+    requires ice4j;
     exports application;
     opens application to javafx.fxml;
     exports application.controller;

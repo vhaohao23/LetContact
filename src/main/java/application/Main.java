@@ -20,7 +20,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         try{
-            TCPSocketSession.getInstance().socket=new Socket("127.0.0.1", 5000);
+            TCPSocketSession.getInstance().socket=new Socket("localhost", 5000);
 
             ClientListenner clientListenner = new ClientListenner();
             new Thread(clientListenner).start();

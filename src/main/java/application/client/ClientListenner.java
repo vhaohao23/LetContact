@@ -88,7 +88,9 @@ public class ClientListenner implements Runnable{
         });
     }
     public void handleCallVideo(OtherInfomationCallVideo otherInfomationCallVideo){
-        System.out.println("You are in a call with: "+otherInfomationCallVideo.getLoginSession().getUser().getUserName());
+        System.out.println("You are in a call with: "+otherInfomationCallVideo.getLoginSession().getUser().getUserName()+
+                " and his ip is: "+otherInfomationCallVideo.getLoginSession().getIpAddress()+" port:"+otherInfomationCallVideo.getLoginSession().getPort());
+        System.out.println("your ip"+TCPSocketSession.getInstance().socket.getLocalAddress().getHostAddress()+" port:"+TCPSocketSession.getInstance().socket.getLocalPort());;
         Platform.runLater(()-> {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("view/CallVideo.fxml"));
             Parent root = null;

@@ -10,6 +10,7 @@ import org.opencv.core.Mat;
 import org.opencv.videoio.VideoCapture;
 
 import javax.imageio.ImageIO;
+import java.awt.dnd.DropTarget;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.ByteArrayOutputStream;
@@ -18,7 +19,7 @@ import java.net.*;
 
 public class CallVideoController {
     static {
-        String relativePath = "src\\main\\java\\application\\dll\\opencv_java4110.dll";
+        String relativePath = "src\\main\\resources\\application\\dll\\opencv_java4110.dll";
         String absolutePath = System.getProperty("user.dir") + System.getProperty("file.separator") + relativePath;
         System.load(absolutePath);
     }
@@ -35,7 +36,9 @@ public class CallVideoController {
 
     private InetAddress ip;
 
-    private DatagramSocket datagramSocket;
+    private DatagramSocket sendSocket;
+
+    private DatagramSocket receiveSocket;
 
     public void init(OtherInfomationCallVideo otherInfomationCallVideo) throws UnknownHostException {
         this.otherInfomationCallVideo=otherInfomationCallVideo;
@@ -45,7 +48,8 @@ public class CallVideoController {
         ip=InetAddress.getByName(otherInfomationCallVideo.getLoginSession().getIpAddress());
 
         try {
-            this.datagramSocket=new DatagramSocket(SessionManagement.getInstance().getLoginSession().getPort());
+            this.sendSocket=new DatagramSocket();
+            this.receiveSocket=new DatagramSocket(SessionManagement.getInstance().getLoginSession().getPort());
         } catch (SocketException ex) {
             ex.printStackTrace();
         }
@@ -91,7 +95,7 @@ public class CallVideoController {
 
                 DatagramPacket senderPacket=new DatagramPacket(imageData,imageData.length,ip,port);
                 try {
-                    datagramSocket.send(senderPacket);
+                    sendSocket.send(senderPacket);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -121,7 +125,7 @@ public class CallVideoController {
             byte [] buffer = new byte[25000]; // Buffer size for incoming packets
             DatagramPacket receivePacket = new DatagramPacket(buffer, buffer.length);
             try {
-                datagramSocket.receive(receivePacket);
+                receiveSocket.receive(receivePacket);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
