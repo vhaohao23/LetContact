@@ -48,21 +48,21 @@ public class Card extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        lbTitle = new JLabel();
-        lbValues = new JLabel();
-        lbDescription = new JLabel();
-        lbIcon = new JLabel();
+        lbTitle = new javax.swing.JLabel();
+        lbValues = new javax.swing.JLabel();
+        lbDescription = new javax.swing.JLabel();
+        lbIcon = new javax.swing.JLabel();
 
         lbTitle.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lbTitle.setForeground(new Color(255, 255, 255));
+        lbTitle.setForeground(new java.awt.Color(255, 255, 255));
         lbTitle.setText("Title");
 
         lbValues.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lbValues.setForeground(new Color(255, 255, 255));
+        lbValues.setForeground(new java.awt.Color(255, 255, 255));
         lbValues.setText("Values");
 
         lbDescription.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        lbDescription.setForeground(new Color(255, 255, 255));
+        lbDescription.setForeground(new java.awt.Color(255, 255, 255));
         lbDescription.setText("Description");
 
         lbIcon.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
@@ -112,9 +112,9 @@ public class Card extends javax.swing.JPanel {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private JLabel lbDescription;
-    private JLabel lbIcon;
-    private JLabel lbTitle;
-    private JLabel lbValues;
+    private javax.swing.JLabel lbDescription;
+    private javax.swing.JLabel lbIcon;
+    private javax.swing.JLabel lbTitle;
+    private javax.swing.JLabel lbValues;
     // End of variables declaration//GEN-END:variables
 }

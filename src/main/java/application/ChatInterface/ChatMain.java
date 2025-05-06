@@ -2,12 +2,15 @@
 package application.ChatInterface;
 
 import application.AdminPart.EventMenuSelected;
+import application.ChatInterface.event.EventImageView;
+import application.ChatInterface.event.PublicEvent;
 import application.ChatInterface.form.MainForm;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.Icon;
 import javax.swing.JLayeredPane;
 import javax.swing.SwingUtilities;
 import net.miginfocom.swing.MigLayout;
@@ -98,23 +101,24 @@ public class ChatMain extends javax.swing.JFrame {
             }
         });
     }
+    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        mainPanel = new JLayeredPane();
+        mainPanel = new javax.swing.JLayeredPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        mainPanel.setBackground(new Color(250, 250, 250));
+        mainPanel.setBackground(new java.awt.Color(229, 229, 229));
         mainPanel.setOpaque(true);
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1340, Short.MAX_VALUE)
+            .addGap(0, 1354, Short.MAX_VALUE)
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -144,8 +148,10 @@ public class ChatMain extends javax.swing.JFrame {
             }
         });
     }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private JLayeredPane mainPanel;
+    private javax.swing.JLayeredPane mainPanel;
     // End of variables declaration//GEN-END:variables
+
 }

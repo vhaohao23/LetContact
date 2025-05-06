@@ -12,7 +12,7 @@ public class Profile extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        pic = new application.raven.swing.ImageAvatar();
+        pic = new com.raven.swing.ImageAvatar();
 
         pic.setForeground(new java.awt.Color(245, 245, 245));
         pic.setBorderSize(2);
@@ -35,6 +35,6 @@ public class Profile extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private application.raven.swing.ImageAvatar pic;
+    private com.raven.swing.ImageAvatar pic;
     // End of variables declaration//GEN-END:variables
 }
