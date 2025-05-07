@@ -43,13 +43,13 @@ public class CallVideoController {
     public void init(OtherInfomationCallVideo otherInfomationCallVideo) throws UnknownHostException {
         this.otherInfomationCallVideo=otherInfomationCallVideo;
 
-        port=otherInfomationCallVideo.getLoginSession().getPort();
+        port=9876;
 
         ip=InetAddress.getByName(otherInfomationCallVideo.getLoginSession().getIpAddress());
 
         try {
             this.sendSocket=new DatagramSocket();
-            this.receiveSocket=new DatagramSocket(SessionManagement.getInstance().getLoginSession().getPort());
+            this.receiveSocket=new DatagramSocket(9876);
         } catch (SocketException ex) {
             ex.printStackTrace();
         }
