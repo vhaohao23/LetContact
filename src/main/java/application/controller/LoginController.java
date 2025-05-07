@@ -2,8 +2,13 @@
 package application.controller;
 
 import application.dao.UserDAO;
+import application.dto.BaseMessage;
+import application.dto.LoginRequest;
+import application.dto.LoginSuccessResponse;
+import application.dto.MessageType;
 import application.model.User;
 import application.session_management.SessionManagement;
+import application.session_management.TCPSocketSession;
 import application.util.BcrypyUtil;
 import application.util.SwitchSceneUtil;
 import javafx.fxml.FXML;
@@ -18,6 +23,8 @@ import javafx.scene.input.MouseEvent;
 import java.io.IOException;
 
 public class LoginController {
+    private MouseEvent lastEvent;
+
     @FXML
     private ImageView eye;
     boolean isHide = true;
@@ -83,14 +90,25 @@ public class LoginController {
 
         if (exampleUser != null) {
             if (tfUsername.getText().equals(exampleUser.getUserName())){
-                System.out.println(exampleUser.getPassword());
                 if (BcrypyUtil.verifyPassword(tfPassword.getText(),exampleUser.getPassword())==true) {
-                    SessionManagement.getInstance().getLoginSession().setUser(exampleUser);
-                    SwitchSceneUtil.switchScene("view/HomePage.fxml", e);
+                    lastEvent=e;
+                    LoginRequest loginRequest = new LoginRequest(MessageType.LOGIN,exampleUser,"attempt to login");
+                    TCPSocketSession.getInstance().out.writeObject(loginRequest);
+                    TCPSocketSession.getInstance().out.flush();
+                    System.out.println("flush success");
                 }
             }
         }
-
-
     }
+
+    public void onLoginSuccess() {
+        try {
+            if (lastEvent != null) {
+                SwitchSceneUtil.switchScene("view/HomePage.fxml", lastEvent);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
