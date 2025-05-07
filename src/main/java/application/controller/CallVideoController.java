@@ -2,6 +2,7 @@ package application.controller;
 
 import application.dto.OtherInfomationCallVideo;
 import application.session_management.SessionManagement;
+import application.session_management.UDPSocketSession;
 import application.util.ImageUtil;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
@@ -36,23 +37,22 @@ public class CallVideoController {
 
     private InetAddress ip;
 
-    private DatagramSocket sendSocket;
+    private DatagramSocket socket;
 
-    private DatagramSocket receiveSocket;
 
     public void init(OtherInfomationCallVideo otherInfomationCallVideo) throws UnknownHostException {
         this.otherInfomationCallVideo=otherInfomationCallVideo;
 
-        port=9876;
+        port=otherInfomationCallVideo.getLoginSession().getUdpPort();
 
-        ip=InetAddress.getByName(otherInfomationCallVideo.getLoginSession().getIpAddress());
+        ip=InetAddress.getByName(otherInfomationCallVideo.getLoginSession().getUdpIpAddress());
 
         try {
-            this.sendSocket=new DatagramSocket();
-            this.receiveSocket=new DatagramSocket(9876);
-        } catch (SocketException ex) {
-            ex.printStackTrace();
+            this.socket=  UDPSocketSession.getInstance().socket;
+        } catch (SocketException e) {
+            throw new RuntimeException(e);
         }
+
 
         //handle your camera
         Thread yourcameraThread = new Thread(this::handleYourCamera);
@@ -95,10 +95,16 @@ public class CallVideoController {
 
                 DatagramPacket senderPacket=new DatagramPacket(imageData,imageData.length,ip,port);
                 try {
-                    sendSocket.send(senderPacket);
+                    socket.send(senderPacket);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+            }
+
+            try {
+                Thread.sleep(33); // ~30 FPS
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -125,13 +131,13 @@ public class CallVideoController {
             byte [] buffer = new byte[25000]; // Buffer size for incoming packets
             DatagramPacket receivePacket = new DatagramPacket(buffer, buffer.length);
             try {
-                receiveSocket.receive(receivePacket);
+                socket.receive(receivePacket);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
 
             byte[] imageData= receivePacket.getData();
-            System.out.println("Other camera: " + imageData.length);
+//            System.out.println("Other camera: " + imageData.length);
             otherCamera.setImage(ImageUtil.getImage(imageData));
         }
     }
