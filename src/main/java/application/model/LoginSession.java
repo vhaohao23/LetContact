@@ -24,6 +24,12 @@ public class LoginSession implements Serializable {
     @Column(name = "Port")
     private int port;
 
+    @Column(name = "UDPIPAddress")
+    private String udpIpAddress=null;
+
+    @Column(name = "UDPPort")
+    private int udpPort=0;
+
     public LoginSession() {
     }
 
@@ -63,5 +69,21 @@ public class LoginSession implements Serializable {
 
     public void setPort(int port) {
         this.port = port;
+    }
+
+    public String getUdpIpAddress() {
+        return udpIpAddress;
+    }
+
+    public void setUdpIpAddress(String udpIpAddress) {
+        this.udpIpAddress = udpIpAddress;
+    }
+
+    public int getUdpPort() {
+        return udpPort;
+    }
+
+    public void setUdpPort(int udpPort) {
+        this.udpPort = udpPort;
     }
 }
