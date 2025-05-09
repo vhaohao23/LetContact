@@ -1,6 +1,7 @@
 package application.controller;
 
 import application.dto.OtherInfomationCallVideo;
+import application.model.SendToOther;
 import application.session_management.SessionManagement;
 import application.session_management.UDPSocketSession;
 import application.util.ImageUtil;
@@ -14,8 +15,7 @@ import javax.imageio.ImageIO;
 import java.awt.dnd.DropTarget;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.*;
 
 public class CallVideoController {
@@ -91,9 +91,25 @@ public class CallVideoController {
                 byte[] imageData = baos.toByteArray();
 
                 yourCamera.setImage(ImageUtil.getImage(imageData));
-//                System.out.println("Your camera: " + imageData.length);
 
-                DatagramPacket senderPacket=new DatagramPacket(imageData,imageData.length,ip,port);
+                SendToOther sendToOther=new SendToOther(imageData,ip,port);
+                ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
+                ObjectOutputStream oos = null;
+                try {
+                    oos = new ObjectOutputStream(baos1);
+                    oos.writeObject(sendToOther);
+                    oos.flush();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                byte[] data = baos1.toByteArray();
+
+                DatagramPacket senderPacket= null;
+                try {
+                    senderPacket = new DatagramPacket(data,data.length, InetAddress.getByName("34.201.147.74"),9877);
+                } catch (UnknownHostException e) {
+                    throw new RuntimeException(e);
+                }
                 try {
                     socket.send(senderPacket);
                 } catch (IOException e) {
@@ -128,17 +144,22 @@ public class CallVideoController {
 
     private void handleOtherCamera() {
         while (true){
-            byte [] buffer = new byte[25000]; // Buffer size for incoming packets
-            DatagramPacket receivePacket = new DatagramPacket(buffer, buffer.length);
             try {
+                byte [] buffer = new byte[65536]; // Buffer size for incoming packets
+                DatagramPacket receivePacket = new DatagramPacket(buffer, buffer.length);
                 socket.receive(receivePacket);
+
+                ByteArrayInputStream bais = new ByteArrayInputStream(receivePacket.getData(), 0, receivePacket.getLength());
+                ObjectInputStream ois = new ObjectInputStream(bais);
+                SendToOther receivedObject = (SendToOther) ois.readObject();
+
+                byte[] imageData= receivedObject.imageData;
+                otherCamera.setImage(ImageUtil.getImage(imageData));
             } catch (IOException e) {
                 throw new RuntimeException(e);
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
             }
-
-            byte[] imageData= receivePacket.getData();
-//            System.out.println("Other camera: " + imageData.length);
-            otherCamera.setImage(ImageUtil.getImage(imageData));
         }
     }
 }

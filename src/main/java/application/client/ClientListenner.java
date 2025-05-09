@@ -58,7 +58,7 @@ public class ClientListenner implements Runnable{
             InetAddress ip= null;
             int port=0;
             try {
-                ip = InetAddress.getByName("localhost");
+                ip = InetAddress.getByName("34.201.147.74");
                 port=9876;
             } catch (UnknownHostException e) {
                 throw new RuntimeException(e);
