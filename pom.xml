@@ -60,7 +60,7 @@
             <artifactId>miglayout</artifactId>
             <version>4.0</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/java/application/lib/miglayout-4.0.jar</systemPath>
+            <systemPath>${project.basedir}/src/main/resources/application/lib/miglayout-4.0.jar</systemPath>
         </dependency>
 
         <dependency>
@@ -68,14 +68,14 @@
             <artifactId>miglayout</artifactId>
             <version>4.0</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/java/application/lib/miglayout-4.0.jar</systemPath>
+            <systemPath>${project.basedir}/src/main/resources/application/lib/miglayout-4.0.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.jdesktop.animation.timing</groupId>
-            <artifactId>TimngFramework</artifactId>
+            <artifactId>TimingFramework</artifactId>
             <version>0.55</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/java/application/lib/TimingFramework-0.55.jar</systemPath>
+            <systemPath>${project.basedir}/src/main/resources/application/lib/TimingFramework-0.55.jar</systemPath>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.jitsi/ice4j -->
         <dependency>
@@ -93,6 +93,20 @@
             <artifactId>javax.websocket-api</artifactId>
             <version>1.1</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.openpnp</groupId>
+            <artifactId>opencv</artifactId>
+            <version>4.11.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/application/lib/opencv-4110.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.swinglabs</groupId>
+            <artifactId>swingx-all</artifactId>
+            <version>1.6.5-1</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/application/lib/swingx-all-1.6.5-1.jar</systemPath>
         </dependency>
     </dependencies>
     <build>
