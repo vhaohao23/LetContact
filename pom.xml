@@ -77,6 +77,12 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/src/main/java/application/lib/TimingFramework-0.55.jar</systemPath>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.jitsi/ice4j -->
+        <dependency>
+            <groupId>org.jitsi</groupId>
+            <artifactId>ice4j</artifactId>
+            <version>3.2-8-gfa5f931</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

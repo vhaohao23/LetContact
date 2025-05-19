@@ -3,7 +3,12 @@ package application.ChatInterface;
 
 import application.ChatInterface.event.EventImageView;
 import application.ChatInterface.event.PublicEvent;
+import application.dao.UserDAO;
+import application.model.User;
+import application.session_management.SessionManagement;
+
 import javax.swing.Icon;
+import java.util.List;
 
 public class ChatSection_Form extends javax.swing.JPanel {
 
@@ -13,6 +18,15 @@ public class ChatSection_Form extends javax.swing.JPanel {
         view_Image.setVisible(false);
         home.setVisible(true);
         initEvent();
+        initializeFriendsList();
+    }
+
+    private void initializeFriendsList() {
+        User currentUser = SessionManagement.getInstance().getLoginSession().getUser();
+        if (currentUser != null) {
+            UserDAO userDAO = new UserDAO();
+            List<User> friends = userDAO.selectFriend(currentUser);
+        }
     }
     
     private void initEvent() {
@@ -29,9 +43,7 @@ public class ChatSection_Form extends javax.swing.JPanel {
         });
     }
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
         border = new javax.swing.JPanel();
         body = new javax.swing.JLayeredPane();
         view_Image = new application.ChatInterface.form.View_Image();
@@ -47,25 +59,25 @@ public class ChatSection_Form extends javax.swing.JPanel {
         javax.swing.GroupLayout borderLayout = new javax.swing.GroupLayout(border);
         border.setLayout(borderLayout);
         borderLayout.setHorizontalGroup(
-            borderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(body, javax.swing.GroupLayout.DEFAULT_SIZE, 1673, Short.MAX_VALUE)
+                borderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(body, javax.swing.GroupLayout.DEFAULT_SIZE, 1673, Short.MAX_VALUE)
         );
         borderLayout.setVerticalGroup(
-            borderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(body)
+                borderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(body)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(border, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(border, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(border, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(border, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-    }// </editor-fold>//GEN-END:initComponents
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

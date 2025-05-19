@@ -10,6 +10,9 @@ module org.example.letcontact {
     requires miglayout;
     requires TimingFramework;
     requires swingx.all;
+    requires opencv;
+    requires ice4j;
+    requires netty.socketio;
     exports application;
     opens application to javafx.fxml;
     exports application.controller;

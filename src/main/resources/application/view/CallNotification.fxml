@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="543.0" prefWidth="720.0" style="-fx-background-color: #4A90E2;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.CallNotificationController">
+   <children>
+      <Label fx:id="callerUsername" layoutY="250.0" prefHeight="27.0" prefWidth="720.0" style="-fx-font-weight: bold;" text="Label">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="acceptCall" fitHeight="70.0" fitWidth="70.0" layoutX="266.0" layoutY="402.0" onMouseClicked="#acceptCall" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../img/acceptCall.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="rejectCall" fitHeight="80.0" fitWidth="70.0" layoutX="392.0" layoutY="402.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../img/rejectCall.png" />
+         </image>
+      </ImageView>
+      <StackPane fx:id="callerAvatarContainer" layoutX="299.0" layoutY="69.0" prefHeight="124.0" prefWidth="125.0">
+         <children>
+            <ImageView fx:id="callerAvatar" fitHeight="143.0" fitWidth="162.0" pickOnBounds="true" preserveRatio="true" />
+         </children>
+      </StackPane>
+   </children>
+</AnchorPane>

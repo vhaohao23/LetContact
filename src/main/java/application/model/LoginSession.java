@@ -2,10 +2,12 @@ package application.model;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+
 
 @Entity
-@Table(name = "sessions")
-public class LoginSession {
+@Table(name = "loginsession")
+public class LoginSession implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -22,7 +24,19 @@ public class LoginSession {
     @Column(name = "Port")
     private int port;
 
+    @Column(name = "UDPIPAddress")
+    private String udpIpAddress=null;
+
+    @Column(name = "UDPPort")
+    private int udpPort=0;
+
     public LoginSession() {
+    }
+
+    public LoginSession(User user, String ipAddress, int port) {
+        this.user = user;
+        this.ipAddress = ipAddress;
+        this.port = port;
     }
 
     public String getSessionID() {
@@ -55,5 +69,21 @@ public class LoginSession {
 
     public void setPort(int port) {
         this.port = port;
+    }
+
+    public String getUdpIpAddress() {
+        return udpIpAddress;
+    }
+
+    public void setUdpIpAddress(String udpIpAddress) {
+        this.udpIpAddress = udpIpAddress;
+    }
+
+    public int getUdpPort() {
+        return udpPort;
+    }
+
+    public void setUdpPort(int udpPort) {
+        this.udpPort = udpPort;
     }
 }

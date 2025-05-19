@@ -57,3 +57,12 @@
     -fxp-font-size: 20;
 }
 
+#friendCell{
+    -fx-border-color: #aaa;
+    -fx-border-width: 0 0 1 0;
+}
+
+#callerUsername{
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+}
