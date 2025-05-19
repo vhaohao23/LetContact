@@ -46,7 +46,7 @@ public class CallVideoController {
     public void init(OtherInfomationCallVideo otherInfomationCallVideo) throws UnknownHostException {
         this.otherInfomationCallVideo=otherInfomationCallVideo;
 
-        port=otherInfomationCallVideo.getLoginSession().getUdpPort();
+        port=9877;
 
         ip=InetAddress.getByName(otherInfomationCallVideo.getLoginSession().getUdpIpAddress());
 
@@ -108,7 +108,9 @@ public class CallVideoController {
                     oos.writeObject(sendToOther);
                     oos.flush();
                     byte[] data = baos.toByteArray();
-                    DatagramPacket senderPacket = new DatagramPacket(data, data.length, InetAddress.getByName("34.201.147.74"), 9877);
+                    DatagramPacket senderPacket = new DatagramPacket(data, data.length, ip, port);
+//                    DatagramPacket senderPacket = new DatagramPacket(data, data.length, InetAddress.getByName("34.201.147.74"), 9877);
+
                     socket.send(senderPacket);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -159,11 +161,8 @@ public class CallVideoController {
                 byte[] data = baos1.toByteArray();
 
                 DatagramPacket senderPacket= null;
-                try {
-                    senderPacket = new DatagramPacket(data,data.length, InetAddress.getByName("34.201.147.74"),9877);
-                } catch (UnknownHostException e) {
-                    throw new RuntimeException(e);
-                }
+                senderPacket = new DatagramPacket(data,data.length, ip,port);
+//                    senderPacket = new DatagramPacket(data,data.length, InetAddress.getByName("34.201.147.74"),9877);
                 try {
                     socket.send(senderPacket);
                 } catch (IOException e) {
@@ -232,7 +231,8 @@ public class CallVideoController {
             oos.flush();
             byte[] data = baos.toByteArray();
 
-            DatagramPacket senderPacket = new DatagramPacket(data, data.length, InetAddress.getByName("34.201.147.74"),9877);
+            DatagramPacket senderPacket = new DatagramPacket(data, data.length, ip,port);
+//            DatagramPacket senderPacket = new DatagramPacket(data, data.length, InetAddress.getByName("34.201.147.74"),9877);
             socket.send(senderPacket);
         } catch (IOException e) {
             e.printStackTrace();
