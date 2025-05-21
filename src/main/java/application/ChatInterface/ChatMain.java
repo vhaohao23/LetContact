@@ -15,6 +15,8 @@ import javax.swing.Icon;
 import javax.swing.JLayeredPane;
 import javax.swing.SwingUtilities;
 
+import application.ChatInterface.form.Setting_Frame;
+import application.Main;
 import application.dao.UserDAO;
 import application.model.User;
 import application.session_management.SessionManagement;
@@ -100,9 +102,21 @@ public class ChatMain extends javax.swing.JFrame {
             @Override
             public void selected(int index) {
                 if (index == 0){
-                  main.show(new ChatSection_Form());
+                    main.show(new ChatSection_Form());
                 } else if (index == 1){
-                  main.show(new MessageWaiting_Form());
+                    main.show(new MessageWaiting_Form());
+                } else if (index == 4){
+                    main.show(new ListFriends_Form());
+                } else if (index == 5){
+                    main.show(new SearchFriends_Form());
+                } else if (index == 7){
+                    main.show(new RestrictedAccount_Form());
+                } else if (index == 8){
+                    main.show(new ReportAccount_Form());
+                } else if (index == 9){
+                    new Setting_Frame().setVisible(true);
+                } else if (index == 10){
+                    setVisible(false);
                 }
             }
         });
