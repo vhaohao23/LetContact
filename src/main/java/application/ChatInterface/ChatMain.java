@@ -2,14 +2,22 @@
 package application.ChatInterface;
 
 import application.AdminPart.EventMenuSelected;
+import application.ChatInterface.event.EventImageView;
+import application.ChatInterface.event.PublicEvent;
 import application.ChatInterface.form.MainForm;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
+import javax.swing.Icon;
 import javax.swing.JLayeredPane;
 import javax.swing.SwingUtilities;
+
+import application.dao.UserDAO;
+import application.model.User;
+import application.session_management.SessionManagement;
 import net.miginfocom.swing.MigLayout;
 import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTarget;
@@ -20,7 +28,7 @@ public class ChatMain extends javax.swing.JFrame {
     private final MigLayout layout;
     private final MainForm main;
     private final MenuLayout menu;
-    private final Animator animator; 
+    private final Animator animator;
     
     public ChatMain() {
         initComponents();
@@ -34,6 +42,9 @@ public class ChatMain extends javax.swing.JFrame {
         mainPanel.setLayout(layout);
         mainPanel.add(main);
         mainPanel.add(menu, "pos -284 0 100% 100%", 0);
+
+        init();
+
         TimingTarget target = new TimingTargetAdapter(){
             @Override
             public void timingEvent(float fraction) {
@@ -92,29 +103,70 @@ public class ChatMain extends javax.swing.JFrame {
                   main.show(new ChatSection_Form());
                 } else if (index == 1){
                   main.show(new MessageWaiting_Form());
-                } else if (index == 2){
-                  main.show(new Archives_Form());
                 }
             }
         });
     }
 
+    private void init() {
+        User currentUser = SessionManagement.getInstance().getLoginSession().getUser();
+        if (currentUser != null) {
+            UserDAO userDAO = new UserDAO();
+            List<User> friends = userDAO.selectFriend(currentUser);
+            System.out.println("User: " + currentUser.getUserName() + ", Friends: " + friends.size());
+            friends.size();
+            menu.getMenu().repaint();
+        }
+    }
+
+
     @SuppressWarnings("unchecked")
+    private void initComponent() {
+        mainPanel = new javax.swing.JLayeredPane();
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        mainPanel.setBackground(new java.awt.Color(229, 229, 229));
+        mainPanel.setOpaque(true);
+
+        javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
+        mainPanel.setLayout(mainPanelLayout);
+        mainPanelLayout.setHorizontalGroup(
+                mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 1354, Short.MAX_VALUE)
+        );
+        mainPanelLayout.setVerticalGroup(
+                mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 731, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(mainPanel, javax.swing.GroupLayout.Alignment.TRAILING)
+        );
+        layout.setVerticalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(mainPanel)
+        );
+
+        pack();
+        setLocationRelativeTo(null);
+    }
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        mainPanel = new JLayeredPane();
+        mainPanel = new javax.swing.JLayeredPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        mainPanel.setBackground(new Color(250, 250, 250));
+        mainPanel.setBackground(new java.awt.Color(229, 229, 229));
         mainPanel.setOpaque(true);
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1340, Short.MAX_VALUE)
+            .addGap(0, 1354, Short.MAX_VALUE)
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -137,15 +189,13 @@ public class ChatMain extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     public static void main(String args[]) {
-        
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ChatMain().setVisible(true);
-            }
-        });
+
+        java.awt.EventQueue.invokeLater(() -> new ChatMain().setVisible(true));;
     }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private JLayeredPane mainPanel;
+    private javax.swing.JLayeredPane mainPanel;
     // End of variables declaration//GEN-END:variables
+
 }

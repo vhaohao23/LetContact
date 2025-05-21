@@ -31,7 +31,7 @@ public class MenuChat extends javax.swing.JPanel {
     private void init(){
         listMenu1.addItem(new Model_Menu("bubble-chat", "Chat Section", Model_Menu.MenuType.MENU));
         listMenu1.addItem(new Model_Menu("message", "Message Waiting", Model_Menu.MenuType.MENU));
-        listMenu1.addItem(new Model_Menu("archive", "Archives", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("calling", "Calling", Model_Menu.MenuType.MENU));
         listMenu1.addItem(new Model_Menu("", " ", Model_Menu.MenuType.EMTY));
         listMenu1.addItem(new Model_Menu("list", "List Friends", Model_Menu.MenuType.MENU));
         listMenu1.addItem(new Model_Menu("search_1", "Search Friends", Model_Menu.MenuType.MENU));

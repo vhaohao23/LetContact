@@ -35,10 +35,10 @@ public class MenuItem extends javax.swing.JPanel {
         lbIcon = new javax.swing.JLabel();
         lbName = new javax.swing.JLabel();
 
-        lbIcon.setForeground(new Color(255, 255, 255));
+        lbIcon.setForeground(new java.awt.Color(255, 255, 255));
 
-        lbName.setFont(new Font("Segoe UI", 0, 18)); // NOI18N
-        lbName.setForeground(new Color(255, 255, 255));
+        lbName.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lbName.setForeground(new java.awt.Color(255, 255, 255));
         lbName.setText("Menu Name");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);

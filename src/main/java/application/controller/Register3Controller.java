@@ -1,5 +1,6 @@
 package application.controller;
 
+import application.ChatInterface.ChatMain;
 import application.Main;
 import application.dao.UserDAO;
 import application.session_management.SessionManagement;
@@ -67,6 +68,14 @@ public class Register3Controller {
         alert.setContentText("You have successfully registered. You can now login.");
         alert.showAndWait();
 
-        SwitchSceneUtil.switchScene("view/Login.fxml",e);
+        // Close the current JavaFX stage
+        Stage currentStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+        currentStage.close();
+
+        // Start the ChatMain interface
+        java.awt.EventQueue.invokeLater(() -> {
+            ChatMain chatMain = new ChatMain();
+            chatMain.setVisible(true);
+        });
     }
 }

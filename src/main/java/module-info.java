@@ -12,6 +12,7 @@ module org.example.letcontact {
     requires swingx.all;
     requires opencv;
     requires ice4j;
+    requires netty.socketio;
     exports application;
     opens application to javafx.fxml;
     exports application.controller;

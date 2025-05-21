@@ -5,9 +5,7 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "user")
