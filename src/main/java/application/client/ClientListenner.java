@@ -55,7 +55,7 @@ public class ClientListenner implements Runnable{
             InetAddress ip= null;
             int port=0;
             try {
-                ip = Inet6Address.getByName("2600:1f18:2403:789b:c81b:4dd7:1d9e:f22");
+                ip = Inet6Address.getByName("localhost");
 //                ip = InetAddress.getByName("34.201.147.74");
 
                 port=9876;
