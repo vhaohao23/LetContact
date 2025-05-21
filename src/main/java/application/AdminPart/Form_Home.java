@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 
-public class Form_Home extends JPanel {
+public class Form_Home extends javax.swing.JPanel {
 
     public Form_Home() {
     initComponents();
@@ -17,7 +17,7 @@ public class Form_Home extends JPanel {
     card2.setData(new Model_Card(new ImageIcon(getClass().getResource("/application/AdminImage/user.png")), "Number of active users", "700", "Increased by 70%"));
     card3.setData(new Model_Card(new ImageIcon(getClass().getResource("/application/AdminImage/blockuser.png")), "Number of banned users", "300", "Decreased by 30%"));
     // add row table
-    spTable.setVerticalScrollBar(new ScollBar());
+    spTable.setVerticalScrollBar(new ScrollBar());
     spTable.getVerticalScrollBar().setBackground(Color.WHITE);
     spTable.getViewport().setBackground(Color.WHITE);
     JPanel p = new JPanel();
@@ -45,26 +45,26 @@ public class Form_Home extends JPanel {
         card3 = new application.AdminPart.Card();
         panelBorder1 = new application.AdminPart.PanelBorder();
         jLabel1 = new javax.swing.JLabel();
-        spTable = new JScrollPane();
+        spTable = new javax.swing.JScrollPane();
         table = new application.AdminPart.Table();
 
-        setBackground(new Color(246, 246, 246));
+        setBackground(new java.awt.Color(246, 246, 246));
 
         panel.setLayout(new java.awt.GridLayout(1, 0, 15, 0));
 
-        card1.setColor1(new Color(0, 51, 153));
+        card1.setColor1(new java.awt.Color(0, 51, 153));
         panel.add(card1);
 
-        card2.setColor1(new Color(0, 51, 153));
+        card2.setColor1(new java.awt.Color(0, 51, 153));
         panel.add(card2);
 
-        card3.setColor1(new Color(0, 51, 153));
+        card3.setColor1(new java.awt.Color(0, 51, 153));
         panel.add(card3);
 
-        panelBorder1.setBackground(new Color(255, 255, 255));
+        panelBorder1.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setFont(new java.awt.Font("Sitka Text", 1, 18)); // NOI18N
-        jLabel1.setForeground(new Color(127, 127, 127));
+        jLabel1.setForeground(new java.awt.Color(127, 127, 127));
         jLabel1.setText("Statistical Table");
 
         table.setModel(new javax.swing.table.DefaultTableModel(
@@ -76,7 +76,7 @@ public class Form_Home extends JPanel {
             }
         ) {
             Class[] types = new Class [] {
-                String.class, String.class, String.class, String.class, String.class, String.class, String.class, String.class, String.class, String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -141,7 +141,7 @@ public class Form_Home extends JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLayeredPane panel;
     private application.AdminPart.PanelBorder panelBorder1;
-    private JScrollPane spTable;
+    private javax.swing.JScrollPane spTable;
     private application.AdminPart.Table table;
     // End of variables declaration//GEN-END:variables
 }

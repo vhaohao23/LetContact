@@ -43,7 +43,7 @@ public class Menu extends javax.swing.JPanel {
         panelMoving.setOpaque(false);
 
         jLabel1.setFont(new java.awt.Font("Elephant", 1, 24)); // NOI18N
-        jLabel1.setForeground(new Color(255, 255, 255));
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/application/AdminImage/admin.png"))); // NOI18N
         jLabel1.setText("ADMIN PAGE");
 

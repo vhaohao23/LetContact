@@ -12,9 +12,11 @@ module org.example.letcontact {
     requires swingx.all;
     requires opencv;
     requires ice4j;
+    requires netty.socketio;
     exports application;
     opens application to javafx.fxml;
     exports application.controller;
     opens application.controller to javafx.fxml;
     opens  application.model to org.hibernate.orm.core;
+    opens application.dto to org.hibernate.orm.core;
 }

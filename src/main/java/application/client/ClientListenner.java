@@ -17,10 +17,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+import java.net.*;
 
 public class ClientListenner implements Runnable{
     @Override
@@ -58,7 +55,9 @@ public class ClientListenner implements Runnable{
             InetAddress ip= null;
             int port=0;
             try {
-                ip = InetAddress.getByName("34.201.147.74");
+                ip = Inet6Address.getByName("localhost");
+//                ip = InetAddress.getByName("34.201.147.74");
+
                 port=9876;
             } catch (UnknownHostException e) {
                 throw new RuntimeException(e);

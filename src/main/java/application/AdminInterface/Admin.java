@@ -4,7 +4,7 @@ package application.AdminInterface;
 import application.AdminPart.EventMenuSelected;
 import application.AdminPart.Form_1;
 import application.AdminPart.Form_Home;
-import application.AdminPart.ScollBar;
+import application.AdminPart.ScrollBar;
 import java.awt.Color;
 import javax.swing.JComponent;
 

@@ -1,6 +1,7 @@
 // Java
 package application.controller;
 
+import application.ChatInterface.ChatMain;
 import application.dao.UserDAO;
 import application.dto.BaseMessage;
 import application.dto.LoginRequest;
@@ -11,14 +12,13 @@ import application.session_management.SessionManagement;
 import application.session_management.TCPSocketSession;
 import application.util.BcrypyUtil;
 import application.util.SwitchSceneUtil;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -61,7 +61,6 @@ public class LoginController {
             tfPassword.setVisible(true);
             pfPassword.setManaged(false);
             pfPassword.setVisible(false);
-
             eye.setImage(new Image(getClass().getResource("/application/img/eye.png").toExternalForm()));
             isHide = false;
             tfPassword.requestFocus();
@@ -71,7 +70,6 @@ public class LoginController {
             pfPassword.setVisible(true);
             tfPassword.setManaged(false);
             tfPassword.setVisible(false);
-
             eye.setImage(new Image(getClass().getResource("/application/img/hideEye.png").toExternalForm()));
             isHide = true;
             pfPassword.requestFocus();
@@ -84,8 +82,7 @@ public class LoginController {
     }
 
     public void letLogin(MouseEvent e) throws IOException {
-        UserDAO userDAO=new UserDAO();
-
+        UserDAO userDAO = new UserDAO();
         User exampleUser = userDAO.selectByUsername(tfUsername.getText());
 
         if (exampleUser != null) {
@@ -97,7 +94,19 @@ public class LoginController {
                     TCPSocketSession.getInstance().out.flush();
                     System.out.println("flush success");
                 }
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Login Failed");
+                alert.setHeaderText("Incorrect Password");
+                alert.setContentText("The password you entered is incorrect. Please try again.");
+                alert.showAndWait();
             }
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Login Failed");
+            alert.setHeaderText("User Not Found");
+            alert.setContentText("The username does not exist. Please check and try again.");
+            alert.showAndWait();
         }
     }
 

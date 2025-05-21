@@ -44,7 +44,6 @@ public class Model_Menu {
     }
     
     public Icon toIcon(){
-//    ClassLoader classLoader = getClass().getClassLoader();
     URL resource = getClass().getResource("/application/AdminImage/" + icon + ".png");
     if (resource == null) {
         System.out.println("Can't find: " + "/application/AdminImage/" + icon + ".png");

@@ -24,9 +24,9 @@ public class HeaderChat extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        cmdMenu = new application.raven.swing.Button();
+        cmdMenu = new com.raven.swing.Button();
 
-        cmdMenu.setBackground(new Color(250, 250, 250));
+        cmdMenu.setBackground(new java.awt.Color(250, 250, 250));
         cmdMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/application/AdminImage/menu.png"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -84,6 +84,6 @@ public void initMoving(JFrame fram){
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private application.raven.swing.Button cmdMenu;
+    private com.raven.swing.Button cmdMenu;
     // End of variables declaration//GEN-END:variables
 }

@@ -46,24 +46,24 @@ public class Form_1 extends javax.swing.JPanel {
 
         jButton1.setText("jButton1");
 
-        setBackground(new Color(246, 246, 246));
+        setBackground(new java.awt.Color(246, 246, 246));
 
-        analysisPanel1.setColor1(new Color(0, 51, 153));
-        analysisPanel1.setColor2(new Color(255, 255, 255));
+        analysisPanel1.setColor1(new java.awt.Color(0, 51, 153));
+        analysisPanel1.setColor2(new java.awt.Color(255, 255, 255));
 
         jPanel1.setOpaque(false);
 
-        progress1.setBackground(new Color(204, 232, 255));
-        progress1.setForeground(new Color(50, 144, 255));
+        progress1.setBackground(new java.awt.Color(204, 232, 255));
+        progress1.setForeground(new java.awt.Color(50, 144, 255));
         progress1.setValue(32);
 
         jLabel1.setFont(new java.awt.Font("Tw Cen MT", 1, 18)); // NOI18N
-        jLabel1.setForeground(new Color(255, 255, 255));
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Equal 18");
 
         jLabel7.setFont(new java.awt.Font("Segoe UI Black", 3, 18)); // NOI18N
-        jLabel7.setForeground(new Color(204, 204, 255));
+        jLabel7.setForeground(new java.awt.Color(204, 204, 255));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel7.setText("REPORT AGE");
 
@@ -95,12 +95,12 @@ public class Form_1 extends javax.swing.JPanel {
 
         jPanel4.setOpaque(false);
 
-        progress2.setBackground(new Color(204, 232, 255));
-        progress2.setForeground(new Color(50, 144, 255));
+        progress2.setBackground(new java.awt.Color(204, 232, 255));
+        progress2.setForeground(new java.awt.Color(50, 144, 255));
         progress2.setValue(14);
 
         jLabel2.setFont(new java.awt.Font("Tw Cen MT", 1, 18)); // NOI18N
-        jLabel2.setForeground(new Color(255, 255, 255));
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Under 18");
 
@@ -126,12 +126,12 @@ public class Form_1 extends javax.swing.JPanel {
 
         jPanel5.setOpaque(false);
 
-        progress3.setBackground(new Color(204, 232, 255));
-        progress3.setForeground(new Color(50, 144, 255));
+        progress3.setBackground(new java.awt.Color(204, 232, 255));
+        progress3.setForeground(new java.awt.Color(50, 144, 255));
         progress3.setValue(54);
 
         jLabel6.setFont(new java.awt.Font("Tw Cen MT", 1, 18)); // NOI18N
-        jLabel6.setForeground(new Color(255, 255, 255));
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setText("Over 18");
 
@@ -179,10 +179,10 @@ public class Form_1 extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
-        analysisPanel2.setColor1(new Color(0, 51, 153));
-        analysisPanel2.setColor2(new Color(255, 255, 255));
+        analysisPanel2.setColor1(new java.awt.Color(0, 51, 153));
+        analysisPanel2.setColor2(new java.awt.Color(255, 255, 255));
 
-        chart.setForeground(new Color(255, 255, 255));
+        chart.setForeground(new java.awt.Color(255, 255, 255));
         chart.setOpaque(false);
 
         javax.swing.GroupLayout analysisPanel2Layout = new javax.swing.GroupLayout(analysisPanel2);
@@ -201,8 +201,8 @@ public class Form_1 extends javax.swing.JPanel {
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        analysisPanel3.setColor1(new Color(255, 255, 255));
-        analysisPanel3.setColor2(new Color(39, 88, 186));
+        analysisPanel3.setColor1(new java.awt.Color(255, 255, 255));
+        analysisPanel3.setColor2(new java.awt.Color(39, 88, 186));
 
         javax.swing.GroupLayout analysisPanel3Layout = new javax.swing.GroupLayout(analysisPanel3);
         analysisPanel3.setLayout(analysisPanel3Layout);

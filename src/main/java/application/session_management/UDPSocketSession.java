@@ -13,7 +13,7 @@ public class UDPSocketSession {
 
     {
         try {
-            socket = new DatagramSocket();
+            socket = new DatagramSocket(9877);
         } catch (SocketException e) {
             throw new RuntimeException(e);
         }
