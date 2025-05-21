@@ -1,20 +1,19 @@
 package application.controller;
 
 import application.dto.OtherInfomationCallVideo;
-import application.session_management.SessionManagement;
+import application.dto.SendToOther;
+import application.session_management.UDPSocketSession;
 import application.util.ImageUtil;
 import javafx.fxml.FXML;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.opencv.core.Mat;
 import org.opencv.videoio.VideoCapture;
 
 import javax.imageio.ImageIO;
-import java.awt.dnd.DropTarget;
+import javax.sound.sampled.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.*;
 
 public class CallVideoController {
@@ -36,23 +35,29 @@ public class CallVideoController {
 
     private InetAddress ip;
 
-    private DatagramSocket sendSocket;
-
-    private DatagramSocket receiveSocket;
+    private DatagramSocket socket;
+    
+    // Audio recording variables
+    private TargetDataLine audioLine;
+    private AudioFormat audioFormat;
+    private boolean isRecording = true;
+    private SourceDataLine speaker;
 
     public void init(OtherInfomationCallVideo otherInfomationCallVideo) throws UnknownHostException {
         this.otherInfomationCallVideo=otherInfomationCallVideo;
 
-        port=9876;
+        port=9877;
 
-        ip=InetAddress.getByName(otherInfomationCallVideo.getLoginSession().getIpAddress());
+        ip=InetAddress.getByName(otherInfomationCallVideo.getLoginSession().getUdpIpAddress());
 
         try {
-            this.sendSocket=new DatagramSocket();
-            this.receiveSocket=new DatagramSocket(9876);
-        } catch (SocketException ex) {
-            ex.printStackTrace();
+            this.socket=  UDPSocketSession.getInstance().socket;
+        } catch (SocketException e) {
+            throw new RuntimeException(e);
         }
+
+        // Initialize audio format
+        audioFormat = new AudioFormat(44100, 16, 1, true, true);
 
         //handle your camera
         Thread yourcameraThread = new Thread(this::handleYourCamera);
@@ -63,6 +68,55 @@ public class CallVideoController {
         Thread othercameraThread = new Thread(this::handleOtherCamera);
         othercameraThread.setDaemon(true); // Will not prevent app from closing
         othercameraThread.start();
+
+        // Initialize audio recording
+        initAudioRecording();
+    }
+
+    private void initAudioRecording() {
+        try {
+            DataLine.Info info = new DataLine.Info(TargetDataLine.class, audioFormat);
+            audioLine = (TargetDataLine) AudioSystem.getLine(info);
+            audioLine.open(audioFormat);
+            audioLine.start();
+
+            // Start audio recording thread
+            Thread audioThread = new Thread(this::handleAudioRecording);
+            audioThread.setDaemon(true);
+            audioThread.start();
+
+            // Initialize speaker for playback
+            DataLine.Info speakerInfo = new DataLine.Info(SourceDataLine.class, audioFormat);
+            speaker = (SourceDataLine) AudioSystem.getLine(speakerInfo);
+            speaker.open(audioFormat);
+            speaker.start();
+        } catch (LineUnavailableException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void handleAudioRecording() {
+        byte[] buffer = new byte[4096];
+        while (isRecording) {
+            int count = audioLine.read(buffer, 0, buffer.length);
+            if (count > 0) {
+                // Send audio data along with video
+                SendToOther sendToOther = new SendToOther(null, buffer, ip, port);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                try {
+                    ObjectOutputStream oos = new ObjectOutputStream(baos);
+                    oos.writeObject(sendToOther);
+                    oos.flush();
+                    byte[] data = baos.toByteArray();
+                    DatagramPacket senderPacket = new DatagramPacket(data, data.length, ip, port);
+//                    DatagramPacket senderPacket = new DatagramPacket(data, data.length, InetAddress.getByName("34.201.147.74"), 9877);
+
+                    socket.send(senderPacket);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     public void handleYourCamera()  {
@@ -74,7 +128,9 @@ public class CallVideoController {
         }
 
         Mat matFrame = new Mat();
-
+        
+        punchHole(new SendToOther(null, null, ip, 10000));
+        
         // Main loop
         while (true) {
             // Read frame from camera
@@ -91,14 +147,33 @@ public class CallVideoController {
                 byte[] imageData = baos.toByteArray();
 
                 yourCamera.setImage(ImageUtil.getImage(imageData));
-//                System.out.println("Your camera: " + imageData.length);
 
-                DatagramPacket senderPacket=new DatagramPacket(imageData,imageData.length,ip,port);
+                SendToOther sendToOther = new SendToOther(imageData, null, ip, port);
+                ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
+                ObjectOutputStream oos = null;
                 try {
-                    sendSocket.send(senderPacket);
+                    oos = new ObjectOutputStream(baos1);
+                    oos.writeObject(sendToOther);
+                    oos.flush();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                byte[] data = baos1.toByteArray();
+
+                DatagramPacket senderPacket= null;
+                senderPacket = new DatagramPacket(data,data.length, ip,port);
+//                    senderPacket = new DatagramPacket(data,data.length, InetAddress.getByName("34.201.147.74"),9877);
+                try {
+                    socket.send(senderPacket);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+            }
+
+            try {
+                Thread.sleep(33); // ~30 FPS
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -122,17 +197,58 @@ public class CallVideoController {
 
     private void handleOtherCamera() {
         while (true){
-            byte [] buffer = new byte[25000]; // Buffer size for incoming packets
-            DatagramPacket receivePacket = new DatagramPacket(buffer, buffer.length);
             try {
-                receiveSocket.receive(receivePacket);
+                byte [] buffer = new byte[65536]; // Buffer size for incoming packets
+                DatagramPacket receivePacket = new DatagramPacket(buffer, buffer.length);
+                socket.receive(receivePacket);
+
+                ByteArrayInputStream bais = new ByteArrayInputStream(receivePacket.getData(), 0, receivePacket.getLength());
+                ObjectInputStream ois = new ObjectInputStream(bais);
+                SendToOther receivedObject = (SendToOther) ois.readObject();
+
+                // Handle video data
+                if (receivedObject.imageData != null) {
+                    otherCamera.setImage(ImageUtil.getImage(receivedObject.imageData));
+                }
+
+                // Handle audio data
+                if (receivedObject.voiceData != null) {
+                    speaker.write(receivedObject.voiceData, 0, receivedObject.voiceData.length);
+                }
             } catch (IOException e) {
                 throw new RuntimeException(e);
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
             }
+        }
+    }
 
-            byte[] imageData= receivePacket.getData();
-            System.out.println("Other camera: " + imageData.length);
-            otherCamera.setImage(ImageUtil.getImage(imageData));
+    private void punchHole(SendToOther sendToOther) {
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(baos);
+            oos.writeObject(sendToOther);
+            oos.flush();
+            byte[] data = baos.toByteArray();
+
+            DatagramPacket senderPacket = new DatagramPacket(data, data.length, ip,port);
+//            DatagramPacket senderPacket = new DatagramPacket(data, data.length, InetAddress.getByName("34.201.147.74"),9877);
+            socket.send(senderPacket);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Cleanup method to be called when the call ends
+    public void cleanup() {
+        isRecording = false;
+        if (audioLine != null) {
+            audioLine.stop();
+            audioLine.close();
+        }
+        if (speaker != null) {
+            speaker.stop();
+            speaker.close();
         }
     }
 }

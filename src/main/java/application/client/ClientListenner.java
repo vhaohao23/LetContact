@@ -8,6 +8,7 @@ import application.dto.*;
 import application.session_management.MainApplicationSession;
 import application.session_management.SessionManagement;
 import application.session_management.TCPSocketSession;
+import application.session_management.UDPSocketSession;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,6 +17,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.net.*;
 
 public class ClientListenner implements Runnable{
     @Override
@@ -47,7 +49,27 @@ public class ClientListenner implements Runnable{
             CallRequest callRequest=(CallRequest)baseResponse;
             handleCallRequest(callRequest);
         }else if (baseResponse.getType()==MessageType.START_CALL){
+            System.out.println("Start call");
             handleCallVideo((OtherInfomationCallVideo)baseResponse);
+        }else if (baseResponse.getType()==MessageType.INFO_REQUEST){
+            InetAddress ip= null;
+            int port=0;
+            try {
+                ip = Inet6Address.getByName("localhost");
+//                ip = InetAddress.getByName("34.201.147.74");
+
+                port=9876;
+            } catch (UnknownHostException e) {
+                throw new RuntimeException(e);
+            }
+            for (int i=1;i<=20;i++){
+                    DatagramPacket packet=new DatagramPacket(new byte[100],100,ip,port);
+                try {
+                    UDPSocketSession.getInstance().socket.send(packet);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
     }
 
@@ -89,8 +111,8 @@ public class ClientListenner implements Runnable{
     }
     public void handleCallVideo(OtherInfomationCallVideo otherInfomationCallVideo){
         System.out.println("You are in a call with: "+otherInfomationCallVideo.getLoginSession().getUser().getUserName()+
-                " and his ip is: "+otherInfomationCallVideo.getLoginSession().getIpAddress()+" port:"+otherInfomationCallVideo.getLoginSession().getPort());
-        System.out.println("your ip"+TCPSocketSession.getInstance().socket.getLocalAddress().getHostAddress()+" port:"+TCPSocketSession.getInstance().socket.getLocalPort());;
+                " and his ip is: "+otherInfomationCallVideo.getLoginSession().getUdpIpAddress()+" port:"+otherInfomationCallVideo.getLoginSession().getUdpPort());
+//        System.out.println("your ip"+TCPSocketSession.getInstance().socket.getLocalAddress().getHostAddress()+" port:"+TCPSocketSession.getInstance().socket.getLocalPort());;
         Platform.runLater(()-> {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("view/CallVideo.fxml"));
             Parent root = null;

@@ -18,4 +18,5 @@ module org.example.letcontact {
     exports application.controller;
     opens application.controller to javafx.fxml;
     opens  application.model to org.hibernate.orm.core;
+    opens application.dto to org.hibernate.orm.core;
 }

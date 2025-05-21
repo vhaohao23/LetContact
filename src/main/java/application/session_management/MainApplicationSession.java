@@ -1,7 +1,6 @@
 package application.session_management;
 
 import application.model.LoginSession;
-import application.model.User;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -10,7 +9,6 @@ public class MainApplicationSession {
 
     public static Stage stage;
     public static Scene scene;
-    private User loggedInUser;
 
     private MainApplicationSession() {
     }
