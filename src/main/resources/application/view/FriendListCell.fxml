@@ -6,18 +6,21 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.StackPane?>
 
-
 <AnchorPane fx:id="friendCell" prefHeight="82.0" prefWidth="398.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.FriendListCellController">
    <children>
-      <ImageView fx:id="callIcon" fitHeight="57.0" fitWidth="59.0" layoutX="327.0" layoutY="12.0" onMouseClicked="#letCall" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../img/call_icon.png" />
-         </image>
-      </ImageView>
       <Label fx:id="friendUserName" layoutX="110.0" layoutY="32.0" text="Label" />
       <StackPane fx:id="friendAvatarContainer" layoutX="14.0" layoutY="6.0" prefHeight="71.0" prefWidth="71.0">
          <children>
             <ImageView fx:id="friendAvatar" fitHeight="70.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true" />
+         </children>
+      </StackPane>
+      <StackPane fx:id="callIconContainer" layoutX="311.0" layoutY="16.0" prefHeight="58.0" prefWidth="62.0">
+         <children>
+            <ImageView fx:id="callIcon" fitHeight="57.0" fitWidth="59.0" onMouseClicked="#letCall" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../img/call_icon.png" />
+               </image>
+            </ImageView>
          </children>
       </StackPane>
    </children>

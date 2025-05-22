@@ -69,13 +69,14 @@ public class Register3Controller {
         alert.showAndWait();
 
         // Close the current JavaFX stage
-        Stage currentStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-        currentStage.close();
+//        Stage currentStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+//        currentStage.close();
 
         // Start the ChatMain interface
-        java.awt.EventQueue.invokeLater(() -> {
-            ChatMain chatMain = new ChatMain();
-            chatMain.setVisible(true);
-        });
+//        java.awt.EventQueue.invokeLater(() -> {
+//            ChatMain chatMain = new ChatMain();
+//            chatMain.setVisible(true);
+//        });
+        SwitchSceneUtil.switchScene("view/Login.fxml",e);
     }
 }
