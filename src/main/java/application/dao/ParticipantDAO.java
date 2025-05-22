@@ -117,4 +117,26 @@ public class ParticipantDAO implements DAOInterface<Participant> {
         }
         return rs;
     }
+
+    public Participant selectByUserIDAndConversationID(String uid, String cid) {
+        Participant rs=null;
+
+        try{
+            SessionFactory sessionFactory= HibernateUtil.getSessionFactory();
+            Session session=sessionFactory.openSession();
+            Transaction tx=session.beginTransaction();
+
+            String hql="from Participant p where p.user = :uid and p.conversation = :cid";
+            Query query=session.createQuery(hql);
+            query.setParameter("uid", uid);
+            query.setParameter("cid", cid);
+            rs= (Participant) query.getSingleResult();
+
+            tx.commit();
+            session.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return rs;
+    }
 }
