@@ -117,4 +117,25 @@ public class MessageDAO implements DAOInterface<Message> {
         }
         return rs;
     }
+
+    public List<Message> selectByParticipantID(String t) {
+        List<Message> rss=new ArrayList<>();
+
+        try{
+            SessionFactory sessionFactory= HibernateUtil.getSessionFactory();
+            Session session=sessionFactory.openSession();
+            Transaction tx=session.beginTransaction();
+
+            String hql="from Message m where m.participant = :id";
+            Query query=session.createQuery(hql);
+            query.setParameter("id", t);
+            rss=query.getResultList();
+
+            tx.commit();
+            session.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return rss;
+    }
 }

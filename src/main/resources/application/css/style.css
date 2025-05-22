@@ -66,3 +66,23 @@
     -fx-text-alignment: center;
     -fx-alignment: center;
 }
+
+#friendCell:hover{
+    -fx-background-color: #4a90e2;
+}
+
+#callIconContainer {
+    -fx-background-radius: 32;
+    -fx-border-radius: 30;
+    -fx-border-width: 5;
+    -fx-border-color: chartreuse;
+    -fx-alignment: center;
+}
+
+#callIconContainer:hover {
+    -fx-background-color: chartreuse;
+}
+
+#callIconContainer:pressed {
+    -fx-background-color: darkgreen;
+}

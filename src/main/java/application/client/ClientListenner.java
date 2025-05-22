@@ -79,7 +79,7 @@ public class ClientListenner implements Runnable{
         javafx.application.Platform.runLater(() -> {
             try {
                 Scene scene = MainApplicationSession.getInstance().scene;
-                LoginController controller = (LoginController) scene.lookup("#loginController").getUserData();
+                LoginController controller = (LoginController) scene.getRoot().getUserData();
                 if (controller != null) {
                     controller.onLoginSuccess();
                 }

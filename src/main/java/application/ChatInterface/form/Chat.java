@@ -11,18 +11,17 @@ import net.miginfocom.swing.MigLayout;
 
 public class Chat extends javax.swing.JPanel {
 
-    
     public Chat() {
         initComponents();
         init();
     }
 
-    private void init(){
-        setLayout(new MigLayout("fillx", "0[fill]0", "0[]0[100%, 78%]0[shrink 0]0"));
+    private void init() {
+        setLayout(new MigLayout("fillx", "0[fill]0", "0[]0[100%, bottom]0[shrink 0]0"));
         Chat_Title chatTitle = new Chat_Title();
         Chat_Body chatBody = new Chat_Body();
         Chat_Bottom chatBottom = new Chat_Bottom();
-        PublicEvent.getInstance().addEventChat(new EventChat(){
+        PublicEvent.getInstance().addEventChat(new EventChat() {
             @Override
             public void sendMessage(String text) {
                 chatBody.addItemRight(text);
@@ -32,7 +31,7 @@ public class Chat extends javax.swing.JPanel {
         add(chatBody, "wrap");
         add(chatBottom, "h ::40%");
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
