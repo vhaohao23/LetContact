@@ -2,7 +2,6 @@
 package application.ChatInterface.form;
 
 import application.AdminPart.ScrollBar;
-import javax.swing.JLayeredPane;
 import net.miginfocom.swing.MigLayout;
 
 
@@ -46,6 +45,7 @@ public class Menu_Left extends javax.swing.JPanel {
         menu = new javax.swing.JLayeredPane();
         menuMessage = new application.ChatInterface.MenuButton();
         menuGroup = new application.ChatInterface.MenuButton();
+        menuButton1 = new application.ChatInterface.MenuButton();
         sp = new javax.swing.JScrollPane();
         menuList = new javax.swing.JLayeredPane();
 
@@ -74,6 +74,14 @@ public class Menu_Left extends javax.swing.JPanel {
             }
         });
         menu.add(menuGroup);
+
+        menuButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/application/AdminImage/create.png"))); // NOI18N
+        menuButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuButton1ActionPerformed(evt);
+            }
+        });
+        menu.add(menuButton1);
 
         sp.setBorder(null);
         sp.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -127,8 +135,14 @@ public class Menu_Left extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_menuGroupActionPerformed
 
+    private void menuButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuButton1ActionPerformed
+        // TODO add your handling code here:
+        setVisible(false);
+    }//GEN-LAST:event_menuButton1ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLayeredPane menu;
+    private application.ChatInterface.MenuButton menuButton1;
     private application.ChatInterface.MenuButton menuGroup;
     private javax.swing.JLayeredPane menuList;
     private application.ChatInterface.MenuButton menuMessage;
