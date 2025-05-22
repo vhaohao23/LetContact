@@ -111,13 +111,17 @@ public class LoginController {
     }
 
     public void onLoginSuccess() {
-        try {
             if (lastEvent != null) {
-                SwitchSceneUtil.switchScene("view/HomePage.fxml", lastEvent);
+                Stage stage = (Stage) btnLogin.getScene().getWindow();
+                stage.close();
+
+                new ChatMain().setVisible(true);
+
+                // Switch to the home page
+//                SwitchSceneUtil.switchScene("view/HomePage.fxml", lastEvent);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+
     }
 
 }

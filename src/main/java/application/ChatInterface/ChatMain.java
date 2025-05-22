@@ -202,10 +202,10 @@ public class ChatMain extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    public static void main(String args[]) {
-
-        java.awt.EventQueue.invokeLater(() -> new ChatMain().setVisible(true));;
-    }
+//    public static void main(String args[]) {
+//
+//        java.awt.EventQueue.invokeLater(() -> new ChatMain().setVisible(true));;
+//    }
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
