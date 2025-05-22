@@ -2,6 +2,9 @@
 package application.ChatInterface.form;
 
 
+import application.raven.swing.Button;
+import application.raven.swing.ImageAvatar;
+
 public class Item_Stranger extends javax.swing.JPanel {
 
     
@@ -17,13 +20,13 @@ public class Item_Stranger extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        imageAvatar = new com.raven.swing.ImageAvatar();
+        imageAvatar = new ImageAvatar();
         lbuserName = new javax.swing.JLabel();
         lbdob = new javax.swing.JLabel();
         lbgender = new javax.swing.JLabel();
-        button = new com.raven.swing.Button();
-        button1 = new com.raven.swing.Button();
-        button2 = new com.raven.swing.Button();
+        button = new Button();
+        button1 = new Button();
+        button2 = new Button();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -125,10 +128,10 @@ public class Item_Stranger extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.raven.swing.Button button;
-    private com.raven.swing.Button button1;
-    private com.raven.swing.Button button2;
-    private com.raven.swing.ImageAvatar imageAvatar;
+    private Button button;
+    private Button button1;
+    private Button button2;
+    private ImageAvatar imageAvatar;
     private javax.swing.JLabel lbdob;
     private javax.swing.JLabel lbgender;
     private javax.swing.JLabel lbuserName;

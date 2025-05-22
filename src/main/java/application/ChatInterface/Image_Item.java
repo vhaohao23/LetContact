@@ -1,7 +1,7 @@
 
 package application.ChatInterface;
 
-import com.raven.swing.blurHash.BlurHash;
+import application.raven.swing.blurHash.BlurHash;
 import java.awt.image.BufferedImage;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;

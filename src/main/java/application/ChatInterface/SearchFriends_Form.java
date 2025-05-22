@@ -3,6 +3,7 @@ package application.ChatInterface;
 
 import application.AdminPart.ScrollBar;
 import application.ChatInterface.form.Item_Search;
+import application.raven.swing.Button;
 import net.miginfocom.swing.MigLayout;
 
 
@@ -34,7 +35,7 @@ public class SearchFriends_Form extends javax.swing.JLayeredPane {
 
         sp = new javax.swing.JScrollPane();
         menuList = new javax.swing.JLayeredPane();
-        button = new com.raven.swing.Button();
+        button = new Button();
         jtsearch = new application.AdminPart.SearchText();
 
         sp.setBackground(new java.awt.Color(222, 242, 255));
@@ -105,7 +106,7 @@ public class SearchFriends_Form extends javax.swing.JLayeredPane {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.raven.swing.Button button;
+    private Button button;
     private application.AdminPart.SearchText jtsearch;
     private javax.swing.JLayeredPane menuList;
     private javax.swing.JScrollPane sp;

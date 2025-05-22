@@ -3,7 +3,6 @@ package application.ChatInterface;
 
 import application.AdminPart.ScrollBar;
 import application.ChatInterface.event.PublicEvent;
-import com.raven.swing.JIMSendTextPane;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -15,6 +14,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+
+import application.raven.swing.JIMSendTextPane;
 import net.miginfocom.swing.MigLayout;
 
 public class Chat_Bottom extends javax.swing.JPanel {

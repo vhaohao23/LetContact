@@ -1,6 +1,8 @@
 
 package application.ChatInterface.form;
 
+import application.raven.swing.ImageAvatar;
+
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -32,7 +34,7 @@ public class Item_People extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        imageAvatar1 = new com.raven.swing.ImageAvatar();
+        imageAvatar1 = new ImageAvatar();
         lb = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
@@ -66,7 +68,7 @@ public class Item_People extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.raven.swing.ImageAvatar imageAvatar1;
+    private ImageAvatar imageAvatar1;
     private javax.swing.JLabel lb;
     // End of variables declaration//GEN-END:variables
 }

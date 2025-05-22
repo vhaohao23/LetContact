@@ -1,5 +1,4 @@
-
-package com.raven.swing.blurHash;
+package application.raven.swing.blurHash;
 
 
 class Base83 {

@@ -1,6 +1,8 @@
 
 package application.ChatInterface;
 
+import application.raven.swing.ImageAvatar;
+
 import java.awt.Color;
 import static java.util.Calendar.PM;
 import javax.swing.Icon;
@@ -50,7 +52,7 @@ public class Chat_Left_With_Profile extends javax.swing.JLayeredPane {
     private void initComponents() {
 
         jLayeredPane1 = new javax.swing.JLayeredPane();
-        IaImage = new com.raven.swing.ImageAvatar();
+        IaImage = new ImageAvatar();
         txt = new application.ChatInterface.Chat_Item();
 
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.LINE_AXIS));
@@ -85,7 +87,7 @@ public class Chat_Left_With_Profile extends javax.swing.JLayeredPane {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.raven.swing.ImageAvatar IaImage;
+    private ImageAvatar IaImage;
     private javax.swing.JLayeredPane jLayeredPane1;
     private application.ChatInterface.Chat_Item txt;
     // End of variables declaration//GEN-END:variables

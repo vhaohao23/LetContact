@@ -1,6 +1,9 @@
 
 package application.ChatInterface.form;
 
+import application.raven.swing.Button;
+import application.raven.swing.ImageAvatar;
+
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
@@ -27,7 +30,7 @@ public class Setting_Frame extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        imageAvatar1 = new com.raven.swing.ImageAvatar();
+        imageAvatar1 = new ImageAvatar();
         lbnickname = new javax.swing.JLabel();
         lbuserfirstname = new javax.swing.JLabel();
         lbuserlastname = new javax.swing.JLabel();
@@ -45,8 +48,8 @@ public class Setting_Frame extends javax.swing.JFrame {
         lbuseremail = new javax.swing.JLabel();
         lbuseraddress = new javax.swing.JLabel();
         lbuserstatus = new javax.swing.JLabel();
-        buttonSetting = new com.raven.swing.Button();
-        buttonOut = new com.raven.swing.Button();
+        buttonSetting = new Button();
+        buttonOut = new Button();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -266,9 +269,9 @@ public class Setting_Frame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.raven.swing.Button buttonOut;
-    private com.raven.swing.Button buttonSetting;
-    private com.raven.swing.ImageAvatar imageAvatar1;
+    private Button buttonOut;
+    private Button buttonSetting;
+    private ImageAvatar imageAvatar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lbaddress;
     private javax.swing.JLabel lbdob;

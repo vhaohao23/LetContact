@@ -1,6 +1,8 @@
 
 package application.ChatInterface.form;
 
+import application.raven.swing.ImageAvatar;
+
 public class Menu_Right extends javax.swing.JPanel {
 
     public Menu_Right() {
@@ -12,7 +14,7 @@ public class Menu_Right extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        imageAvatar1 = new com.raven.swing.ImageAvatar();
+        imageAvatar1 = new ImageAvatar();
         toggleButton1 = new application.ChatInterface.ToggleButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -241,7 +243,7 @@ public class Menu_Right extends javax.swing.JPanel {
     private application.raven.CustomButton.Button button1;
     private application.raven.CustomButton.Button button2;
     private application.raven.CustomButton.Button button3;
-    private com.raven.swing.ImageAvatar imageAvatar1;
+    private ImageAvatar imageAvatar1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

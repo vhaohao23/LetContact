@@ -1,6 +1,8 @@
 
 package application.ChatInterface;
 
+import application.raven.swing.JIMSendTextPane;
+
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.FlowLayout;
@@ -109,7 +111,7 @@ public class Chat_Item extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        txt = new com.raven.swing.JIMSendTextPane();
+        txt = new JIMSendTextPane();
 
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.PAGE_AXIS));
 
@@ -127,6 +129,6 @@ public class Chat_Item extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.raven.swing.JIMSendTextPane txt;
+    private JIMSendTextPane txt;
     // End of variables declaration//GEN-END:variables
 }

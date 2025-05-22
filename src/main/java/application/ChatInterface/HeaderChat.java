@@ -9,6 +9,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
+
+import application.raven.swing.Button;
 import org.jdesktop.swingx.graphics.ShadowRenderer;
 
 public class HeaderChat extends javax.swing.JPanel {
@@ -24,7 +26,7 @@ public class HeaderChat extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        cmdMenu = new com.raven.swing.Button();
+        cmdMenu = new Button();
 
         cmdMenu.setBackground(new java.awt.Color(250, 250, 250));
         cmdMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/application/AdminImage/menu.png"))); // NOI18N
@@ -84,6 +86,6 @@ public void initMoving(JFrame fram){
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.raven.swing.Button cmdMenu;
+    private Button cmdMenu;
     // End of variables declaration//GEN-END:variables
 }

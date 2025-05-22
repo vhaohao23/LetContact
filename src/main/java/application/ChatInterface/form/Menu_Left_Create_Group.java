@@ -3,6 +3,8 @@ package application.ChatInterface.form;
 
 import application.AdminPart.ScrollBar;
 import javax.swing.JLayeredPane;
+
+import application.raven.swing.Button;
 import net.miginfocom.swing.MigLayout;
 
 
@@ -45,12 +47,12 @@ public class Menu_Left_Create_Group extends javax.swing.JPanel {
 
         sp = new javax.swing.JScrollPane();
         menuList = new javax.swing.JLayeredPane();
-        buttonSearch = new com.raven.swing.Button();
+        buttonSearch = new Button();
         searchText = new application.AdminPart.SearchText();
         sp1 = new javax.swing.JScrollPane();
         menuList1 = new javax.swing.JLayeredPane();
-        buttonMenuLeft = new com.raven.swing.Button();
-        buttonCreate1 = new com.raven.swing.Button();
+        buttonMenuLeft = new Button();
+        buttonCreate1 = new Button();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -157,9 +159,9 @@ public class Menu_Left_Create_Group extends javax.swing.JPanel {
     }//GEN-LAST:event_buttonCreate1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.raven.swing.Button buttonCreate1;
-    private com.raven.swing.Button buttonMenuLeft;
-    private com.raven.swing.Button buttonSearch;
+    private Button buttonCreate1;
+    private Button buttonMenuLeft;
+    private Button buttonSearch;
     private javax.swing.JLayeredPane menuList;
     private javax.swing.JLayeredPane menuList1;
     private application.AdminPart.SearchText searchText;

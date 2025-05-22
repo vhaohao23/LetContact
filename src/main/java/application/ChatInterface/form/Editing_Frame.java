@@ -1,6 +1,9 @@
 
 package application.ChatInterface.form;
 
+import application.raven.swing.Button;
+import application.raven.swing.ImageAvatar;
+
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
@@ -26,7 +29,7 @@ public class Editing_Frame extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        imageAvatar1 = new com.raven.swing.ImageAvatar();
+        imageAvatar1 = new ImageAvatar();
         lbnickname = new javax.swing.JLabel();
         lbfirstname = new javax.swing.JLabel();
         lblastname = new javax.swing.JLabel();
@@ -35,7 +38,7 @@ public class Editing_Frame extends javax.swing.JFrame {
         lbphone = new javax.swing.JLabel();
         lbemail = new javax.swing.JLabel();
         lbaddress = new javax.swing.JLabel();
-        buttonSave = new com.raven.swing.Button();
+        buttonSave = new Button();
         jtfirstname = new javax.swing.JTextField();
         jtlastname = new javax.swing.JTextField();
         jtdob = new javax.swing.JTextField();
@@ -45,8 +48,8 @@ public class Editing_Frame extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jtaddress = new javax.swing.JTextArea();
         jtnickname = new javax.swing.JTextField();
-        buttonCamera = new com.raven.swing.Button();
-        buttonBack = new com.raven.swing.Button();
+        buttonCamera = new Button();
+        buttonBack = new Button();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -315,10 +318,10 @@ public class Editing_Frame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.raven.swing.Button buttonBack;
-    private com.raven.swing.Button buttonCamera;
-    private com.raven.swing.Button buttonSave;
-    private com.raven.swing.ImageAvatar imageAvatar1;
+    private Button buttonBack;
+    private Button buttonCamera;
+    private Button buttonSave;
+    private ImageAvatar imageAvatar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jtaddress;

@@ -1,5 +1,4 @@
-
-package com.raven.swing;
+package application.raven.swing;
 
 import java.awt.Graphics;
 import javax.swing.JLabel;
