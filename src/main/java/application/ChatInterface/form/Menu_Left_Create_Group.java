@@ -24,7 +24,7 @@ public class Menu_Left_Create_Group extends javax.swing.JPanel {
     private void showPeople(){
         menuList.removeAll();
         for (int i = 0; i<20; i++){
-            menuList.add(new Item_People("People " + i), "wrap");
+            menuList.add(new Item_People(null), "wrap");
         }
         refreshMenuList();
     }
@@ -32,7 +32,7 @@ public class Menu_Left_Create_Group extends javax.swing.JPanel {
     private void showGroup(){
         menuList.removeAll();
         for (int i = 0; i<10; i++){
-            menuList.add(new Item_People("Group " + i), "wrap");
+            menuList.add(new Item_People(null), "wrap");
         }
         refreshMenuList();
     }

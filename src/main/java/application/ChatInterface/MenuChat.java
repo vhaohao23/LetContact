@@ -4,6 +4,8 @@ package application.ChatInterface;
 import application.AdminPart.*;
 import application.AdminPart.EventMenuSelected;
 import application.AdminPart.Model_Menu;
+import application.model.User;
+
 import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
@@ -12,11 +14,13 @@ import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Path2D;
+import java.util.List;
 import javax.swing.JFrame;
 
 public class MenuChat extends javax.swing.JPanel {
 
     private EventMenuSelected event;
+    private List<User> friendsList;
     
     public void addEventMenuSelected (EventMenuSelected event){
         this.event = event;

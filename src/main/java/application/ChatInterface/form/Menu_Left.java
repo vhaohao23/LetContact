@@ -2,13 +2,19 @@
 package application.ChatInterface.form;
 
 import application.AdminPart.ScrollBar;
+import application.dao.UserDAO;
+import application.model.User;
 import net.miginfocom.swing.MigLayout;
+
+import java.util.List;
 
 
 public class Menu_Left extends javax.swing.JPanel {
 
-    
+    private UserDAO userDAO;
+
     public Menu_Left() {
+        userDAO = new UserDAO();
         initComponents();
         init();
     }
@@ -20,8 +26,9 @@ public class Menu_Left extends javax.swing.JPanel {
     }
     private void showPeople(){
         menuList.removeAll();
-        for (int i = 0; i<20; i++){
-            menuList.add(new Item_People("People " + i), "wrap");
+        List<User> users = userDAO.getAll();
+        for (User user : users) {
+            menuList.add(new Item_People(user), "wrap"); // Thêm Item_People với thông tin user
         }
         refreshMenuList();
     }
@@ -29,7 +36,7 @@ public class Menu_Left extends javax.swing.JPanel {
     private void showGroup(){
         menuList.removeAll();
         for (int i = 0; i<10; i++){
-            menuList.add(new Item_People("Group " + i), "wrap");
+            menuList.add(new Item_People(null), "wrap");
         }
         refreshMenuList();
     }

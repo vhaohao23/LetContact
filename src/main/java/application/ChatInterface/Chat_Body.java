@@ -19,29 +19,6 @@ public class Chat_Body extends javax.swing.JPanel {
     public Chat_Body() {
         initComponents();
         init();
-        addItemLeft("bkdbvskv bkvbsjv lndsk bsj bdjv lsjl vholusfbv sujdv jsd vjksbvsvk", "Khánh");
-        addItemRight("dsbijvbiiuvbsfj vsrfuibuiv bfsjk sfj vbsdv bv sjdbvoud vbfuv bdsv sbndjv bskdvs v");
-        addItemLeft("bkdbvskv bkvbsjv lndsk bsj bdjv lsjl vholusfbv sujdv jsd vjksbvsvk", "Khánh");
-        addItemRight("dsbijvbiiuvbsfj vsrfuibuiv bfsjk sfj vbsdv bv sjdbvoud vbfuv bdsv sbndjv bskdvs v");
-        addDate("29/04/2025");
-        addItemLeft("bkdbvskv bkvbsjv lndsk bsj bdjv lsjl vholusfbv sujdv jsd vjksbvsvk", "Khánh");
-        addItemRight("dsbijvbiiuvbsfj vsrfuibuiv bfsjk sfj vbsdv bv sjdbvoud vbfuv bdsv sbndjv bskdvs v");
-        addItemLeft("bkdbvskv bkvbsjv lndsk bsj bdjv lsjl vholusfbv sujdv jsd vjksbvsvk", "Khánh");
-        addItemRight("dsbijvbiiuvbsfj vsrfuibuiv bfsjk sfj vbsdv bv sjdbvoud vbfuv bdsv sbndjv bskdvs v");
-        addItemLeft("bkdbvskv bkvbsjv lndsk bsj bdjv lsjl vholusfbv sujdv jsd vjksbvsvk", "Khánh");
-        addItemRight("dsbijvbiiuvbsfj vsrfuibuiv bfsjk sfj vbsdv bv sjdbvoud vbfuv bdsv sbndjv bskdvs v");
-        addItemLeft("bkdbvskv bkvbsjv lndsk bsj bdjv lsjl vholusfbv sujdv jsd vjksbvsvk", "Khánh");
-        addItemRight("dsbijvbiiuvbsfj vsrfuibuiv bfsjk sfj vbsdv bv sjdbvoud vbfuv bdsv sbndjv bskdvs v");
-        addDate("30/04/2025");
-        String img[] = {"LTI;YWKSNKxV?dT2R,s+EmS6sSxD"};
-        addItemRight("", new ImageIcon(getClass().getResource("/application/AdminImage/avt2.jpg")));
-        addItemRight("dsbijvbiiuvbsfj vsrfuibuiv bfsjk sfj vbsdv bv sjdbvoud vbfuv bdsv sbndjv bskdvs v", new ImageIcon(getClass().getResource("/application/AdminImage/avt2.jpg")));
-        addItemLeft("bkdbvskv bkvb", "Khánh", img);
-        addDate("Today");
-        addItemRight("dsbijvbiiuvbsfj vsrfuibuiv bfsjk sfj vbsdv bv sjdbvoud vbfuv bdsv sbndjv bskdvs v");
-        addItemLeft("", "Khánh", new ImageIcon(getClass().getResource("/application/AdminImage/avt2.jpg")));
-        addItemFile("", "Khánh", "my doc.pdf", "1 MB");
-        addItemFileRight("", "myfile.rar", "15 MB");
     }
 
     private void init(){
@@ -49,6 +26,13 @@ public class Chat_Body extends javax.swing.JPanel {
         sp.setVerticalScrollBar(new ScrollBar());
         sp.getVerticalScrollBar().setBackground(Color.WHITE);
     }
+
+    public void clearChat() {
+        body.removeAll();
+        body.repaint();
+        body.revalidate();
+    }
+
     public void addItemLeft(String text, String user, Icon... image){
         Chat_Left_With_Profile item = new Chat_Left_With_Profile();
         item.setText(text);

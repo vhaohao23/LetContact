@@ -11,7 +11,7 @@ public class MenuLayout extends javax.swing.JPanel {
 
     private boolean show;
     private float alpha;
-    
+
     public boolean isShow() {
         return show;
     }
@@ -47,13 +47,13 @@ public class MenuLayout extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(0, 0, 0)
                 .addComponent(menuChat1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(menuChat1, javax.swing.GroupLayout.PREFERRED_SIZE, 562, Short.MAX_VALUE)
+            .addComponent(menuChat1, javax.swing.GroupLayout.DEFAULT_SIZE, 613, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
