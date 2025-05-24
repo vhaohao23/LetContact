@@ -5,9 +5,14 @@ import application.raven.swing.ImageAvatar;
 
 public class Menu_Right extends javax.swing.JPanel {
 
+    
     public Menu_Right() {
         initComponents();
-        
+        init();
+    }
+
+    private void init(){
+
     }
 
     @SuppressWarnings("unchecked")
