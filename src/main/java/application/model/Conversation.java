@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "conversation")
-public class Conversation {
+public class Conversation implements java.io.Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

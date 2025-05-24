@@ -13,6 +13,7 @@ module org.example.letcontact {
     requires opencv;
     requires ice4j;
     requires netty.socketio;
+    requires mysql.connector.j;
     exports application;
     opens application to javafx.fxml;
     exports application.controller;

@@ -1,6 +1,7 @@
 
 package application.ChatInterface.form;
 
+import application.session_management.ChatSession;
 import net.miginfocom.swing.MigLayout;
 
 public class HomeChat extends javax.swing.JLayeredPane {
@@ -14,7 +15,7 @@ public class HomeChat extends javax.swing.JLayeredPane {
     private void init(){
         setLayout(new MigLayout("fillx, filly","0[300!]0[fill, 100%]0[300!]0","0[fill]0"));
         this.add(new Menu_Left());
-        this.add(new Chat());
+        this.add(ChatSession.getInstance().getChat());
         this.add(new Menu_Right());
     }
     @SuppressWarnings("unchecked")

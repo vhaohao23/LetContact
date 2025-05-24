@@ -6,7 +6,9 @@ import java.sql.Date;
 
 @Entity
 @Table(name = "message")
-public class Message {
+public class Message implements java.io.Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -29,6 +31,13 @@ public class Message {
     private String type;
 
     public Message() {
+    }
+
+    public Message(Participant participant, byte[] content, Date time, String type) {
+        this.participant = participant;
+        this.content = content;
+        this.time = time;
+        this.type = type;
     }
 
     public String getMessageId() {

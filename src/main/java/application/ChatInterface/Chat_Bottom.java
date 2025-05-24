@@ -15,12 +15,13 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import application.model.User;
 import application.raven.swing.JIMSendTextPane;
 import net.miginfocom.swing.MigLayout;
 
 public class Chat_Bottom extends javax.swing.JPanel {
 
-    
+    private User user;
     public Chat_Bottom() {
         initComponents();
         init();

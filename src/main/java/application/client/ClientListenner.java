@@ -1,25 +1,31 @@
 package application.client;
 
+import application.ChatInterface.Chat_Body;
+import application.ChatInterface.event.EventChat;
+import application.ChatInterface.event.PublicEvent;
+import application.ChatInterface.form.Chat;
 import application.Main;
 import application.controller.CallNotificationController;
 import application.controller.CallVideoController;
 import application.controller.LoginController;
 import application.dto.*;
-import application.session_management.MainApplicationSession;
-import application.session_management.SessionManagement;
-import application.session_management.TCPSocketSession;
-import application.session_management.UDPSocketSession;
+import application.model.Message;
+import application.model.User;
+import application.session_management.*;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.*;
+import java.nio.charset.StandardCharsets;
 
 public class ClientListenner implements Runnable{
+
     @Override
     public void run() {
         try {
@@ -70,6 +76,35 @@ public class ClientListenner implements Runnable{
                     throw new RuntimeException(e);
                 }
             }
+        } else if (baseResponse.getType() == MessageType.MESSAGE) {
+            MessageDTO messageDTO = (MessageDTO) baseResponse;
+            byte[] contentBytes = messageDTO.getMessage().getContent();
+            String contentString = new String(contentBytes, StandardCharsets.UTF_8);
+            System.out.println("Receive: " + contentString);
+            User currentUser = messageDTO.getMessage().getParticipant().getUser();
+
+//            PublicEvent.getInstance().addEventChat(new EventChat() {
+//                @Override
+//                public void sendMessage(String text) {
+//
+//                }
+//
+//                @Override
+//                public void receiveMessage(String text, String name) {
+//                    if (currentUser != null) {
+//                        Chat_Body chatBody = ChatSession.getInstance().getChat().chatBodyMap.get(currentUser);
+//                        if (chatBody != null) {
+//                            chatBody.addItemLeft(text, currentUser.getUserName(), new ImageIcon(currentUser.getAvatar()));
+//                        }
+//                    }
+//                }
+//            });
+//            if (currentUser != null) {
+//                Chat_Body chatBody = ChatSession.getInstance().getChat().chatBodyMap.get(currentUser);
+//                if (chatBody != null) {
+//                    chatBody.addItemLeft(messageDTO.getMessage().getContent().toString(), currentUser.getUserName(), new ImageIcon(currentUser.getAvatar()));
+//                }
+//            }
         }
     }
 

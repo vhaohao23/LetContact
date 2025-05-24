@@ -6,10 +6,13 @@ import java.awt.Adjustable;
 import java.awt.Color;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
+import java.nio.charset.StandardCharsets;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
+
+import application.model.Message;
 import net.miginfocom.swing.MigLayout;
 import org.jdesktop.swingx.VerticalLayout;
 
@@ -33,27 +36,26 @@ public class Chat_Body extends javax.swing.JPanel {
         body.revalidate();
     }
 
-    public void addItemLeft(String text, String user, Icon... image){
+    public void addItemLeft(Message message) {
         Chat_Left_With_Profile item = new Chat_Left_With_Profile();
-        item.setText(text);
-        item.setImage(image);
+        item.setText(new String(message.getContent(), StandardCharsets.UTF_8));
+        item.setUserProfile(message.getParticipant().getUser().getUserName());
         item.setTime();
-        // item.setUserProfile(user);
         body.add(item, "wrap, w 100::80%");
-        body.repaint();
-        body.revalidate();
+        repaint();
+        revalidate();
     }
     
-    public void addItemLeft(String text, String user, String[] image){
-        Chat_Left_With_Profile item = new Chat_Left_With_Profile();
-        item.setText(text);
-        item.setImage(image);
-        item.setTime();
-        // item.setUserProfile(user);
-        body.add(item, "wrap, w 100::80%");
-        body.repaint();
-        body.revalidate();
-    }
+//    public void addItemLeft(String text, String user, String[] image){
+//        Chat_Left_With_Profile item = new Chat_Left_With_Profile();
+//        item.setText(text);
+//        item.setImage(image);
+//        item.setTime();
+//        // item.setUserProfile(user);
+//        body.add(item, "wrap, w 100::80%");
+//        body.repaint();
+//        body.revalidate();
+//    }
     
     public void addItemFile(String text, String user, String fileName, String fileSize){
         Chat_Left_With_Profile item = new Chat_Left_With_Profile();

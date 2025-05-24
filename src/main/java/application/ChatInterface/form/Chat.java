@@ -5,19 +5,30 @@ import application.ChatInterface.Chat_Bottom;
 import application.ChatInterface.Chat_Title;
 import application.ChatInterface.event.EventChat;
 import application.ChatInterface.event.EventMenuLeft;
+import application.ChatInterface.event.EventMenuRight;
 import application.ChatInterface.event.PublicEvent;
+import application.dao.ParticipantDAO;
+import application.dto.MessageDTO;
+import application.dto.MessageType;
+import application.model.Message;
+import application.model.Participant;
 import application.model.User;
+import application.session_management.SessionManagement;
+import application.session_management.TCPSocketSession;
 import net.miginfocom.swing.MigLayout;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 public class Chat extends javax.swing.JPanel {
 
     private Chat_Title chatTitle;
-    private Map<User, Chat_Body> chatBodyMap;
+    public Map<User, Chat_Body> chatBodyMap;
     private Map<User, Chat_Bottom> chatBottomMap;
     private User currentUser;
     private Chat_Body currentChatBody;
@@ -38,19 +49,60 @@ public class Chat extends javax.swing.JPanel {
 
         setVisible(false);
 
-        // Add initial components (will be replaced when a user is selected)
+        // Add initial components
         add(chatTitle, "wrap");
         add(currentChatBody, "wrap");
         add(currentChatBottom, "h ::40%");
 
-        // Event for sending messages
+        // Event for sending and receiving messages
         PublicEvent.getInstance().addEventChat(new EventChat() {
-            @Override
             public void sendMessage(String text) {
                 if (currentUser != null) {
                     Chat_Body chatBody = chatBodyMap.get(currentUser);
                     if (chatBody != null) {
+                        // Hiển thị tin nhắn của mình ngay lập tức bên phải
                         chatBody.addItemRight(text);
+
+                        Participant participant = (new ParticipantDAO()).selectParticipantOneByTwoUser(
+                                SessionManagement.getInstance().getLoginSession().getUser(),
+                                currentUser);
+
+                        Message message = new Message(participant, text.getBytes(),
+                                new Date(System.currentTimeMillis()), "text");
+
+                        try {
+                            // Gửi tin nhắn lên server
+                            TCPSocketSession.getInstance().out.writeObject(
+                                    new MessageDTO(MessageType.MESSAGE, message));
+                            TCPSocketSession.getInstance().out.flush();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+            }
+
+            public void receiveMessage(Message message) {
+                if (message != null && message.getParticipant() != null) {
+                    User sender = message.getParticipant().getUser();
+                    User currentLoginUser = SessionManagement.getInstance().getLoginSession().getUser();
+
+                    // Kiểm tra nếu đang ở đúng hội thoại với người gửi
+                    if (currentUser != null && currentUser.equals(sender)) {
+                        Chat_Body chatBody = chatBodyMap.get(currentUser);
+                        if (chatBody != null) {
+                            // Tin nhắn từ người khác -> hiển thị bên trái
+                            chatBody.addItemLeft(message);
+                        }
+                    }
+
+                    // Nếu tin nhắn là từ chính mình (trường hợp đồng bộ nhiều thiết bị)
+                    if (sender.equals(currentLoginUser) && currentUser != null) {
+                        Chat_Body chatBody = chatBodyMap.get(currentUser);
+                        if (chatBody != null) {
+                            // Tin nhắn từ mình -> hiển thị bên phải
+                            chatBody.addItemRight(new String(message.getContent(), StandardCharsets.UTF_8));
+                        }
                     }
                 }
             }
@@ -124,7 +176,6 @@ public class Chat extends javax.swing.JPanel {
     }
 
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">
     private void initComponents() {
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -139,5 +190,4 @@ public class Chat extends javax.swing.JPanel {
                         .addGap(0, 800, Short.MAX_VALUE)
         );
     }
-    // </editor-fold>
 }

@@ -6,6 +6,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
 import application.ChatInterface.event.PublicEvent;
+import com.mysql.cj.conf.PropertyDefinitions;
 
 public class Item_People extends javax.swing.JPanel {
 
@@ -41,6 +42,7 @@ public class Item_People extends javax.swing.JPanel {
             public void mouseClicked(MouseEvent e) {
                 PublicEvent.getInstance().getEventMenuLeft().selectUser(user);
                 PublicEvent.getInstance().getEventMenuRight().selectUser(user);
+                System.out.println(user.getUserName());
             }
         });
     }
