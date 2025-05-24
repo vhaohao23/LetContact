@@ -10,6 +10,8 @@ import java.util.List;
 @Entity
 @Table(name = "user")
 public class User implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "UserID", length = 200)
@@ -169,5 +171,18 @@ public class User implements Serializable {
 
     public void setRelationships2(List<Relationship> relationships2) {
         this.relationships2 = relationships2;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return userID.equals(user.userID);
+    }
+
+    @Override
+    public int hashCode() {
+        return userID.hashCode();
     }
 }

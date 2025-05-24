@@ -80,31 +80,91 @@ public class ClientListenner implements Runnable{
             MessageDTO messageDTO = (MessageDTO) baseResponse;
             byte[] contentBytes = messageDTO.getMessage().getContent();
             String contentString = new String(contentBytes, StandardCharsets.UTF_8);
-            System.out.println("Receive: " + contentString);
-            User currentUser = messageDTO.getMessage().getParticipant().getUser();
+            System.out.println("\n=== Message Received in ClientListener ===");
+            System.out.println("Raw message content: " + contentString);
+            System.out.println("Message sender: " + messageDTO.getMessage().getParticipant().getUser().getUserName());
+            
+            try {
+                // Get chat instance directly
+                Chat chat = ChatSession.getInstance().getChat();
+                if (chat == null) {
+                    System.out.println("ERROR: Chat instance is null");
+                    return;
+                }
+                System.out.println("Found Chat instance");
+                System.out.println("Current chat windows: " + chat.chatBodyMap.keySet().stream()
+                    .map(User::getUserName)
+                    .toList());
 
-//            PublicEvent.getInstance().addEventChat(new EventChat() {
-//                @Override
-//                public void sendMessage(String text) {
-//
-//                }
-//
-//                @Override
-//                public void receiveMessage(String text, String name) {
-//                    if (currentUser != null) {
-//                        Chat_Body chatBody = ChatSession.getInstance().getChat().chatBodyMap.get(currentUser);
-//                        if (chatBody != null) {
-//                            chatBody.addItemLeft(text, currentUser.getUserName(), new ImageIcon(currentUser.getAvatar()));
-//                        }
-//                    }
-//                }
-//            });
-//            if (currentUser != null) {
-//                Chat_Body chatBody = ChatSession.getInstance().getChat().chatBodyMap.get(currentUser);
-//                if (chatBody != null) {
-//                    chatBody.addItemLeft(messageDTO.getMessage().getContent().toString(), currentUser.getUserName(), new ImageIcon(currentUser.getAvatar()));
-//                }
-//            }
+                // Process message directly using Swing's event dispatch thread
+                System.out.println("Scheduling message processing...");
+                try {
+                    SwingUtilities.invokeLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                System.out.println("Starting message processing in EDT");
+                                Message message = messageDTO.getMessage();
+                                User sender = message.getParticipant().getUser();
+                                System.out.println("Processing message from: " + sender.getUserName());
+                                
+                                // Get or create chat window for sender
+                                Chat_Body chatBody = chat.chatBodyMap.get(sender);
+                                if (chatBody == null) {
+                                    System.out.println("Creating new chat window for: " + sender.getUserName());
+                                    try {
+                                        chatBody = new Chat_Body();
+                                        chat.chatBodyMap.put(sender, chatBody);
+                                        System.out.println("Successfully created new chat window");
+                                    } catch (Exception e) {
+                                        System.out.println("Error creating chat window: " + e.getMessage());
+                                        e.printStackTrace();
+                                        return;
+                                    }
+                                } else {
+                                    System.out.println("Using existing chat window for: " + sender.getUserName());
+                                }
+                                
+                                // Add message to chat window
+                                if (chatBody != null) {
+                                    System.out.println("Adding message to chat window");
+                                    try {
+                                        chatBody.addItemLeft(message);
+                                        System.out.println("Message added successfully");
+                                        // Force UI update
+                                        chatBody.revalidate();
+                                        chatBody.repaint();
+                                        // Also update the parent container
+                                        chat.revalidate();
+                                        chat.repaint();
+                                        
+                                        // Automatically select the chat window
+                                        System.out.println("Selecting chat window for: " + sender.getUserName());
+                                        PublicEvent.getInstance().getEventMenuLeft().selectUser(sender);
+                                        PublicEvent.getInstance().getEventMenuRight().selectUser(sender);
+                                    } catch (Exception e) {
+                                        System.out.println("Error adding message to chat window: " + e.getMessage());
+                                        e.printStackTrace();
+                                    }
+                                } else {
+                                    System.out.println("ERROR: Chat body is null for sender: " + sender.getUserName());
+                                }
+                            } catch (Exception e) {
+                                System.out.println("Error in message processing: " + e.getMessage());
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                    System.out.println("Message processing scheduled successfully");
+                } catch (Exception e) {
+                    System.out.println("Error scheduling SwingUtilities.invokeLater: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            } catch (Exception e) {
+                System.out.println("Error in message handling: " + e.getMessage());
+                e.printStackTrace();
+            }
+            System.out.println("=== End Message Processing in ClientListener ===\n");
         }
     }
 

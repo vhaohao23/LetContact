@@ -1,4 +1,3 @@
-
 package application.ChatInterface;
 
 import application.AdminPart.ScrollBar;
@@ -25,7 +24,7 @@ public class Chat_Body extends javax.swing.JPanel {
     }
 
     private void init(){
-        body.setLayout(new MigLayout("fillx", "5[]5"));
+        body.setLayout(new MigLayout("fillx", "5[]5", "5[]5"));
         sp.setVerticalScrollBar(new ScrollBar());
         sp.getVerticalScrollBar().setBackground(Color.WHITE);
     }
@@ -41,9 +40,10 @@ public class Chat_Body extends javax.swing.JPanel {
         item.setText(new String(message.getContent(), StandardCharsets.UTF_8));
         item.setUserProfile(message.getParticipant().getUser().getUserName());
         item.setTime();
-        body.add(item, "wrap, w 100::80%");
-        repaint();
-        revalidate();
+        body.add(item, "wrap, w 100::80%, gapy 5");
+        body.revalidate();
+        body.repaint();
+        scrollToBottom();
     }
     
 //    public void addItemLeft(String text, String user, String[] image){
@@ -72,9 +72,9 @@ public class Chat_Body extends javax.swing.JPanel {
         Chat_Right item = new Chat_Right();
         item.setText(text);
         item.setImage(image);
-        body.add(item, "wrap, al right ,w 100::80%");
-        body.repaint();
+        body.add(item, "wrap, al right, w 100::80%, gapy 5");
         body.revalidate();
+        body.repaint();
         item.setTime();
         scrollToBottom();
     }
@@ -113,7 +113,6 @@ public class Chat_Body extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
         sp = new javax.swing.JScrollPane();
         body = new javax.swing.JPanel();
 
@@ -121,17 +120,6 @@ public class Chat_Body extends javax.swing.JPanel {
         sp.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
         body.setBackground(new java.awt.Color(255, 255, 255));
-
-        javax.swing.GroupLayout bodyLayout = new javax.swing.GroupLayout(body);
-        body.setLayout(bodyLayout);
-        bodyLayout.setHorizontalGroup(
-            bodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 794, Short.MAX_VALUE)
-        );
-        bodyLayout.setVerticalGroup(
-            bodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 479, Short.MAX_VALUE)
-        );
 
         sp.setViewportView(body);
 
