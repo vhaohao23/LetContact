@@ -5,6 +5,7 @@ public class PublicEvent {
     private EventImageView evetImageView;
     private EventChat eventChat;
     private EventMenuLeft eventMenuLeft;
+    private EventMenuRight eventMenuRight;
 
     public static PublicEvent getInstance() {
         if (instance == null) {
@@ -22,6 +23,15 @@ public class PublicEvent {
 
     public void addEventChat(EventChat event) {
         this.eventChat = event;
+    }
+
+    // Thêm phương thức này
+    public void addEventMenuRight(EventMenuRight event) {
+        this.eventMenuRight = event;
+    }
+
+    public EventMenuRight getEventMenuRight() {
+        return eventMenuRight;
     }
 
     public void addEventMenuLeft(EventMenuLeft event) {

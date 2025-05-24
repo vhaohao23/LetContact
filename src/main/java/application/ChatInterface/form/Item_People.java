@@ -40,6 +40,7 @@ public class Item_People extends javax.swing.JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 PublicEvent.getInstance().getEventMenuLeft().selectUser(user);
+                PublicEvent.getInstance().getEventMenuRight().selectUser(user);
             }
         });
     }

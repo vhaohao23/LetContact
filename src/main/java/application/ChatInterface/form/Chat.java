@@ -110,6 +110,7 @@ public class Chat extends javax.swing.JPanel {
                 revalidate();
                 repaint();
                 setVisible(true);
+                PublicEvent.getInstance().getEventMenuRight().selectUser(user);
             }
         });
     }
