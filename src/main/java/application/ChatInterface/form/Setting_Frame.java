@@ -14,19 +14,19 @@ import java.util.Date;
 import javax.swing.*;
 
 public class Setting_Frame extends javax.swing.JFrame {
-
     private final User user;
+
     public Setting_Frame(User user) {
         this.user = user;
         initComponents();
         init();
     }
 
-    private void init(){
+    private void init() {
         setLocationRelativeTo(null);
         URL url_icon_signup = Setting_Frame.class.getResource("/application/AdminImage/iconChat.png");
-	Image img = Toolkit.getDefaultToolkit().createImage(url_icon_signup);
-	setIconImage(img);
+        Image img = Toolkit.getDefaultToolkit().createImage(url_icon_signup);
+        setIconImage(img);
         setTitle("KHchat - Setting");
 
         // Populate user information
@@ -36,7 +36,7 @@ public class Setting_Frame extends javax.swing.JFrame {
             lbuserlastname.setText(user.getLastName() != null ? user.getLastName() : "N/A");
 
             // Format DOB from Date to dd-MM-yyyy
-            Date dob = user.getDob();
+            java.util.Date dob = user.getDob();
             if (dob != null) {
                 try {
                     SimpleDateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy");
@@ -64,20 +64,20 @@ public class Setting_Frame extends javax.swing.JFrame {
                 } catch (Exception e) {
                     System.err.println("Error loading avatar from byte array: " + e.getMessage());
                     // Set default avatar
-                    URL defaultUrl = getClass().getResource("/application/AdminImage/Black_cat.jpg");
+                    URL defaultUrl = getClass().getResource("/application/AdminImage/avatar.png");
                     if (defaultUrl != null) {
                         imageAvatar1.setIcon(new ImageIcon(defaultUrl));
                     } else {
-                        System.err.println("Default avatar image not found at: /application/AdminImage/Black_cat.jpg");
+                        System.err.println("Default avatar image not found at: /application/AdminImage/avatar.png");
                     }
                 }
             } else {
                 // Set default avatar
-                URL defaultUrl = getClass().getResource("/application/AdminImage/Black_cat.jpg");
+                URL defaultUrl = getClass().getResource("/application/AdminImage/avatar.png");
                 if (defaultUrl != null) {
                     imageAvatar1.setIcon(new ImageIcon(defaultUrl));
                 } else {
-                    System.err.println("Default avatar image not found at: /application/AdminImage/Black_cat.jpg");
+                    System.err.println("Default avatar image not found at: /application/AdminImage/avatar.png");
                 }
             }
         } else {
@@ -91,7 +91,12 @@ public class Setting_Frame extends javax.swing.JFrame {
             lbuseremail.setText("N/A");
             lbuseraddress.setText("N/A");
             lbuserstatus.setText("N/A");
-            imageAvatar1.setIcon(new ImageIcon(getClass().getResource("/application/AdminImage/Black_cat.jpg")));
+            URL defaultUrl = getClass().getResource("/application/AdminImage/avatar.png");
+            if (defaultUrl != null) {
+                imageAvatar1.setIcon(new ImageIcon(defaultUrl));
+            } else {
+                System.err.println("Default avatar image not found at: /application/AdminImage/avatar.png");
+            }
         }
     }
     
@@ -320,7 +325,7 @@ public class Setting_Frame extends javax.swing.JFrame {
     private void buttonSettingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSettingActionPerformed
         // TODO add your handling code here:
         setVisible(false);
-        new Editing_Frame().setVisible(true);
+        new Editing_Frame(user).setVisible(true);
     }//GEN-LAST:event_buttonSettingActionPerformed
 
     private void buttonOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOutActionPerformed
@@ -329,14 +334,14 @@ public class Setting_Frame extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonOutActionPerformed
 
     
-    public static void main(String args[]) {
-        
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Setting_Frame(null).setVisible(true);
-            }
-        });
-    }
+//    public static void main(String args[]) {
+//
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                new Setting_Frame(null).setVisible(true);
+//            }
+//        });
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private Button buttonOut;
