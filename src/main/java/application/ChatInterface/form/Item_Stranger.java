@@ -2,9 +2,6 @@
 package application.ChatInterface.form;
 
 
-import application.raven.swing.Button;
-import application.raven.swing.ImageAvatar;
-
 public class Item_Stranger extends javax.swing.JPanel {
 
     
@@ -20,17 +17,16 @@ public class Item_Stranger extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        imageAvatar = new ImageAvatar();
+        imageAvatar = new application.raven.swing.ImageAvatar();
         lbuserName = new javax.swing.JLabel();
         lbdob = new javax.swing.JLabel();
         lbgender = new javax.swing.JLabel();
-        button = new Button();
-        button1 = new Button();
-        button2 = new Button();
+        button = new application.raven.swing.Button();
+        button2 = new application.raven.swing.Button();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
-        imageAvatar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/application/AdminImage/AccountIcon.png"))); // NOI18N
+        imageAvatar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/AdminImage/AccountIcon.png"))); // NOI18N
 
         lbuserName.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lbuserName.setText("USER NAME");
@@ -47,17 +43,6 @@ public class Item_Stranger extends javax.swing.JPanel {
         button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonActionPerformed(evt);
-            }
-        });
-
-        button1.setBackground(new java.awt.Color(163, 209, 255));
-        button1.setForeground(new java.awt.Color(0, 51, 153));
-        button1.setText("Chat Now");
-        button1.setToolTipText("Chat now!");
-        button1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        button1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                button1ActionPerformed(evt);
             }
         });
 
@@ -83,9 +68,7 @@ public class Item_Stranger extends javax.swing.JPanel {
                     .addComponent(lbdob)
                     .addComponent(lbgender)
                     .addComponent(lbuserName))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 215, Short.MAX_VALUE)
-                .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 306, Short.MAX_VALUE)
                 .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(button, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -107,7 +90,6 @@ public class Item_Stranger extends javax.swing.JPanel {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(button, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(19, Short.MAX_VALUE))
             .addComponent(imageAvatar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -118,20 +100,15 @@ public class Item_Stranger extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_buttonActionPerformed
 
-    private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_button1ActionPerformed
-
     private void button2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_button2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private Button button;
-    private Button button1;
-    private Button button2;
-    private ImageAvatar imageAvatar;
+    private application.raven.swing.Button button;
+    private application.raven.swing.Button button2;
+    private application.raven.swing.ImageAvatar imageAvatar;
     private javax.swing.JLabel lbdob;
     private javax.swing.JLabel lbgender;
     private javax.swing.JLabel lbuserName;
