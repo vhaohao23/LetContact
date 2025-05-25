@@ -3,6 +3,8 @@ package application.ChatInterface;
 
 import application.AdminPart.ScrollBar;
 import application.ChatInterface.event.PublicEvent;
+import application.model.User;
+import application.raven.swing.JIMSendTextPane;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -14,9 +16,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-
-import application.model.User;
-import application.raven.swing.JIMSendTextPane;
 import net.miginfocom.swing.MigLayout;
 
 public class Chat_Bottom extends javax.swing.JPanel {
@@ -27,18 +26,22 @@ public class Chat_Bottom extends javax.swing.JPanel {
         init();
     }
 
-    private void init(){
-        setLayout(new MigLayout("fillx, filly", "0[fill]0[]0[]2", "2[fill]2"));
+    private void init() {
+        mig = new MigLayout("fillx, filly", "0[fill]0[]0[]2", "2[fill]2[]0");
+        setLayout(mig);
         JScrollPane scroll = new JScrollPane();
         scroll.setBorder(null);
         JIMSendTextPane txt = new JIMSendTextPane();
-        txt.addKeyListener(new KeyAdapter(){
+        txt.addKeyListener(new KeyAdapter() {
             @Override
-            public void keyTyped(KeyEvent e) {
+            public void keyTyped(KeyEvent ke) {
                 refresh();
+                if(ke.getKeyChar() == 10 && ke.isControlDown()){
+                    eventSend(txt);
+                }
             }
         });
-        txt.setHintText("Say something here...");
+        txt.setHintText("Write Message Here ...");
         scroll.setViewportView(txt);
         ScrollBar sb = new ScrollBar();
         sb.setPreferredSize(new Dimension(2, 10));
@@ -46,19 +49,54 @@ public class Chat_Bottom extends javax.swing.JPanel {
         add(sb);
         add(scroll, "w 100%");
         JPanel panel = new JPanel();
-        panel.setLayout(new MigLayout("filly","0[]0","0[bottom]0"));
-        panel.setPreferredSize(new Dimension(30, 20));
-        JButton cmd = new JButton();
+        panel.setLayout(new MigLayout("filly", "0[]5[]10", "0[bottom]0"));
+        panel.setPreferredSize(new Dimension(30, 28));
         panel.setBackground(Color.WHITE);
+        JButton cmd = new JButton();
         cmd.setBorder(null);
         cmd.setContentAreaFilled(false);
         cmd.setCursor(new Cursor(Cursor.HAND_CURSOR));
         cmd.setIcon(new ImageIcon(getClass().getResource("/application/AdminImage/send.png")));
-        cmd.addActionListener(new ActionListener(){
+        cmd.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                String text = txt.getText().trim();
-                if (!text.equals("")){
+            public void actionPerformed(ActionEvent ae) {
+                eventSend(txt);
+            }
+        });
+        JButton cmdMore = new JButton();
+        cmdMore.setBorder(null);
+        cmdMore.setContentAreaFilled(false);
+        cmdMore.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        cmdMore.setIcon(new ImageIcon(getClass().getResource("/application/AdminImage/3dots.png")));
+        cmdMore.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                if(panelMore.isVisible()){
+                    cmdMore.setIcon(new ImageIcon(getClass().getResource("/application/AdminImage/3dots.png")));
+                    panelMore.setVisible(false);
+                    mig.setComponentConstraints(panelMore, "dock south, h 0!");
+                } else {
+                    cmdMore.setIcon(new ImageIcon(getClass().getResource("/application/AdminImage/3dots1.png")));
+                    panelMore.setVisible(true);
+                    mig.setComponentConstraints(panelMore, "dock south, h 170!");
+                }
+            }
+        });
+        panel.add(cmd);
+        panel.add(cmdMore);
+        add(panel, "wrap");
+        panelMore = new Panel_More();
+        panelMore.setVisible(false);
+        add(panelMore, "dock south, h 0!");
+    }
+
+    private void refresh() {
+        revalidate();
+    }
+    
+    private void eventSend(JIMSendTextPane txt){
+        String text = txt.getText().trim();
+                if (!text.equals("")) {
                     PublicEvent.getInstance().getEventChat().sendMessage(text);
                     txt.setText("");
                     txt.grabFocus();
@@ -66,15 +104,10 @@ public class Chat_Bottom extends javax.swing.JPanel {
                 } else {
                     txt.grabFocus();
                 }
-            }
-        });
-        panel.add(cmd);
-        add(panel);
     }
+    private MigLayout mig;
+    private Panel_More panelMore;
     
-    private void refresh(){
-        revalidate();
-    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
