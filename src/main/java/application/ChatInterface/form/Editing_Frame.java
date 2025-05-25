@@ -162,7 +162,7 @@ public class Editing_Frame extends javax.swing.JFrame {
         buttonBack.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         buttonBack.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonBackActionPerformed(evt);
+//                buttonBackActionPerformed(evt);
             }
         });
 
@@ -293,11 +293,11 @@ public class Editing_Frame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jtemailActionPerformed
 
-    private void buttonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBackActionPerformed
-        // TODO add your handling code here:
-        setVisible(false);
-        new application.ChatInterface.form.Setting_Frame().setVisible(true);
-    }//GEN-LAST:event_buttonBackActionPerformed
+//    private void buttonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBackActionPerformed
+//        // TODO add your handling code here:
+//        setVisible(false);
+//        new application.ChatInterface.form.Setting_Frame().setVisible(true);
+//    }//GEN-LAST:event_buttonBackActionPerformed
 
     private void buttonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSaveActionPerformed
         // TODO add your handling code here:

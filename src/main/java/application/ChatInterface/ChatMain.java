@@ -116,7 +116,8 @@ public class ChatMain extends javax.swing.JFrame {
                 } else if (index == 8){
                     main.show(new ReportAccount_Form());
                 } else if (index == 9){
-                    new Setting_Frame().setVisible(true);
+                    User currentUser = SessionManagement.getInstance().getLoginSession().getUser();
+                    new Setting_Frame(currentUser).setVisible(true);
                 } else if (index == 10){
                     setVisible(false);
                 }

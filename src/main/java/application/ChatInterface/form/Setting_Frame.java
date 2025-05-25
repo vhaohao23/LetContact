@@ -1,18 +1,23 @@
 
 package application.ChatInterface.form;
 
+import application.model.User;
 import application.raven.swing.Button;
 import application.raven.swing.ImageAvatar;
 
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
-import javax.swing.Icon;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.swing.*;
 
 public class Setting_Frame extends javax.swing.JFrame {
 
-    
-    public Setting_Frame() {
+    private final User user;
+    public Setting_Frame(User user) {
+        this.user = user;
         initComponents();
         init();
     }
@@ -23,6 +28,71 @@ public class Setting_Frame extends javax.swing.JFrame {
 	Image img = Toolkit.getDefaultToolkit().createImage(url_icon_signup);
 	setIconImage(img);
         setTitle("KHchat - Setting");
+
+        // Populate user information
+        if (user != null) {
+            lbnickname.setText(user.getUserName() != null ? user.getUserName() : "N/A");
+            lbuserfirstname.setText(user.getFirstName() != null ? user.getFirstName() : "N/A");
+            lbuserlastname.setText(user.getLastName() != null ? user.getLastName() : "N/A");
+
+            // Format DOB from Date to dd-MM-yyyy
+            Date dob = user.getDob();
+            if (dob != null) {
+                try {
+                    SimpleDateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy");
+                    lbuserdob.setText(outputFormat.format(dob));
+                } catch (Exception e) {
+                    lbuserdob.setText("N/A");
+                    e.printStackTrace();
+                }
+            } else {
+                lbuserdob.setText("N/A");
+            }
+
+            lbusergender.setText(user.getGender() != null ? user.getGender() : "N/A");
+            lbuserphone.setText(user.getPhone() != null ? user.getPhone() : "N/A");
+            lbuseremail.setText(user.getEmail() != null ? user.getEmail() : "N/A");
+            lbuseraddress.setText(user.getAddress() != null ? user.getAddress() : "N/A");
+            lbuserstatus.setText(user.getStatus() != null ? user.getStatus() : "N/A");
+
+            // Set avatar image
+            byte[] avatarBytes = user.getAvatar();
+            if (avatarBytes != null && avatarBytes.length > 0) {
+                try {
+                    ImageIcon avatarIcon = new ImageIcon(avatarBytes);
+                    imageAvatar1.setIcon(avatarIcon);
+                } catch (Exception e) {
+                    System.err.println("Error loading avatar from byte array: " + e.getMessage());
+                    // Set default avatar
+                    URL defaultUrl = getClass().getResource("/application/AdminImage/Black_cat.jpg");
+                    if (defaultUrl != null) {
+                        imageAvatar1.setIcon(new ImageIcon(defaultUrl));
+                    } else {
+                        System.err.println("Default avatar image not found at: /application/AdminImage/Black_cat.jpg");
+                    }
+                }
+            } else {
+                // Set default avatar
+                URL defaultUrl = getClass().getResource("/application/AdminImage/Black_cat.jpg");
+                if (defaultUrl != null) {
+                    imageAvatar1.setIcon(new ImageIcon(defaultUrl));
+                } else {
+                    System.err.println("Default avatar image not found at: /application/AdminImage/Black_cat.jpg");
+                }
+            }
+        } else {
+            // Fallback if no user is provided
+            lbnickname.setText("N/A");
+            lbuserfirstname.setText("N/A");
+            lbuserlastname.setText("N/A");
+            lbuserdob.setText("N/A");
+            lbusergender.setText("N/A");
+            lbuserphone.setText("N/A");
+            lbuseremail.setText("N/A");
+            lbuseraddress.setText("N/A");
+            lbuserstatus.setText("N/A");
+            imageAvatar1.setIcon(new ImageIcon(getClass().getResource("/application/AdminImage/Black_cat.jpg")));
+        }
     }
     
     @SuppressWarnings("unchecked")
@@ -263,7 +333,7 @@ public class Setting_Frame extends javax.swing.JFrame {
         
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Setting_Frame().setVisible(true);
+                new Setting_Frame(null).setVisible(true);
             }
         });
     }
