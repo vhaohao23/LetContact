@@ -119,22 +119,21 @@ public class RelationshipDAO implements DAOInterface<Relationship> {
     }
 
     public List<Relationship> selectByUserName(String userName) {
-        List<Relationship> rss=null;
+        List<Relationship> rss = new ArrayList<>();
 
-        try{
-            SessionFactory sessionFactory= HibernateUtil.getSessionFactory();
-            Session session=sessionFactory.openSession();
-            Transaction tx=session.beginTransaction();
+        try {
+            SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+            Session session = sessionFactory.openSession();
+            Transaction tx = session.beginTransaction();
 
-            String hql="from Relationship u where u.user1 =:userName or  u.user2=:userName";
-            Query query=session.createQuery(hql);
+            String hql = "from Relationship u where u.user1.userName = :userName or u.user2.userName = :userName";
+            Query query = session.createQuery(hql);
             query.setParameter("userName", userName);
-            query.setParameter("userName", userName);
-            rss= query.getResultList();
+            rss = query.getResultList();
 
             tx.commit();
             session.close();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return rss;
