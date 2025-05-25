@@ -5,11 +5,13 @@ import application.AdminPart.EventMenuSelected;
 import application.ChatInterface.event.EventImageView;
 import application.ChatInterface.event.PublicEvent;
 import application.ChatInterface.form.MainForm;
-import java.awt.Color;
+
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.net.URL;
 import java.util.List;
 import javax.swing.Icon;
 import javax.swing.JLayeredPane;
@@ -114,7 +116,8 @@ public class ChatMain extends javax.swing.JFrame {
                 } else if (index == 8){
                     main.show(new ReportAccount_Form());
                 } else if (index == 9){
-                    new Setting_Frame().setVisible(true);
+                    User currentUser = SessionManagement.getInstance().getLoginSession().getUser();
+                    new Setting_Frame(currentUser).setVisible(true);
                 } else if (index == 10){
                     setVisible(false);
                 }
@@ -123,6 +126,11 @@ public class ChatMain extends javax.swing.JFrame {
     }
 
     private void init() {
+        URL url_icon_signup = Setting_Frame.class.getResource("/application/AdminImage/iconChat.png");
+        Image img = Toolkit.getDefaultToolkit().createImage(url_icon_signup);
+        setIconImage(img);
+        setTitle("KHchat");
+
         User currentUser = SessionManagement.getInstance().getLoginSession().getUser();
         if (currentUser != null) {
             UserDAO userDAO = new UserDAO();
@@ -202,10 +210,10 @@ public class ChatMain extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    public static void main(String args[]) {
-
-        java.awt.EventQueue.invokeLater(() -> new ChatMain().setVisible(true));;
-    }
+//    public static void main(String args[]) {
+//
+//        java.awt.EventQueue.invokeLater(() -> new ChatMain().setVisible(true));;
+//    }
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

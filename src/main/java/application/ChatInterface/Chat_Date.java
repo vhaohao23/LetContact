@@ -2,6 +2,8 @@
 package application.ChatInterface;
 
 
+import application.raven.swing.Line;
+
 public class Chat_Date extends javax.swing.JLayeredPane {
 
     
@@ -18,8 +20,8 @@ public class Chat_Date extends javax.swing.JLayeredPane {
     private void initComponents() {
 
         lbDate = new javax.swing.JLabel();
-        line1 = new com.raven.swing.Line();
-        line2 = new com.raven.swing.Line();
+        line1 = new Line();
+        line2 = new Line();
 
         lbDate.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lbDate.setForeground(new java.awt.Color(189, 189, 189));
@@ -58,7 +60,7 @@ public class Chat_Date extends javax.swing.JLayeredPane {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel lbDate;
-    private com.raven.swing.Line line1;
-    private com.raven.swing.Line line2;
+    private Line line1;
+    private Line line2;
     // End of variables declaration//GEN-END:variables
 }

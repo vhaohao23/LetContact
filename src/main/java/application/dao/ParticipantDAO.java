@@ -1,7 +1,9 @@
 package application.dao;
 
+import application.model.Conversation;
 import application.model.Participant;
 import application.model.Participant;
+import application.model.User;
 import application.util.HibernateUtil;
 import jakarta.persistence.Query;
 import org.hibernate.Session;
@@ -130,6 +132,54 @@ public class ParticipantDAO implements DAOInterface<Participant> {
             Query query=session.createQuery(hql);
             query.setParameter("uid", uid);
             query.setParameter("cid", cid);
+            rs= (Participant) query.getSingleResult();
+
+            tx.commit();
+            session.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return rs;
+    }
+    public Conversation getCommonConversation(User user1, User user2){
+        Conversation rs=null;
+
+        try{
+            SessionFactory sessionFactory= HibernateUtil.getSessionFactory();
+            Session session=sessionFactory.openSession();
+            Transaction tx=session.beginTransaction();
+
+            String hql="select distinct p1.conversation from Participant p1,Participant p2 " +
+                    "where p1.user = :user1 and p2.user = :user2 and p1.conversation = p2.conversation";
+            Query query=session.createQuery(hql);
+            query.setParameter("user1", user1);
+            query.setParameter("user2", user2);
+            rs= (Conversation) query.getSingleResult();
+
+            tx.commit();
+            session.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return rs;
+    }
+    public Participant selectParticipantOneByTwoUser(User user1,User user2){
+        Participant rs=null;
+
+        try{
+            SessionFactory sessionFactory= HibernateUtil.getSessionFactory();
+            Session session=sessionFactory.openSession();
+            Transaction tx=session.beginTransaction();
+
+            String hql="select p1 " +
+                    "from Participant p1, Participant p2 " +
+                    "where p1.conversation = p2.conversation " +
+                    "and p1.user = :user1 " +
+                    "and p2.user = :user2";
+            Query query=session.createQuery(hql);
+            query.setParameter("user1", user1);
+            query.setParameter("user2", user2);
+
             rs= (Participant) query.getSingleResult();
 
             tx.commit();

@@ -14,4 +14,5 @@ public enum MessageType {
     START_CALL,
     INFO_REQUEST,
     INFO_RESPONSE,
+    MESSAGE,
 }

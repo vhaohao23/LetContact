@@ -1,24 +1,133 @@
 
 package application.ChatInterface.form;
 
+import application.dao.UserDAO;
+import application.model.User;
+import application.raven.swing.Button;
+import application.raven.swing.ImageAvatar;
+import application.session_management.SessionManagement;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.Date;
 
 public class Editing_Frame extends javax.swing.JFrame {
 
-    
-    public Editing_Frame() {
+    private final User user;
+    private byte[] newAvatarBytes; // Store selected avatar image data
+
+    public Editing_Frame(User user) {
+        this.user = user;
+        this.newAvatarBytes = null; // Initialize as null
         initComponents();
         init();
     }
 
-    private void init(){
+    private void init() {
         setLocationRelativeTo(null);
         URL url_icon_signup = Editing_Frame.class.getResource("/application/AdminImage/iconChat.png");
-	Image img = Toolkit.getDefaultToolkit().createImage(url_icon_signup);
-	setIconImage(img);
-        setTitle("KHchat - Setting");
+        if (url_icon_signup == null) {
+            System.err.println("Icon image not found at: /application/AdminImage/iconChat.png");
+        } else {
+            Image img = Toolkit.getDefaultToolkit().createImage(url_icon_signup);
+            setIconImage(img);
+        }
+        setTitle("KHchat - Editing Profile");
+
+        // Populate user information
+        if (user != null) {
+            jtnickname.setText(user.getUserName() != null ? user.getUserName() : "");
+            jtfirstname.setText(user.getFirstName() != null ? user.getFirstName() : "");
+            jtlastname.setText(user.getLastName() != null ? user.getLastName() : "");
+
+            // Format DOB from Date to dd-MM-yyyy
+            Date dob = user.getDob();
+            if (dob != null) {
+                try {
+                    SimpleDateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy");
+                    jtdob.setText(outputFormat.format(dob));
+                } catch (Exception e) {
+                    jtdob.setText("");
+                    System.err.println("Error formatting DOB: " + e.getMessage());
+                }
+            } else {
+                jtdob.setText("");
+            }
+
+            jtgender.setText(user.getGender() != null ? user.getGender() : "");
+            jtphone.setText(user.getPhone() != null ? user.getPhone() : "");
+            jtemail.setText(user.getEmail() != null ? user.getEmail() : "");
+            jtaddress.setText(user.getAddress() != null ? user.getAddress() : "");
+
+            // Set avatar image
+            byte[] avatarBytes = user.getAvatar();
+            if (avatarBytes != null && avatarBytes.length > 0) {
+                try {
+                    ImageIcon avatarIcon = new ImageIcon(avatarBytes);
+                    imageAvatar1.setIcon(avatarIcon);
+                    imageAvatar1.repaint();
+                } catch (Exception e) {
+                    System.err.println("Error loading avatar from byte array: " + e.getMessage());
+                    setDefaultAvatar();
+                }
+            } else {
+                setDefaultAvatar();
+            }
+        } else {
+            // Fallback if no user is provided
+            jtnickname.setText("");
+            jtfirstname.setText("");
+            jtlastname.setText("");
+            jtdob.setText("");
+            jtgender.setText("");
+            jtphone.setText("");
+            jtemail.setText("");
+            jtaddress.setText("");
+            setDefaultAvatar();
+        }
+    }
+
+    private void setDefaultAvatar() {
+        URL defaultUrl = getClass().getResource("/application/AdminImage/avatar.png");
+        if (defaultUrl != null) {
+            ImageIcon defaultIcon = new ImageIcon(defaultUrl);
+            imageAvatar1.setIcon(defaultIcon);
+            imageAvatar1.repaint();
+        } else {
+            System.err.println("Default avatar image not found at: /application/AdminImage/avatar.png");
+        }
+    }
+
+    private byte[] fileToBytes(File file) {
+        try {
+            BufferedImage image = ImageIO.read(file);
+            if (image == null) {
+                System.err.println("Failed to read image: " + file.getAbsolutePath());
+                return null;
+            }
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            String fileName = file.getName().toLowerCase();
+            String format = fileName.endsWith(".png") ? "png" : "jpeg"; // Default to JPEG if not PNG
+            ImageIO.write(image, format, baos);
+            byte[] result = baos.toByteArray();
+            System.out.println("Successfully converted file to bytes: " + file.getAbsolutePath() + ", size: " + result.length);
+            return result;
+        } catch (Exception e) {
+            System.err.println("Error converting file to bytes: " + e.getMessage());
+            return null;
+        }
     }
     
     @SuppressWarnings("unchecked")
@@ -26,7 +135,7 @@ public class Editing_Frame extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        imageAvatar1 = new com.raven.swing.ImageAvatar();
+        imageAvatar1 = new ImageAvatar();
         lbnickname = new javax.swing.JLabel();
         lbfirstname = new javax.swing.JLabel();
         lblastname = new javax.swing.JLabel();
@@ -35,7 +144,7 @@ public class Editing_Frame extends javax.swing.JFrame {
         lbphone = new javax.swing.JLabel();
         lbemail = new javax.swing.JLabel();
         lbaddress = new javax.swing.JLabel();
-        buttonSave = new com.raven.swing.Button();
+        buttonSave = new Button();
         jtfirstname = new javax.swing.JTextField();
         jtlastname = new javax.swing.JTextField();
         jtdob = new javax.swing.JTextField();
@@ -45,8 +154,8 @@ public class Editing_Frame extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jtaddress = new javax.swing.JTextArea();
         jtnickname = new javax.swing.JTextField();
-        buttonCamera = new com.raven.swing.Button();
-        buttonBack = new com.raven.swing.Button();
+        buttonCamera = new Button();
+        buttonBack = new Button();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -159,7 +268,7 @@ public class Editing_Frame extends javax.swing.JFrame {
         buttonBack.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         buttonBack.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonBackActionPerformed(evt);
+//                buttonBackActionPerformed(evt);
             }
         });
 
@@ -293,32 +402,139 @@ public class Editing_Frame extends javax.swing.JFrame {
     private void buttonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBackActionPerformed
         // TODO add your handling code here:
         setVisible(false);
-        new application.ChatInterface.form.Setting_Frame().setVisible(true);
+        new Setting_Frame(user).setVisible(true);
     }//GEN-LAST:event_buttonBackActionPerformed
 
     private void buttonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSaveActionPerformed
         // TODO add your handling code here:
+        if (user == null) {
+            JOptionPane.showMessageDialog(this, "No user is logged in.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        try {
+            // Update user object with new values
+            user.setUserName(jtnickname.getText().trim().isEmpty() ? null : jtnickname.getText().trim());
+            user.setFirstName(jtfirstname.getText().trim().isEmpty() ? null : jtfirstname.getText().trim());
+            user.setLastName(jtlastname.getText().trim().isEmpty() ? null : jtlastname.getText().trim());
+
+            // Parse DOB from dd-MM-yyyy to LocalDate and convert to java.sql.Date for database
+            String dobText = jtdob.getText().trim();
+            if (!dobText.isEmpty()) {
+                try {
+                    DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                    LocalDate localDate = LocalDate.parse(dobText, inputFormatter);
+
+                    // Validate the date is not in the future
+                    LocalDate today = LocalDate.now(); // Current date (6:56 PM +07, May 25, 2025)
+                    if (localDate.isAfter(today)) {
+                        JOptionPane.showMessageDialog(this, "Date of birth cannot be in the future.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                    // Convert LocalDate to java.sql.Date (yyyy-MM-dd format for SQL)
+                    java.sql.Date dob = java.sql.Date.valueOf(localDate);
+                    user.setDob(dob);
+                } catch (DateTimeParseException e) {
+                    JOptionPane.showMessageDialog(this, "Invalid date format. Please use dd-MM-yyyy (e.g., 25-05-2025).", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            } else {
+                user.setDob(null);
+            }
+
+            user.setGender(jtgender.getText().trim().isEmpty() ? null : jtgender.getText().trim());
+            user.setPhone(jtphone.getText().trim().isEmpty() ? null : jtphone.getText().trim());
+            user.setEmail(jtemail.getText().trim().isEmpty() ? null : jtemail.getText().trim());
+            user.setAddress(jtaddress.getText().trim().isEmpty() ? null : jtaddress.getText().trim());
+
+            // Update avatar if a new one was selected
+            if (newAvatarBytes != null) {
+                user.setAvatar(newAvatarBytes);
+            }
+
+            // Save to database
+            UserDAO userDAO = new UserDAO();
+            try {
+                userDAO.update(user);
+            } catch (Exception e) {
+                System.err.println("Database update failed: " + e.getMessage());
+                throw new RuntimeException("Failed to update user in database: " + e.getMessage());
+            }
+
+            // Update session
+            SessionManagement.getInstance().getLoginSession().setUser(user);
+
+            JOptionPane.showMessageDialog(this, "Profile updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+            // Return to Setting_Frame
+            setVisible(false);
+            new Setting_Frame(user).setVisible(true);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error saving profile: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            System.err.println("Error in save operation: " + e.getMessage());
+        }
     }//GEN-LAST:event_buttonSaveActionPerformed
 
     private void buttonCameraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCameraActionPerformed
         // TODO add your handling code here:
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileFilter(new javax.swing.filechooser.FileFilter() {
+            @Override
+            public boolean accept(File f) {
+                if (f.isDirectory()) return true;
+                String name = f.getName().toLowerCase();
+                return name.endsWith(".jpg") || name.endsWith(".jpeg") || name.endsWith(".png");
+            }
+
+            @Override
+            public String getDescription() {
+                return "Image Files (*.jpg, *.jpeg, *.png)";
+            }
+        });
+
+        int result = fileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+            newAvatarBytes = fileToBytes(selectedFile);
+            if (newAvatarBytes != null && newAvatarBytes.length > 0) {
+                try {
+                    ImageIcon previewIcon = new ImageIcon(newAvatarBytes);
+                    imageAvatar1.setIcon(previewIcon);
+                    imageAvatar1.repaint();
+                    System.out.println("Avatar preview updated successfully.");
+                } catch (Exception e) {
+                    System.err.println("Error previewing image: " + e.getMessage());
+                    JOptionPane.showMessageDialog(this, "Invalid image file.", "Error", JOptionPane.ERROR_MESSAGE);
+                    newAvatarBytes = null;
+                    setDefaultAvatar();
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Failed to load image. Please select a valid image file.", "Error", JOptionPane.ERROR_MESSAGE);
+                newAvatarBytes = null;
+                setDefaultAvatar();
+            }
+        } else {
+            System.out.println("File selection canceled.");
+        }
     }//GEN-LAST:event_buttonCameraActionPerformed
 
     
-    public static void main(String args[]) {
-        
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Editing_Frame().setVisible(true);
-            }
-        });
-    }
+//    public static void main(String args[]) {
+//
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                new Editing_Frame().setVisible(true);
+//            }
+//        });
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.raven.swing.Button buttonBack;
-    private com.raven.swing.Button buttonCamera;
-    private com.raven.swing.Button buttonSave;
-    private com.raven.swing.ImageAvatar imageAvatar1;
+    private Button buttonBack;
+    private Button buttonCamera;
+    private Button buttonSave;
+    private ImageAvatar imageAvatar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jtaddress;

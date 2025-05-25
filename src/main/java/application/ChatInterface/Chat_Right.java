@@ -2,6 +2,8 @@
 package application.ChatInterface;
 
 import java.awt.Color;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.Icon;
 
 
@@ -33,9 +35,11 @@ public class Chat_Right extends javax.swing.JLayeredPane {
     public void setFile(String fileName, String fileSize){
         txt.setFile(fileName, fileSize);
     }
-    
-    public void setTime(){
-        txt.setTime("10:30 PM");
+
+    public void setTime() {
+        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
+        String currentTime = sdf.format(new Date());
+        txt.setTime(currentTime);
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

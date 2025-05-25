@@ -1,18 +1,54 @@
 
 package application.ChatInterface.form;
 
+import application.ChatInterface.event.EventMenuRight;
+import application.ChatInterface.event.PublicEvent;
+import application.model.User;
+import application.raven.swing.ImageAvatar;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.geom.Ellipse2D;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+
 public class Menu_Right extends javax.swing.JPanel {
 
+    private User user;
     public Menu_Right() {
+        this.user = user;
         initComponents();
-        
+        init();
+        setVisible(false);
+    }
+
+    private void init() {
+        PublicEvent.getInstance().addEventMenuRight(new EventMenuRight() {
+            @Override
+            public void selectUser(User user) {
+                jLabel4.setText(user.getUserName());
+
+                // Cách đơn giản nhất - sử dụng trực tiếp ảnh từ User
+                if (user.getAvatar() != null && user.getAvatar().length > 0) {
+                    imageAvatar1.setIcon(new ImageIcon(user.getAvatar()));
+                } else {
+                    imageAvatar1.setIcon(new ImageIcon(getClass().getResource("/application/AdminImage/avatar.png")));
+                }
+                // Refresh UI
+                revalidate();
+                repaint();
+                setVisible(true);
+            }
+        });
     }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        imageAvatar1 = new com.raven.swing.ImageAvatar();
+        imageAvatar1 = new ImageAvatar();
         toggleButton1 = new application.ChatInterface.ToggleButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -241,7 +277,7 @@ public class Menu_Right extends javax.swing.JPanel {
     private application.raven.CustomButton.Button button1;
     private application.raven.CustomButton.Button button2;
     private application.raven.CustomButton.Button button3;
-    private com.raven.swing.ImageAvatar imageAvatar1;
+    private ImageAvatar imageAvatar1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

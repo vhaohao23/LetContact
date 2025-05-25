@@ -1,5 +1,5 @@
+package application.raven.swing;
 
-package com.raven.swing;
 import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
