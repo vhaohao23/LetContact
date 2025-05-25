@@ -1,4 +1,4 @@
-module org.example.letcontact {
+module application {
     requires javafx.controls;
     requires javafx.fxml;
     requires jakarta.persistence;
@@ -22,4 +22,5 @@ module org.example.letcontact {
     opens application.dto to org.hibernate.orm.core;
     exports application.ChatInterface;
     exports application.client;
+    exports application.AdminPart;
 }

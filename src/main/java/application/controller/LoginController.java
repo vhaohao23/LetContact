@@ -8,6 +8,7 @@ import application.dto.LoginRequest;
 import application.dto.LoginSuccessResponse;
 import application.dto.MessageType;
 import application.model.User;
+import application.session_management.MainApplicationSession;
 import application.session_management.SessionManagement;
 import application.session_management.TCPSocketSession;
 import application.util.BcrypyUtil;
@@ -112,13 +113,17 @@ public class LoginController {
 
     public void onLoginSuccess() {
             if (lastEvent != null) {
-                Stage stage = (Stage) btnLogin.getScene().getWindow();
-                stage.close();
+//                Stage stage = (Stage) btnLogin.getScene().getWindow();
+//                stage.hide();
 
                 new ChatMain().setVisible(true);
 
                 // Switch to the home page
-//                SwitchSceneUtil.switchScene("view/HomePage.fxml", lastEvent);
+                try {
+                    SwitchSceneUtil.switchScene("view/HomePage.fxml", lastEvent);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
 
 

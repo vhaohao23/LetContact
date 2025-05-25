@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import javax.swing.Icon;
@@ -21,7 +22,13 @@ import application.ChatInterface.form.Setting_Frame;
 import application.Main;
 import application.dao.UserDAO;
 import application.model.User;
+import application.session_management.MainApplicationSession;
 import application.session_management.SessionManagement;
+import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 import net.miginfocom.swing.MigLayout;
 import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTarget;
@@ -107,7 +114,13 @@ public class ChatMain extends javax.swing.JFrame {
                     main.show(new ChatSection_Form());
                 } else if (index == 1){
                     main.show(new MessageWaiting_Form());
-                } else if (index == 4){
+                }else if (index == 2){
+                    System.out.println("index 2");
+                    Platform.runLater(()->{
+                        MainApplicationSession.stage.show();
+                    });
+                }
+                else if (index == 4){
                     main.show(new ListFriends_Form());
                 } else if (index == 5){
                     main.show(new SearchFriends_Form());
