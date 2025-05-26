@@ -214,4 +214,54 @@ public class ParticipantDAO implements DAOInterface<Participant> {
         }
         return participants;
     }
+
+    public List<Participant> selectByUserID(String userId) {
+        List<Participant> participants = new ArrayList<>();
+        Session session = null;
+        Transaction tx = null;
+
+        try {
+            SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+            session = sessionFactory.openSession();
+            tx = session.beginTransaction();
+
+            String hql = "from Participant p where p.user.userID = :userId";
+            Query query = session.createQuery(hql);
+            query.setParameter("userId", userId);
+            participants = query.getResultList();
+
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            if (session != null) session.close();
+        }
+        return participants;
+    }
+
+    public long countParticipantsByConversationID(String conversationId) {
+        long count = 0;
+        Session session = null;
+        Transaction tx = null;
+
+        try {
+            SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+            session = sessionFactory.openSession();
+            tx = session.beginTransaction();
+
+            String hql = "select count(*) from Participant p where p.conversation.conversationID = :conversationId";
+            Query query = session.createQuery(hql);
+            query.setParameter("conversationId", conversationId);
+            count = (Long) query.getSingleResult();
+
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            if (session != null) session.close();
+        }
+        return count;
+    }
 }

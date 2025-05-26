@@ -70,11 +70,14 @@ public class Menu_Left extends javax.swing.JPanel {
             refreshMenuList();
             return;
         }
-        List<Participant> adminParticipants = participantDAO.selectByUserIDAndRole(currentUser.getUserID(), "admin");
-        for (Participant participant : adminParticipants) {
+        List<Participant> participants = participantDAO.selectByUserID(currentUser.getUserID());
+        for (Participant participant : participants) {
             Conversation conversation = conversationDAO.selectById(participant.getConversation().getConversationID());
             if (conversation != null) {
-                menuList.add(new Item_Group(conversation, participant), "wrap"); // Truyền participant vào Item_Group
+                long participantCount = participantDAO.countParticipantsByConversationID(conversation.getConversationID());
+                if (participantCount >= 3) {
+                    menuList.add(new Item_Group(conversation, participant), "wrap");
+                }
             }
         }
         refreshMenuList();

@@ -60,16 +60,13 @@ public class Chat extends javax.swing.JPanel {
         eventChat = new EventChat() {
             @Override
             public void sendMessage(String text) {
-                System.out.println("sendMessage called with text: " + text);
                 if (currentUser != null) {
                     Chat_Body chatBody = chatBodyMap.get(currentUser);
                     if (chatBody != null) {
                         // Hiển thị tin nhắn của mình ngay lập tức bên phải
                         chatBody.addItemRight(text);
 
-                        Participant participant = (new ParticipantDAO()).selectParticipantOneByTwoUser(
-                                SessionManagement.getInstance().getLoginSession().getUser(),
-                                currentUser);
+                        Participant participant = (new ParticipantDAO()).selectByUserIDAndConversationID(SessionManagement.getInstance().getLoginSession().getUser().getUserID(), currentConversation.getConversationID());
 
                         Message message = new Message(participant, text.getBytes(),
                                 new Date(System.currentTimeMillis()), "text");
@@ -178,7 +175,7 @@ public class Chat extends javax.swing.JPanel {
             public void selectUser(User user) {
                 System.out.println("\n=== Selecting User ===");
                 System.out.println("Selecting user: " + user.getUserName());
-                
+
                 currentUser = user;
                 chatTitle.setName(user.getUserName());
                 if ("ACTIVE".equalsIgnoreCase(user.getStatus())) {
@@ -227,9 +224,17 @@ public class Chat extends javax.swing.JPanel {
                 revalidate();
                 repaint();
                 setVisible(true);
-                
+
                 System.out.println("=== User Selection Complete ===\n");
                 PublicEvent.getInstance().getEventMenuRight().selectUser(user);
+
+                // Switch to Menu_Right
+                HomeChat homeChat = (HomeChat) SwingUtilities.getAncestorOfClass(HomeChat.class, Chat.this);
+                if (homeChat != null) {
+                    homeChat.showRightMenu(new Menu_Right());
+                } else {
+                    System.err.println("HomeChat ancestor not found!");
+                };
             }
 
             @Override
@@ -283,7 +288,7 @@ public class Chat extends javax.swing.JPanel {
                 System.out.println("=== Conversation Selection Complete ===\n");
                 PublicEvent.getInstance().getEventMenuRight().selectConversation(conversation, participant);
                 // Chuyển sang Menu_Right_Group
-                HomeChat homeChat = (HomeChat) SwingUtilities.getAncestorOfClass(HomeChat.class, Chat.this); // Sửa từ 'this' thành 'Chat.this'
+                HomeChat homeChat = (HomeChat) SwingUtilities.getAncestorOfClass(HomeChat.class, Chat.this);
                 if (homeChat != null) {
                     homeChat.showRightMenu(new Menu_Right_Group());
                 } else {
