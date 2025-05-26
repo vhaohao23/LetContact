@@ -105,7 +105,11 @@ public class ChatMain extends javax.swing.JFrame {
                 if (index == 0){
                     main.show(new ChatSection_Form());
                 } else if (index == 1){
-                    main.show(new MessageWaiting_Form());
+                    if (currentUser != null) {
+                        main.show(new MessageWaiting_Form(currentUser));
+                    } else {
+                        JOptionPane.showMessageDialog(ChatMain.this, "User session is not available. Please log in again.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
                 } else if (index == 4){
                     main.show(new ListFriends_Form());
                 } else if (index == 5){
@@ -140,11 +144,7 @@ public class ChatMain extends javax.swing.JFrame {
         currentUser = SessionManagement.getInstance().getLoginSession().getUser();
         if (currentUser == null) {
             System.out.println("Warning: currentUser is null. Session may not be initialized.");
-            // Có thể hiển thị thông báo hoặc tự động điều hướng đến trang login
             JOptionPane.showMessageDialog(this, "Session expired. Please log in again.", "Session Error", JOptionPane.ERROR_MESSAGE);
-            // Ví dụ: Điều hướng đến trang login (tùy thuộc vào logic của bạn)
-            // dispose(); // Đóng cửa sổ hiện tại
-            // new LoginForm().setVisible(true);
         } else {
             UserDAO userDAO = new UserDAO();
             List<User> friends = userDAO.selectFriend(currentUser);

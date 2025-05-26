@@ -116,29 +116,30 @@ public class Item_Search extends javax.swing.JPanel {
     private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
         // TODO add your handling code here:
         RelationshipDAO relationshipDAO = new RelationshipDAO();
-        // Tạo 2 bản ghi relationship
+        // Bản ghi 1: currentUser là UserID1, targetUser là UserID2, trạng thái "accepted"
         Relationship relationship1 = new Relationship();
         relationship1.setUser1(currentUser);
         relationship1.setUser2(targetUser);
         relationship1.setrStatus("accepted");
 
+        // Bản ghi 2: targetUser là UserID1, currentUser là UserID2, trạng thái "waiting"
         Relationship relationship2 = new Relationship();
         relationship2.setUser1(targetUser);
         relationship2.setUser2(currentUser);
-        relationship2.setrStatus("accepted");
+        relationship2.setrStatus("waiting");
 
         // Lưu vào cơ sở dữ liệu
         boolean success1 = relationshipDAO.insert(relationship1);
         boolean success2 = relationshipDAO.insert(relationship2);
 
         if (success1 && success2) {
-            JOptionPane.showMessageDialog(this, "Friend added successfully!");
-            // Xóa Item_Search khỏi danh sách sau khi thêm bạn
+            JOptionPane.showMessageDialog(this, "Friend request sent successfully!");
+            // Xóa Item_Search khỏi danh sách sau khi thêm
             SwingUtilities.getAncestorOfClass(JLayeredPane.class, this).remove(this);
             SwingUtilities.getAncestorOfClass(JLayeredPane.class, this).revalidate();
             SwingUtilities.getAncestorOfClass(JLayeredPane.class, this).repaint();
         } else {
-            JOptionPane.showMessageDialog(this, "Failed to add friend.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Failed to send friend request.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_button1ActionPerformed
 

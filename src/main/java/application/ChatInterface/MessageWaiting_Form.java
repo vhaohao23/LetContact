@@ -4,28 +4,51 @@ package application.ChatInterface;
 import application.AdminPart.ScrollBar;
 import application.ChatInterface.form.Item_People;
 import application.ChatInterface.form.Item_Stranger;
+import application.dao.RelationshipDAO;
+import application.dao.UserDAO;
+import application.model.Relationship;
+import application.model.User;
 import net.miginfocom.swing.MigLayout;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class MessageWaiting_Form extends javax.swing.JLayeredPane {
 
-    
-    public MessageWaiting_Form() {
+    private User currentUser;
+
+    public MessageWaiting_Form(User currentUser) {
+        if (currentUser == null) {
+            throw new IllegalArgumentException("Current user cannot be null");
+        }
+        this.currentUser = currentUser;
         initComponents();
         init();
     }
     
     private void init(){
         sp.setVerticalScrollBar(new ScrollBar());
-        menuList.setLayout(new MigLayout("filly", "2[]4", "fill"));
+        menuList.setLayout(new MigLayout("fillx, wrap 2", "[center]10[center]", "[]10[]"));
         showPeople();
     }
     private void showPeople() {
-    for (int i = 0; i < 20; i++) {
-        int row = i / 2; 
-        int col = i % 2; 
-        menuList.add(new Item_Stranger("Stranger " + i, "dd/mm/yy", "gender"), String.format("cell %d %d, grow", col, row));
-    }
+        RelationshipDAO relationshipDAO = new RelationshipDAO();
+        UserDAO userDAO = new UserDAO();
+        List<Relationship> relationships = relationshipDAO.getAll();
+
+        List<Relationship> waitingRelationships = relationships.stream()
+                .filter(r -> r.getUser1().getUserID().equals(currentUser.getUserID()))
+                .filter(r -> r.getrStatus().equals("waiting"))
+                .collect(Collectors.toList());
+
+        menuList.removeAll();
+        for (Relationship r : waitingRelationships) {
+            User targetUser = r.getUser2(); // UserID2 là user gửi lời mời
+            menuList.add(new Item_Stranger(currentUser, targetUser));
+        }
+        menuList.revalidate();
+        menuList.repaint();
 }
 
     

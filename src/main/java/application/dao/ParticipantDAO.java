@@ -58,23 +58,22 @@ public class ParticipantDAO implements DAOInterface<Participant> {
     }
 
     @Override
-    public boolean insert(Participant Participant) {
-        boolean rs=false;
+    public boolean insert(Participant participant) {
+        boolean rs = false;
 
-        try{
-            SessionFactory sessionFactory= HibernateUtil.getSessionFactory();
+        try {
+            SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
             if (sessionFactory != null) {
-                Session session=sessionFactory.openSession();
-                Transaction tx=session.beginTransaction();
+                Session session = sessionFactory.openSession();
+                Transaction tx = session.beginTransaction();
 
-                session.save(Participant);
+                session.save(participant);
 
                 tx.commit();
                 session.close();
-                rs=true;
+                rs = true;
             }
-
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return rs;
