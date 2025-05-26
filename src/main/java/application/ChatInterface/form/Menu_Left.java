@@ -2,8 +2,11 @@
 package application.ChatInterface.form;
 
 import application.AdminPart.ScrollBar;
+import application.dao.RelationshipDAO;
 import application.dao.UserDAO;
+import application.model.Relationship;
 import application.model.User;
+import application.session_management.SessionManagement;
 import net.miginfocom.swing.MigLayout;
 
 import java.util.List;
@@ -12,9 +15,11 @@ import java.util.List;
 public class Menu_Left extends javax.swing.JPanel {
 
     private UserDAO userDAO;
+    private RelationshipDAO relationshipDAO;
 
     public Menu_Left() {
         userDAO = new UserDAO();
+        relationshipDAO = new RelationshipDAO();
         initComponents();
         init();
     }
@@ -24,11 +29,27 @@ public class Menu_Left extends javax.swing.JPanel {
         menuList.setLayout(new MigLayout("fillx","0[]0", "0[]2"));
         showPeople();
     }
-    private void showPeople(){
+    private void showPeople() {
         menuList.removeAll();
-        List<User> users = userDAO.getAll();
-        for (User user : users) {
-            menuList.add(new Item_People(user), "wrap"); // Thêm Item_People với thông tin user
+        User currentUser = SessionManagement.getInstance().getLoginSession().getUser();
+        if (currentUser == null || currentUser.getUserName() == null) {
+            System.err.println("No logged-in user found. Cannot load relationships.");
+            refreshMenuList();
+            return;
+        }
+
+        String currentUserName = currentUser.getUserName();
+        // Get all relationships for the current user
+        List<Relationship> relationships = relationshipDAO.selectByUserName(currentUserName);
+
+        // Filter relationships where the current user is UserID1 and R_Status is "accepted"
+        for (Relationship relationship : relationships) {
+            if (relationship.getUser1().getUserName().equals(currentUserName) && "accepted".equals(relationship.getrStatus())) {
+                User otherUser = relationship.getUser2();
+                if (otherUser != null) {
+                    menuList.add(new Item_People(otherUser), "wrap");
+                }
+            }
         }
         refreshMenuList();
     }

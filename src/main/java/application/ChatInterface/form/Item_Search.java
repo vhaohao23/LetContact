@@ -2,19 +2,49 @@
 package application.ChatInterface.form;
 
 
+import application.dao.RelationshipDAO;
+import application.model.Relationship;
+import application.model.User;
 import application.raven.swing.Button;
 import application.raven.swing.ImageAvatar;
 
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+
 public class Item_Search extends javax.swing.JPanel {
 
-    
-    public Item_Search(String name, String dob, String gender) {
+    private User currentUser;
+    private User targetUser;
+
+    public Item_Search(User currentUser, User targetUser) {
+        this.currentUser = currentUser;
+        this.targetUser = targetUser;
         initComponents();
-        lbuserName.setText(name);
-        lbdob.setText(dob);
-        lbgender.setText(gender);
+        lbuserName.setText(targetUser.getUserName());
+        lbdob.setText(targetUser.getDob() != null ? targetUser.getDob().toString() : "N/A");
+        lbgender.setText(targetUser.getGender() != null ? targetUser.getGender() : "N/A");
+        setAvatarImage(targetUser.getAvatar());
     }
 
+    private void setAvatarImage(byte[] avatar) {
+        if (avatar != null && avatar.length > 0) {
+            try {
+                ByteArrayInputStream bais = new ByteArrayInputStream(avatar);
+                BufferedImage img = ImageIO.read(bais);
+                Image scaledImg = img.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+                imageAvatar.setIcon(new ImageIcon(scaledImg));
+            } catch (IOException e) {
+                e.printStackTrace();
+                imageAvatar.setIcon(new ImageIcon(getClass().getResource("/application/AdminImage/AccountIcon.png")));
+            }
+        } else {
+            imageAvatar.setIcon(new ImageIcon(getClass().getResource("/application/AdminImage/AccountIcon.png")));
+        }
+    }
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -85,6 +115,32 @@ public class Item_Search extends javax.swing.JPanel {
 
     private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
         // TODO add your handling code here:
+        RelationshipDAO relationshipDAO = new RelationshipDAO();
+        // Bản ghi 1: currentUser là UserID1, targetUser là UserID2, trạng thái "accepted"
+        Relationship relationship1 = new Relationship();
+        relationship1.setUser1(currentUser);
+        relationship1.setUser2(targetUser);
+        relationship1.setrStatus("accepted");
+
+        // Bản ghi 2: targetUser là UserID1, currentUser là UserID2, trạng thái "waiting"
+        Relationship relationship2 = new Relationship();
+        relationship2.setUser1(targetUser);
+        relationship2.setUser2(currentUser);
+        relationship2.setrStatus("waiting");
+
+        // Lưu vào cơ sở dữ liệu
+        boolean success1 = relationshipDAO.insert(relationship1);
+        boolean success2 = relationshipDAO.insert(relationship2);
+
+        if (success1 && success2) {
+            JOptionPane.showMessageDialog(this, "Friend request sent successfully!");
+            // Xóa Item_Search khỏi danh sách sau khi thêm
+            SwingUtilities.getAncestorOfClass(JLayeredPane.class, this).remove(this);
+            SwingUtilities.getAncestorOfClass(JLayeredPane.class, this).revalidate();
+            SwingUtilities.getAncestorOfClass(JLayeredPane.class, this).repaint();
+        } else {
+            JOptionPane.showMessageDialog(this, "Failed to send friend request.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_button1ActionPerformed
 
 

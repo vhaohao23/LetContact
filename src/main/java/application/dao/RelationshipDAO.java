@@ -78,6 +78,35 @@ public class RelationshipDAO implements DAOInterface<Relationship> {
         return rs;
     }
 
+    public boolean update(Relationship relationship, String status) {
+        boolean rs = false;
+        try {
+            SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+            Session session = sessionFactory.openSession();
+            Transaction tx = session.beginTransaction();
+
+            // Tìm bản ghi dựa trên UserID1 và UserID2
+            String hql = "from Relationship r where (r.user1 = :user1 and r.user2 = :user2) or (r.user1 = :user2 and r.user2 = :user1)";
+            Query query = session.createQuery(hql);
+            query.setParameter("user1", relationship.getUser1());
+            query.setParameter("user2", relationship.getUser2());
+            List<Relationship> results = query.getResultList();
+
+            if (!results.isEmpty()) {
+                for (Relationship r : results) {
+                    r.setrStatus(status);
+                    session.update(r);
+                }
+                tx.commit();
+                session.close();
+                rs = true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rs;
+    }
+
     @Override
     public boolean update(Relationship Relationship) {
         boolean rs=false;
@@ -119,22 +148,21 @@ public class RelationshipDAO implements DAOInterface<Relationship> {
     }
 
     public List<Relationship> selectByUserName(String userName) {
-        List<Relationship> rss=null;
+        List<Relationship> rss = new ArrayList<>();
 
-        try{
-            SessionFactory sessionFactory= HibernateUtil.getSessionFactory();
-            Session session=sessionFactory.openSession();
-            Transaction tx=session.beginTransaction();
+        try {
+            SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+            Session session = sessionFactory.openSession();
+            Transaction tx = session.beginTransaction();
 
-            String hql="from Relationship u where u.user1 =:userName or  u.user2=:userName";
-            Query query=session.createQuery(hql);
+            String hql = "from Relationship u where u.user1.userName = :userName or u.user2.userName = :userName";
+            Query query = session.createQuery(hql);
             query.setParameter("userName", userName);
-            query.setParameter("userName", userName);
-            rss= query.getResultList();
+            rss = query.getResultList();
 
             tx.commit();
             session.close();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return rss;

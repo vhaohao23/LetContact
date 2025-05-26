@@ -14,9 +14,7 @@ import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
-import javax.swing.Icon;
-import javax.swing.JLayeredPane;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
 import application.ChatInterface.form.Setting_Frame;
 import application.Main;
@@ -40,6 +38,7 @@ public class ChatMain extends javax.swing.JFrame {
     private final MainForm main;
     private final MenuLayout menu;
     private final Animator animator;
+    private User currentUser;
     
     public ChatMain() {
         initComponents();
@@ -113,24 +112,29 @@ public class ChatMain extends javax.swing.JFrame {
                 if (index == 0){
                     main.show(new ChatSection_Form());
                 } else if (index == 1){
-                    main.show(new MessageWaiting_Form());
-                }else if (index == 2){
-                    System.out.println("index 2");
-                    Platform.runLater(()->{
-                        MainApplicationSession.stage.show();
-                    });
-                }
-                else if (index == 4){
+                    if (currentUser != null) {
+                        main.show(new MessageWaiting_Form(currentUser));
+                    } else {
+                        JOptionPane.showMessageDialog(ChatMain.this, "User session is not available. Please log in again.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                } else if (index == 4){
                     main.show(new ListFriends_Form());
                 } else if (index == 5){
-                    main.show(new SearchFriends_Form());
+                    if (currentUser != null) {
+                        main.show(new SearchFriends_Form(currentUser));
+                    } else {
+                        JOptionPane.showMessageDialog(ChatMain.this, "User session is not available. Please log in again.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
                 } else if (index == 7){
                     main.show(new RestrictedAccount_Form());
                 } else if (index == 8){
                     main.show(new ReportAccount_Form());
                 } else if (index == 9){
-                    User currentUser = SessionManagement.getInstance().getLoginSession().getUser();
-                    new Setting_Frame(currentUser).setVisible(true);
+                    if (currentUser != null) {
+                        new Setting_Frame(currentUser).setVisible(true);
+                    } else {
+                        JOptionPane.showMessageDialog(ChatMain.this, "User session is not available. Please log in again.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
                 } else if (index == 10){
                     setVisible(false);
                 }
@@ -144,12 +148,14 @@ public class ChatMain extends javax.swing.JFrame {
         setIconImage(img);
         setTitle("KHchat");
 
-        User currentUser = SessionManagement.getInstance().getLoginSession().getUser();
-        if (currentUser != null) {
+        currentUser = SessionManagement.getInstance().getLoginSession().getUser();
+        if (currentUser == null) {
+            System.out.println("Warning: currentUser is null. Session may not be initialized.");
+            JOptionPane.showMessageDialog(this, "Session expired. Please log in again.", "Session Error", JOptionPane.ERROR_MESSAGE);
+        } else {
             UserDAO userDAO = new UserDAO();
             List<User> friends = userDAO.selectFriend(currentUser);
             System.out.println("User: " + currentUser.getUserName() + ", Friends: " + friends.size());
-            friends.size();
             menu.getMenu().repaint();
         }
     }
