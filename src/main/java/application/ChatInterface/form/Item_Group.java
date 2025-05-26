@@ -3,6 +3,7 @@ package application.ChatInterface.form;
 
 import application.model.Conversation;
 
+import javax.swing.*;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -18,6 +19,24 @@ public class Item_Group extends javax.swing.JPanel {
         if (conversation != null) {
             lb.setText(conversation.getNameGroup());
             lbStatus.setText(conversation.getType());
+            String theme = conversation.getTheme();
+            String avatarPath;
+            switch (theme != null ? theme.toLowerCase() : "default") {
+                case "bff":
+                    avatarPath = "/application/AdminImage/bff.jpg";
+                    break;
+                case "love":
+                    avatarPath = "/application/AdminImage/love.jpg";
+                    break;
+                case "family":
+                    avatarPath = "/application/AdminImage/family.jpg";
+                    break;
+                case "default":
+                default:
+                    avatarPath = "/application/AdminImage/normal.jpg";
+                    break;
+            }
+            imageAvatar1.setIcon(new ImageIcon(getClass().getResource(avatarPath)));
         }
         init();
     }
@@ -36,8 +55,6 @@ public class Item_Group extends javax.swing.JPanel {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                // Thêm logic khi click vào Item_Group nếu cần (ví dụ: mở chat nhóm)
-                System.out.println("Selected group: " + conversation.getNameGroup());
             }
         });
     }
