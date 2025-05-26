@@ -3,29 +3,57 @@ package application.ChatInterface;
 
 import application.AdminPart.ScrollBar;
 import application.ChatInterface.form.Item_Search;
+import application.dao.RelationshipDAO;
+import application.dao.UserDAO;
+import application.model.Relationship;
+import application.model.User;
 import application.raven.swing.Button;
 import net.miginfocom.swing.MigLayout;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class SearchFriends_Form extends javax.swing.JLayeredPane {
 
-    
-    public SearchFriends_Form() {
+    private User currentUser;
+
+    public SearchFriends_Form(User currentUser) {
+        this.currentUser = currentUser;
         initComponents();
         init();
     }
     
     private void init(){
         sp.setVerticalScrollBar(new ScrollBar());
-        menuList.setLayout(new MigLayout("filly", "2[]4", "fill"));
+        menuList.setLayout(new MigLayout("fillx, wrap 5", "[center]10[center]10[center]10[center]10[center]", "[]10[]"));
         showPeople();
     }
     private void showPeople() {
-    for (int i = 0; i < 20; i++) {
-        int row = i / 5; 
-        int col = i % 5; 
-        menuList.add(new Item_Search("Stranger " + i, "dd/mm/yy", "gender"), String.format("cell %d %d, grow", col, row));
-    }
+        UserDAO userDAO = new UserDAO();
+        RelationshipDAO relationshipDAO = new RelationshipDAO();
+        List<User> allUsers = userDAO.getAll();
+        List<Relationship> relationships = relationshipDAO.getAll();
+
+        // Lọc danh sách user chưa có 2 bản ghi relationship với trạng thái "accepted"
+        List<User> nonFriends = allUsers.stream()
+                .filter(user -> !user.getUserID().equals(currentUser.getUserID())) // So sánh userID để loại bỏ currentUser
+                .filter(user -> {
+                    long acceptedCount = relationships.stream()
+                            .filter(r -> r.getrStatus().equals("accepted") &&
+                                    ((r.getUser1().getUserID().equals(currentUser.getUserID()) && r.getUser2().getUserID().equals(user.getUserID())) ||
+                                            (r.getUser1().getUserID().equals(user.getUserID()) && r.getUser2().getUserID().equals(currentUser.getUserID()))))
+                            .count();
+                    return acceptedCount < 2;
+                })
+                .collect(Collectors.toList());
+
+        menuList.removeAll();
+        for (User user : nonFriends) {
+            menuList.add(new Item_Search(currentUser, user)); // Tự động căn chỉnh theo wrap 5
+        }
+        menuList.revalidate();
+        menuList.repaint();
 }
 
     
