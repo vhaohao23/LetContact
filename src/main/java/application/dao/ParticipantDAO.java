@@ -188,4 +188,30 @@ public class ParticipantDAO implements DAOInterface<Participant> {
         }
         return rs;
     }
+
+    public List<Participant> selectByUserIDAndRole(String userId, String role) {
+        List<Participant> participants = new ArrayList<>();
+        Session session = null;
+        Transaction tx = null;
+
+        try {
+            SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+            session = sessionFactory.openSession();
+            tx = session.beginTransaction();
+
+            String hql = "from Participant p where p.user.userID = :userId and p.role = :role";
+            Query query = session.createQuery(hql);
+            query.setParameter("userId", userId);
+            query.setParameter("role", role);
+            participants = query.getResultList();
+
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            if (session != null) session.close();
+        }
+        return participants;
+    }
 }

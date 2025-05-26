@@ -183,4 +183,29 @@ public class UserDAO implements DAOInterface<User> {
         }
         return rss;
     }
+
+    public List<User> selectByUsernameLike(String usernamePattern) {
+        List<User> users = new ArrayList<>();
+        Session session = null;
+        Transaction tx = null;
+
+        try {
+            SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+            session = sessionFactory.openSession();
+            tx = session.beginTransaction();
+
+            String hql = "from User u where lower(u.userName) like :pattern";
+            Query query = session.createQuery(hql);
+            query.setParameter("pattern", "%" + usernamePattern.toLowerCase() + "%");
+            users = query.getResultList();
+
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            if (session != null) session.close();
+        }
+        return users;
+    }
 }

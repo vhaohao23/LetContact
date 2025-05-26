@@ -1,6 +1,8 @@
 
 package application.ChatInterface.form;
 
+import application.model.Conversation;
+
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -8,15 +10,20 @@ import java.awt.event.MouseEvent;
 
 public class Item_Group extends javax.swing.JPanel {
 
-    
-    public Item_Group(String name) {
+    private Conversation conversation;
+
+    public Item_Group(Conversation conversation) {
+        this.conversation = conversation;
         initComponents();
-        lb.setText(name);
+        if (conversation != null) {
+            lb.setText(conversation.getNameGroup());
+            lbStatus.setText(conversation.getType());
+        }
         init();
     }
 
     private void init(){
-        addMouseListener(new MouseAdapter(){
+        addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
                 setBackground(new Color(163, 192, 230));
@@ -24,7 +31,13 @@ public class Item_Group extends javax.swing.JPanel {
 
             @Override
             public void mouseExited(MouseEvent e) {
-                setBackground(new Color(243,249,255));
+                setBackground(new Color(243, 249, 255));
+            }
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // Thêm logic khi click vào Item_Group nếu cần (ví dụ: mở chat nhóm)
+                System.out.println("Selected group: " + conversation.getNameGroup());
             }
         });
     }
@@ -40,7 +53,7 @@ public class Item_Group extends javax.swing.JPanel {
         setBackground(new java.awt.Color(255, 255, 255));
 
         imageAvatar1.setForeground(new java.awt.Color(0, 0, 153));
-        imageAvatar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/AdminImage/avatar.png"))); // NOI18N
+        imageAvatar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/application/AdminImage/avatar.png"))); // NOI18N
 
         lb.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lb.setText("Group's Name");

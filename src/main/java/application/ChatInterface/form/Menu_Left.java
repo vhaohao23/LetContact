@@ -4,8 +4,12 @@ package application.ChatInterface.form;
 import application.AdminPart.ScrollBar;
 import javax.swing.JLayeredPane;
 
+import application.dao.ConversationDAO;
+import application.dao.ParticipantDAO;
 import application.dao.RelationshipDAO;
 import application.dao.UserDAO;
+import application.model.Conversation;
+import application.model.Participant;
 import application.model.Relationship;
 import application.model.User;
 import application.session_management.SessionManagement;
@@ -18,8 +22,12 @@ public class Menu_Left extends javax.swing.JPanel {
 
     private UserDAO userDAO;
     private RelationshipDAO relationshipDAO;
+    private ConversationDAO conversationDAO = new ConversationDAO();
+    private ParticipantDAO participantDAO = new ParticipantDAO();
+    private HomeChat homeChat;
 
-    public Menu_Left() {
+    public Menu_Left(HomeChat homeChat) {
+        this.homeChat = homeChat;
         userDAO = new UserDAO();
         relationshipDAO = new RelationshipDAO();
         initComponents();
@@ -41,10 +49,8 @@ public class Menu_Left extends javax.swing.JPanel {
         }
 
         String currentUserName = currentUser.getUserName();
-        // Get all relationships for the current user
         List<Relationship> relationships = relationshipDAO.selectByUserName(currentUserName);
 
-        // Filter relationships where the current user is UserID1 and R_Status is "accepted"
         for (Relationship relationship : relationships) {
             if (relationship.getUser1().getUserName().equals(currentUserName) && "accepted".equals(relationship.getrStatus())) {
                 User otherUser = relationship.getUser2();
@@ -58,8 +64,18 @@ public class Menu_Left extends javax.swing.JPanel {
 
     private void showGroup(){
         menuList.removeAll();
-        for (int i = 0; i<10; i++){
-            menuList.add(new Item_People(null), "wrap");
+        User currentUser = SessionManagement.getInstance().getLoginSession().getUser();
+        if (currentUser == null || currentUser.getUserID() == null) {
+            System.err.println("No logged-in user found. Cannot load groups.");
+            refreshMenuList();
+            return;
+        }
+        List<Participant> adminParticipants = participantDAO.selectByUserIDAndRole(currentUser.getUserID(), "admin");
+        for (Participant participant : adminParticipants) {
+            Conversation conversation = conversationDAO.selectById(participant.getConversation().getConversationID());
+            if (conversation != null) {
+                menuList.add(new Item_Group(conversation), "wrap");
+            }
         }
         refreshMenuList();
     }
@@ -84,8 +100,8 @@ public class Menu_Left extends javax.swing.JPanel {
         menu.setBackground(new java.awt.Color(255, 255, 255));
         menu.setLayout(new java.awt.GridLayout(1, 2));
 
-        menuMessage.setIconSelected(new javax.swing.ImageIcon(getClass().getResource("/AdminImage/icons8-chat-32color.png"))); // NOI18N
-        menuMessage.setIconSimple(new javax.swing.ImageIcon(getClass().getResource("/AdminImage/icons8-chat-32.png"))); // NOI18N
+        menuMessage.setIconSelected(new javax.swing.ImageIcon(getClass().getResource("/application/AdminImage/icons8-chat-32color.png"))); // NOI18N
+        menuMessage.setIconSimple(new javax.swing.ImageIcon(getClass().getResource("/application/AdminImage/icons8-chat-32.png"))); // NOI18N
         menuMessage.setSelected(true);
         menuMessage.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -94,9 +110,9 @@ public class Menu_Left extends javax.swing.JPanel {
         });
         menu.add(menuMessage);
 
-        menuGroup.setIcon(new javax.swing.ImageIcon(getClass().getResource("/AdminImage/icons8-group-32.png"))); // NOI18N
-        menuGroup.setIconSelected(new javax.swing.ImageIcon(getClass().getResource("/AdminImage/icons8-group-32color.png"))); // NOI18N
-        menuGroup.setIconSimple(new javax.swing.ImageIcon(getClass().getResource("/AdminImage/icons8-group-32.png"))); // NOI18N
+        menuGroup.setIcon(new javax.swing.ImageIcon(getClass().getResource("/application/AdminImage/icons8-group-32.png"))); // NOI18N
+        menuGroup.setIconSelected(new javax.swing.ImageIcon(getClass().getResource("/application/AdminImage/icons8-group-32color.png"))); // NOI18N
+        menuGroup.setIconSimple(new javax.swing.ImageIcon(getClass().getResource("/application/AdminImage/icons8-group-32.png"))); // NOI18N
         menuGroup.setOpaque(true);
         menuGroup.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -105,7 +121,7 @@ public class Menu_Left extends javax.swing.JPanel {
         });
         menu.add(menuGroup);
 
-        menuButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/AdminImage/create.png"))); // NOI18N
+        menuButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/application/AdminImage/create.png"))); // NOI18N
         menuButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuButton1ActionPerformed(evt);
@@ -167,7 +183,7 @@ public class Menu_Left extends javax.swing.JPanel {
 
     private void menuButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuButton1ActionPerformed
         // TODO add your handling code here:
-        setVisible(false);
+        homeChat.showMenu(new Menu_Left_Create_Group(homeChat));
     }//GEN-LAST:event_menuButton1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
