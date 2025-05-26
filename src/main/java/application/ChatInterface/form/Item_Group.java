@@ -1,7 +1,9 @@
 
 package application.ChatInterface.form;
 
+import application.ChatInterface.event.PublicEvent;
 import application.model.Conversation;
+import application.model.Participant;
 
 import javax.swing.*;
 import java.awt.Color;
@@ -12,9 +14,11 @@ import java.awt.event.MouseEvent;
 public class Item_Group extends javax.swing.JPanel {
 
     private Conversation conversation;
+    private Participant participant;
 
-    public Item_Group(Conversation conversation) {
+    public Item_Group(Conversation conversation, Participant participant) {
         this.conversation = conversation;
+        this.participant = participant;
         initComponents();
         if (conversation != null) {
             lb.setText(conversation.getNameGroup());
@@ -31,7 +35,8 @@ public class Item_Group extends javax.swing.JPanel {
                 case "family":
                     avatarPath = "/application/AdminImage/family.jpg";
                     break;
-                case "default":
+//                case "default":
+//                    avatarPath = "/application/AdminImage/normal.jpg";
                 default:
                     avatarPath = "/application/AdminImage/normal.jpg";
                     break;
@@ -39,6 +44,10 @@ public class Item_Group extends javax.swing.JPanel {
             imageAvatar1.setIcon(new ImageIcon(getClass().getResource(avatarPath)));
         }
         init();
+    }
+
+    public Conversation getConversation() {
+        return conversation;
     }
 
     private void init(){
@@ -55,6 +64,8 @@ public class Item_Group extends javax.swing.JPanel {
 
             @Override
             public void mouseClicked(MouseEvent e) {
+                PublicEvent.getInstance().getEventMenuLeft().selectConversation(conversation, participant);
+                PublicEvent.getInstance().getEventMenuRight().selectConversation(conversation, participant);
             }
         });
     }

@@ -1,11 +1,61 @@
 
 package application.ChatInterface.form;
 
+import application.ChatInterface.event.EventMenuRight;
+import application.ChatInterface.event.PublicEvent;
+import application.model.Conversation;
+import application.model.Participant;
+import application.model.User;
+
+import javax.swing.*;
+
 public class Menu_Right_Group extends javax.swing.JPanel {
 
+    private Conversation conversation;
+
     public Menu_Right_Group() {
+        this.conversation = conversation;
         initComponents();
-        
+        init();
+        setVisible(false);
+    }
+
+    private void init() {
+        PublicEvent.getInstance().addEventMenuRight(new EventMenuRight() {
+            @Override
+            public void selectUser(User user) {
+
+            }
+
+            @Override
+            public void selectConversation(Conversation conversation, Participant participant) {
+                if (conversation != null) {
+                    Menu_Right_Group.this.conversation = conversation;
+                    jLabel4.setText(conversation.getNameGroup()); // Hiển thị NameGroup
+                    String theme = conversation.getTheme();
+                    String avatarPath;
+                    switch (theme != null ? theme.toLowerCase() : "default") {
+                        case "bff":
+                            avatarPath = "/application/AdminImage/bff.jpg";
+                            break;
+                        case "love":
+                            avatarPath = "/application/AdminImage/love.jpg";
+                            break;
+                        case "family":
+                            avatarPath = "/application/AdminImage/family.jpg";
+                            break;
+                        case "default":
+                        default:
+                            avatarPath = "/application/AdminImage/normal.jpg";
+                            break;
+                    }
+                    imageAvatar1.setIcon(new ImageIcon(getClass().getResource(avatarPath)));
+                    setVisible(true); // Hiển thị panel
+                    revalidate();
+                    repaint();
+                }
+            }
+        });
     }
 
     @SuppressWarnings("unchecked")

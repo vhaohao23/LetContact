@@ -74,7 +74,7 @@ public class Menu_Left extends javax.swing.JPanel {
         for (Participant participant : adminParticipants) {
             Conversation conversation = conversationDAO.selectById(participant.getConversation().getConversationID());
             if (conversation != null) {
-                menuList.add(new Item_Group(conversation), "wrap");
+                menuList.add(new Item_Group(conversation, participant), "wrap"); // Truyền participant vào Item_Group
             }
         }
         refreshMenuList();

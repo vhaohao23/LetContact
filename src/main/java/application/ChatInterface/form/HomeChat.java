@@ -9,6 +9,7 @@ import javax.swing.*;
 public class HomeChat extends javax.swing.JLayeredPane {
 
     private JPanel currentMenuPanel;
+    private JPanel currentRightMenuPanel;
 
     public HomeChat() {
         initComponents();
@@ -17,16 +18,25 @@ public class HomeChat extends javax.swing.JLayeredPane {
 
     private void init(){
         setLayout(new MigLayout("fillx, filly", "0[300!]0[fill, 100%]0[300!]0", "0[fill]0"));
-        currentMenuPanel = new Menu_Left(this); // Khởi tạo với Menu_Left
+        currentMenuPanel = new Menu_Left(this);
+        currentRightMenuPanel = new Menu_Right(); // Khởi tạo với Menu_Right
         this.add(currentMenuPanel);
         this.add(ChatSession.getInstance().getChat());
-        this.add(new Menu_Right());
+        this.add(currentRightMenuPanel);
     }
 
     public void showMenu(JPanel newMenu) {
-        this.remove(currentMenuPanel); // Xóa panel hiện tại
-        currentMenuPanel = newMenu; // Cập nhật panel mới
-        this.add(currentMenuPanel, 0); // Thêm panel mới vào vị trí đầu tiên
+        this.remove(currentMenuPanel);
+        currentMenuPanel = newMenu;
+        this.add(currentMenuPanel, 0);
+        this.revalidate();
+        this.repaint();
+    }
+
+    public void showRightMenu(JPanel newRightMenu) {
+        this.remove(currentRightMenuPanel);
+        currentRightMenuPanel = newRightMenu;
+        this.add(currentRightMenuPanel, 2); // Thêm vào vị trí thứ 3 (sau Menu_Left và Chat)
         this.revalidate();
         this.repaint();
     }
