@@ -1,18 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.TilePane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="617.0" prefWidth="844.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.HomePageController">
+<AnchorPane prefHeight="848.0" prefWidth="1408.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.HomePageController">
    <children>
-      <StackPane fx:id="yourAvatarContainer" layoutX="692.0" layoutY="26.0" prefHeight="60.0" prefWidth="58.0">
+      <TilePane fx:id="tilePane" hgap="10" layoutX="99.0" layoutY="185.0" prefHeight="578.0" prefWidth="1265.0" vgap="10">
+      </TilePane>
+      <AnchorPane fx:id="userInfoContainer" layoutX="99.0" layoutY="28.0" prefHeight="89.0" prefWidth="432.0">
          <children>
-            <ImageView fx:id="yourAvatarImageView" fitHeight="70.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true" />
-         </children></StackPane>
-      <Label fx:id="yourUsername" layoutX="783.0" layoutY="44.0" text="Label" />
-      <VBox fx:id="friendList" layoutX="29.0" layoutY="107.0" prefHeight="477.0" prefWidth="214.0" />
+            <StackPane fx:id="yourAvatarContainer" layoutX="31.0" layoutY="14.0" prefHeight="60.0" prefWidth="58.0">
+               <children>
+                  <ImageView fx:id="yourAvatarImageView" fitHeight="70.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </StackPane>
+            <Label fx:id="yourUsername" layoutX="127.0" layoutY="25.0" text="Label" />
+         </children>
+      </AnchorPane>
+      <Line endX="-73.0" layoutX="644.0" layoutY="73.0" startX="-100.0" stroke="#4fc3ff" strokeWidth="3.0" />
+      <Line endX="-73.0" layoutX="683.0" layoutY="73.0" startX="-100.0" stroke="#4fc3ff" strokeWidth="3.0" />
+      <Line endX="-73.0" layoutX="720.0" layoutY="73.0" startX="-100.0" stroke="#4fc3ff" strokeWidth="3.0" />
+      <Line endX="-73.0" layoutX="757.0" layoutY="73.0" startX="-100.0" stroke="#4fc3ff" strokeWidth="3.0" />
+      <Line endX="-73.0" layoutX="793.0" layoutY="73.0" startX="-100.0" stroke="#4fc3ff" strokeWidth="3.0" />
+      <Label layoutX="738.0" layoutY="49.0" style="-fx-text-fill: #4FC3FF;" text="LetContact Calling">
+         <font>
+            <Font name="Eras Demi ITC" size="40.0" />
+         </font>
+      </Label>
+      <Line endX="-73.0" layoutX="1203.0" layoutY="74.0" startX="-100.0" stroke="#4fc3ff" strokeWidth="3.0" />
+      <Line endX="-73.0" layoutX="1242.0" layoutY="74.0" startX="-100.0" stroke="#4fc3ff" strokeWidth="3.0" />
+      <Line endX="-73.0" layoutX="1279.0" layoutY="74.0" startX="-100.0" stroke="#4fc3ff" strokeWidth="3.0" />
+      <Line endX="-73.0" layoutX="1316.0" layoutY="74.0" startX="-100.0" stroke="#4fc3ff" strokeWidth="3.0" />
+      <Line endX="-73.0" layoutX="1352.0" layoutY="74.0" startX="-100.0" stroke="#4fc3ff" strokeWidth="3.0" />
+      <ImageView fx:id="exitIcon" fitHeight="89.0" fitWidth="82.0" layoutX="1295.0" layoutY="33.0" onMouseClicked="#exitApplication" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../img/exit.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

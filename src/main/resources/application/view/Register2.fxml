@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
@@ -28,10 +29,10 @@
             <Label fx:id="lblLogin" layoutX="624.0" layoutY="510.0" onMouseClicked="#gotoLogin" text="Login" />
             <TextField fx:id="tfFirstName" layoutX="79.0" layoutY="146.0" prefHeight="42.0" prefWidth="266.0" promptText="First name" />
             <TextField fx:id="tfLastName" layoutX="397.0" layoutY="146.0" prefHeight="42.0" prefWidth="266.0" promptText="Last name" />
-            <TextField fx:id="tfGender" layoutX="395.0" layoutY="237.0" prefHeight="42.0" prefWidth="266.0" promptText="Gender" />
             <TextField fx:id="tfPhone" layoutX="79.0" layoutY="335.0" prefHeight="42.0" prefWidth="266.0" promptText="Phone" />
             <TextField fx:id="tfAddress" layoutX="397.0" layoutY="335.0" prefHeight="42.0" prefWidth="266.0" promptText="Address" />
             <DatePicker fx:id="dpDoB" layoutX="78.0" layoutY="237.0" prefHeight="42.0" prefWidth="266.0" promptText="Date of birth" />
+            <ComboBox fx:id="tfGender" editable="true" layoutX="397.0" layoutY="237.0" prefHeight="42.0" prefWidth="266.0" promptText="Gender" />
          </children>
       </AnchorPane>
    </children>

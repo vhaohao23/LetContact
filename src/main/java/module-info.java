@@ -23,4 +23,5 @@ module org.example.letcontact {
     exports application.ChatInterface;
     exports application.client;
     exports application.AdminPart;
+    exports application.model;
 }

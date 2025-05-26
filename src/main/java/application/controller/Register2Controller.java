@@ -3,6 +3,8 @@ package application.controller;
 import application.session_management.SessionManagement;
 import application.session_management.UserSession;
 import application.util.SwitchSceneUtil;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
@@ -24,12 +26,17 @@ public class Register2Controller {
     @FXML
     private DatePicker dpDoB;
     @FXML
-    private TextField tfGender;
+    private ComboBox tfGender;
     @FXML
     private TextField tfPhone;
     @FXML
     private TextField tfAddress;
 
+
+    public void initialize() {
+        ObservableList<String> list = FXCollections.observableArrayList("Male","Female","Other");
+        tfGender.setItems(list);
+    }
 
     public void gotoLogin(MouseEvent e) throws IOException {
         SwitchSceneUtil.switchScene("view/Login.fxml", e);
@@ -39,7 +46,7 @@ public class Register2Controller {
         UserSession.getInstance().getUser().setFirstName(tfFirstName.getText());
         UserSession.getInstance().getUser().setLastName(tfLastName.getText());
         UserSession.getInstance().getUser().setDob(Date.valueOf(dpDoB.getValue().toString()));
-        UserSession.getInstance().getUser().setGender(tfGender.getText());
+        UserSession.getInstance().getUser().setGender(tfGender.getSelectionModel().getSelectedItem().toString());
         UserSession.getInstance().getUser().setPhone(tfPhone.getText());
         UserSession.getInstance().getUser().setAddress(tfAddress.getText());
         SwitchSceneUtil.switchScene("view/Register3.fxml", e);

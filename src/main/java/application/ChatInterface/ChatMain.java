@@ -18,6 +18,7 @@ import javax.swing.*;
 
 import application.ChatInterface.form.Setting_Frame;
 import application.Main;
+import application.dao.LoginSessionDAO;
 import application.dao.UserDAO;
 import application.model.User;
 import application.session_management.MainApplicationSession;
@@ -136,7 +137,9 @@ public class ChatMain extends javax.swing.JFrame {
                         JOptionPane.showMessageDialog(ChatMain.this, "User session is not available. Please log in again.", "Error", JOptionPane.ERROR_MESSAGE);
                     }
                 } else if (index == 10){
-                    setVisible(false);
+                    (new LoginSessionDAO()).delete(SessionManagement.getInstance().getLoginSession());
+                    Platform.exit();
+                    System.exit(0);
                 }
             }
         });
