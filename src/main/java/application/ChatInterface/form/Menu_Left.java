@@ -1,4 +1,3 @@
-
 package application.ChatInterface.form;
 
 import application.AdminPart.ScrollBar;
@@ -62,21 +61,32 @@ public class Menu_Left extends javax.swing.JPanel {
         refreshMenuList();
     }
 
-    private void showGroup(){
+    private void showGroup() {
         menuList.removeAll();
         User currentUser = SessionManagement.getInstance().getLoginSession().getUser();
+        
         if (currentUser == null || currentUser.getUserID() == null) {
-            System.err.println("No logged-in user found. Cannot load groups.");
+            System.err.println("Không tìm thấy người dùng đăng nhập");
             refreshMenuList();
             return;
         }
-        List<Participant> adminParticipants = participantDAO.selectByUserIDAndRole(currentUser.getUserID(), "admin");
-        for (Participant participant : adminParticipants) {
-            Conversation conversation = conversationDAO.selectById(participant.getConversation().getConversationID());
-            if (conversation != null) {
-                menuList.add(new Item_Group(conversation, participant), "wrap"); // Truyền participant vào Item_Group
+
+        // Lấy danh sách các cuộc trò chuyện nhóm có nhiều hơn 3 thành viên
+        List<Conversation> groupConversations = participantDAO.getGroupConversationsForUser(currentUser.getUserID());
+        
+        for (Conversation conversation : groupConversations) {
+            // Lấy participant của người dùng hiện tại trong nhóm này
+            Participant userParticipant = participantDAO.selectByUserIDAndConversationID(
+                currentUser.getUserID(), 
+                conversation.getConversationID()
+            );
+            
+            if (userParticipant != null) {
+                Item_Group item = new Item_Group(conversation, userParticipant);
+                menuList.add(item, "wrap");
             }
         }
+        
         refreshMenuList();
     }
     

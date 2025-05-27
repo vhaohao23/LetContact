@@ -214,4 +214,48 @@ public class ParticipantDAO implements DAOInterface<Participant> {
         }
         return participants;
     }
+public int countParticipantsInConversation(String conversationId) {
+    try {
+        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+        Session session = sessionFactory.openSession();
+        
+        String hql = "SELECT COUNT(p) FROM Participant p WHERE p.conversation.conversationID = :cid";
+        Query query = session.createQuery(hql);
+        query.setParameter("cid", conversationId);
+        
+        Long count = (Long) query.getSingleResult();
+        session.close();
+        return count.intValue();
+    } catch (Exception e) {
+        e.printStackTrace();
+        return 0;
+    }
+}
+
+public List<Conversation> getGroupConversationsForUser(String userId) {
+    try {
+        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+        Session session = sessionFactory.openSession();
+        
+        String hql = "SELECT DISTINCT p.conversation FROM Participant p " +
+                    "WHERE p.conversation.type = 'group' " +
+                    "AND p.conversation.conversationID IN " +
+                    "(SELECT p2.conversation.conversationID FROM Participant p2 " +
+                    "GROUP BY p2.conversation.conversationID " +
+                    "HAVING COUNT(p2) > 3) " +
+                    "AND EXISTS (SELECT 1 FROM Participant p3 " +
+                    "WHERE p3.conversation = p.conversation " +
+                    "AND p3.user.userID = :userId)";
+        
+        Query query = session.createQuery(hql);
+        query.setParameter("userId", userId);
+        
+        List<Conversation> results = query.getResultList();
+        session.close();
+        return results;
+    } catch (Exception e) {
+        e.printStackTrace();
+        return new ArrayList<>();
+    }
+}
 }
