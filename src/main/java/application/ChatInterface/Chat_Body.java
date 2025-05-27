@@ -14,6 +14,10 @@ import javax.swing.JScrollPane;
 import application.model.Message;
 import net.miginfocom.swing.MigLayout;
 import org.jdesktop.swingx.VerticalLayout;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 
 public class Chat_Body extends javax.swing.JPanel {
 
@@ -39,6 +43,20 @@ public class Chat_Body extends javax.swing.JPanel {
         Chat_Left_With_Profile item = new Chat_Left_With_Profile();
         item.setText(new String(message.getContent(), StandardCharsets.UTF_8));
         item.setUserProfile(message.getParticipant().getUser().getUserName());
+        
+        // Thêm phần xử lý avatar
+        if (message.getParticipant().getUser().getAvatar() != null) {
+            try {
+                ByteArrayInputStream bis = new ByteArrayInputStream(message.getParticipant().getUser().getAvatar());
+                BufferedImage bImage = ImageIO.read(bis);
+                if (bImage != null) {
+                    item.setImageProfile(new ImageIcon(bImage));
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        
         item.setTime();
         body.add(item, "wrap, w 100::80%, gapy 5");
         body.revalidate();
