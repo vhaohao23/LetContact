@@ -2,6 +2,7 @@ package application.dao;
 
 import application.model.Relationship;
 import application.model.Relationship;
+import application.model.User;
 import application.util.HibernateUtil;
 import jakarta.persistence.Query;
 import org.hibernate.Session;
@@ -199,5 +200,43 @@ public class RelationshipDAO implements DAOInterface<Relationship> {
             e.printStackTrace();
         }
         return rs;
+    }
+public List<Relationship> selectRelationshipsByUsers(User user1, User user2) {
+    List<Relationship> relationships = new ArrayList<>();
+    try {
+        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+        Session session = sessionFactory.openSession();
+        Transaction tx = session.beginTransaction();
+
+        String hql = "from Relationship r where " +
+                    "(r.user1 = :user1 and r.user2 = :user2) or " +
+                    "(r.user1 = :user2 and r.user2 = :user1)";
+        Query query = session.createQuery(hql);
+        query.setParameter("user1", user1);
+        query.setParameter("user2", user2);
+        relationships = query.getResultList();
+
+        tx.commit();
+        session.close();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return relationships;
+}
+    public List<Relationship> selectByUser1AndStatus(User user1, String status) {
+        List<Relationship> relationships = new ArrayList<>();
+        try {
+            SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+            Session session = sessionFactory.openSession();
+            String hql = "from Relationship r where r.user1 = :user1 and r.rStatus = :status";
+            Query query = session.createQuery(hql);
+            query.setParameter("user1", user1);
+            query.setParameter("status", status);
+            relationships = query.getResultList();
+            session.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return relationships;
     }
 }

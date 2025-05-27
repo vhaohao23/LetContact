@@ -225,15 +225,17 @@ private void button5ActionPerformed(java.awt.event.ActionEvent evt) {
         User currentUser = SessionManagement.getInstance().getLoginSession().getUser();
         if (currentUser != null) {
             try {
+                // Tạo và cập nhật mối quan hệ cho người dùng hiện tại block người khác
                 Relationship relationship1 = new Relationship();
                 relationship1.setUser1(currentUser);
                 relationship1.setUser2(selectedUser);
-                boolean success1 = relationshipDAO.update(relationship1, "blocked");
+                boolean success1 = relationshipDAO.updateSpecific(relationship1, "blocked");
 
+                // Tạo và cập nhật mối quan hệ ngược lại
                 Relationship relationship2 = new Relationship();
                 relationship2.setUser1(selectedUser);
                 relationship2.setUser2(currentUser);
-                boolean success2 = relationshipDAO.update(relationship2, "unaccepted");
+                boolean success2 = relationshipDAO.updateSpecific(relationship2, "unaccepted");
 
                 if (success1 && success2) {
                     int option = JOptionPane.showConfirmDialog(this,

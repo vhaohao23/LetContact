@@ -1,32 +1,101 @@
-
 package application.ChatInterface;
 
 import application.AdminPart.ScrollBar;
-import application.ChatInterface.form.Item_Friend;
+import application.ChatInterface.form.Item_Restricted;
+import application.AdminPart.SearchText;
+import application.dao.RelationshipDAO;
+import application.dao.UserDAO;
+import application.model.Relationship;
+import application.model.User;
 import application.raven.swing.Button;
+import application.session_management.SessionManagement;
 import net.miginfocom.swing.MigLayout;
+
+import java.awt.event.ActionEvent;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.swing.JOptionPane;
 
 
 public class RestrictedAccount_Form extends javax.swing.JLayeredPane {
+    private User currentUser;
+    private UserDAO userDAO;
+    private RelationshipDAO relationshipDAO;
 
-    
     public RestrictedAccount_Form() {
         initComponents();
+        this.currentUser = SessionManagement.getInstance().getLoginSession().getUser();
+        this.userDAO = new UserDAO();
+        this.relationshipDAO = new RelationshipDAO();
         init();
     }
     
-    private void init(){
+    private void init() {
         sp.setVerticalScrollBar(new ScrollBar());
-        menuList.setLayout(new MigLayout("filly", "2[]4[]2", "fill"));
+        menuList.setLayout(new MigLayout("fillx", "0[fill]0", "0[]0"));
         showPeople();
     }
-    private void showPeople() {
-    for (int i = 0; i < 20; i++) {
-        int row = i / 3; 
-        int col = i % 3; 
-        menuList.add(new Item_Friend("People " + i, "dd/mm/yy", "gender", "Friend"), String.format("cell %d %d, grow", col, row));
+
+    public void showPeople() {
+        menuList.removeAll();
+        
+        // Lấy danh sách các user bị restricted
+        List<Relationship> restrictedRelationships = relationshipDAO.getAll().stream()
+            .filter(r -> r.getUser1().getUserID().equals(currentUser.getUserID())
+                     && "restricted".equals(r.getrStatus()))
+            .collect(Collectors.toList());
+
+        int row = 0;
+        for (Relationship relationship : restrictedRelationships) {
+            User restrictedUser = relationship.getUser2();
+            menuList.add(new Item_Restricted(currentUser, restrictedUser), "wrap");
+            row++;
+        }
+
+        menuList.revalidate();
+        menuList.repaint();
     }
-}
+
+    private void jtsearchActionPerformed(java.awt.event.ActionEvent evt) {
+        buttonActionPerformed(evt);
+    }
+
+    private void buttonActionPerformed(java.awt.event.ActionEvent evt) {
+        String searchText = jtsearch.getText().trim().toLowerCase();
+        
+        if (searchText.isEmpty()) {
+            showPeople();
+            return;
+        }
+
+        menuList.removeAll();
+        
+        // Tìm kiếm trong danh sách restricted users theo userName
+        List<Relationship> restrictedRelationships = relationshipDAO.getAll().stream()
+            .filter(r -> {
+                User user2 = r.getUser2();
+                return r.getUser1().getUserID().equals(currentUser.getUserID()) 
+                    && "restricted".equals(r.getrStatus())
+                    && user2.getUserName().toLowerCase().contains(searchText.toLowerCase());
+            })
+            .collect(Collectors.toList());
+
+        if (restrictedRelationships.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                "Không tìm thấy người dùng nào có tên chứa: " + searchText,
+                "Kết quả tìm kiếm",
+                JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            for (Relationship relationship : restrictedRelationships) {
+                User restrictedUser = relationship.getUser2();
+                menuList.add(new Item_Restricted(currentUser, restrictedUser), "wrap");
+            }
+        }
+
+        menuList.revalidate();
+        menuList.repaint();
+    }
 
     
     @SuppressWarnings("unchecked")
@@ -36,7 +105,7 @@ public class RestrictedAccount_Form extends javax.swing.JLayeredPane {
         sp = new javax.swing.JScrollPane();
         menuList = new javax.swing.JLayeredPane();
         button = new Button();
-        jtsearch = new application.AdminPart.SearchText();
+        jtsearch = new SearchText();
 
         sp.setBackground(new java.awt.Color(222, 242, 255));
 
@@ -96,18 +165,10 @@ public class RestrictedAccount_Form extends javax.swing.JLayeredPane {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_buttonActionPerformed
-
-    private void jtsearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtsearchActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jtsearchActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private Button button;
-    private application.AdminPart.SearchText jtsearch;
+    private SearchText jtsearch;
     private javax.swing.JLayeredPane menuList;
     private javax.swing.JScrollPane sp;
     // End of variables declaration//GEN-END:variables

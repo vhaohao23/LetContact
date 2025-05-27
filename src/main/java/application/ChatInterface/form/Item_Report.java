@@ -1,19 +1,73 @@
-
 package application.ChatInterface.form;
 
-
+import application.ChatInterface.ReportAccount_Form;
+import application.dao.ConversationDAO;
+import application.dao.MessageDAO;
+import application.dao.ParticipantDAO;
+import application.dao.RelationshipDAO;
+import application.model.*;
 import application.raven.swing.Button;
 import application.raven.swing.ImageAvatar;
+import java.awt.Container;
+import java.awt.Image;
+import java.util.List;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 public class Item_Report extends javax.swing.JPanel {
+    private User reportedUser;
+    private User currentUser;
+    private RelationshipDAO relationshipDAO;
+    private ConversationDAO conversationDAO;
+    private ParticipantDAO participantDAO;
+    private MessageDAO messageDAO;
 
-    
-    public Item_Report(String name, String dob, String gender, String status) {
+    public Item_Report(User currentUser, User reportedUser) {
         initComponents();
-        lbuserName.setText(name);
-        lbdob.setText(dob);
-        lbgender.setText(gender);
-        lbstatus.setText(status);
+        this.currentUser = currentUser;
+        this.reportedUser = reportedUser;
+        this.relationshipDAO = new RelationshipDAO();
+        this.conversationDAO = new ConversationDAO();
+        this.participantDAO = new ParticipantDAO();
+        this.messageDAO = new MessageDAO();
+        
+        // Hiển thị thông tin user
+        lbuserName.setText(reportedUser.getUserName());
+        lbdob.setText(reportedUser.getDob() != null ? reportedUser.getDob().toString() : "");
+        lbgender.setText(reportedUser.getGender());
+        lbstatus.setText(reportedUser.getStatus());
+        
+        // Hiển thị avatar
+        displayAvatar();
+    }
+
+    private void displayAvatar() {
+        byte[] avatarBytes = reportedUser.getAvatar();
+        if (avatarBytes != null && avatarBytes.length > 0) {
+            try {
+                ImageIcon originalIcon = new ImageIcon(avatarBytes);
+                Image originalImage = originalIcon.getImage();
+                
+                int width = imageAvatar.getWidth();
+                int height = imageAvatar.getHeight();
+                
+                if (width <= 0) width = 100;
+                if (height <= 0) height = 100;
+
+                Image scaledImage = originalImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+                imageAvatar.setIcon(new ImageIcon(scaledImage));
+                
+            } catch (Exception e) {
+                setDefaultAvatar();
+            }
+        } else {
+            setDefaultAvatar();
+        }
+    }
+
+    private void setDefaultAvatar() {
+        ImageIcon defaultIcon = new ImageIcon(getClass().getResource("/application/AdminImage/AccountIcon.png"));
+        imageAvatar.setIcon(defaultIcon);
     }
 
     
@@ -109,13 +163,82 @@ public class Item_Report extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_button1ActionPerformed
+    private void button1ActionPerformed(java.awt.event.ActionEvent evt) {
+        try {
+            // Cập nhật R_Status thành "accepted" cho cả hai chiều
+            Relationship relationship = new Relationship();
+            relationship.setUser1(currentUser);
+            relationship.setUser2(reportedUser);
+            relationshipDAO.update(relationship, "accepted");
 
-    private void button2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_button2ActionPerformed
+            JOptionPane.showMessageDialog(this,
+                "Đã bỏ chặn người dùng " + reportedUser.getUserName(),
+                "Thành công",
+                JOptionPane.INFORMATION_MESSAGE);
+            
+            // Refresh form
+            refreshParentForm();
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                "Lỗi khi bỏ chặn: " + e.getMessage(),
+                "Lỗi",
+                JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void button2ActionPerformed(java.awt.event.ActionEvent evt) {
+        try {
+            // Xóa messages
+            List<Message> messages = messageDAO.selectMessagesBetweenUsers(currentUser, reportedUser);
+            for (Message message : messages) {
+                messageDAO.delete(message);
+            }
+
+            // Xóa participants và conversation
+            Conversation conversation = participantDAO.getCommonConversation(currentUser, reportedUser);
+            if (conversation != null) {
+                // Xóa participants
+                Participant participant1 = participantDAO.selectParticipantOneByTwoUser(currentUser, reportedUser);
+                Participant participant2 = participantDAO.selectParticipantOneByTwoUser(reportedUser, currentUser);
+                
+                if (participant1 != null) participantDAO.delete(participant1);
+                if (participant2 != null) participantDAO.delete(participant2);
+
+                // Xóa conversation
+                conversationDAO.delete(conversation);
+            }
+
+            // Xóa relationships
+            List<Relationship> relationships = relationshipDAO.selectRelationshipsByUsers(currentUser, reportedUser);
+            for (Relationship relationship : relationships) {
+                relationshipDAO.delete(relationship);
+            }
+
+            JOptionPane.showMessageDialog(this,
+                "Đã xóa tất cả dữ liệu liên quan đến " + reportedUser.getUserName(),
+                "Thành công",
+                JOptionPane.INFORMATION_MESSAGE);
+
+            refreshParentForm();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                "Đã xảy ra lỗi: " + e.getMessage(),
+                "Lỗi",
+                JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void refreshParentForm() {
+        Container parent = getParent();
+        while (parent != null && !(parent instanceof ReportAccount_Form)) {
+            parent = parent.getParent();
+        }
+        if (parent != null) {
+            ((ReportAccount_Form) parent).showPeople();
+        }
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

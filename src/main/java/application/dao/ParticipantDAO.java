@@ -258,4 +258,28 @@ public List<Conversation> getGroupConversationsForUser(String userId) {
         return new ArrayList<>();
     }
 }
+public List<Participant> selectParticipantsByUsers(User user1, User user2) {
+    List<Participant> participants = new ArrayList<>();
+    try {
+        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+        Session session = sessionFactory.openSession();
+        
+        String hql = "SELECT p FROM Participant p " +
+                    "WHERE p.conversation IN " +
+                    "(SELECT p1.conversation FROM Participant p1, Participant p2 " +
+                    "WHERE p1.conversation = p2.conversation " +
+                    "AND ((p1.user = :user1 AND p2.user = :user2) " +
+                    "OR (p1.user = :user2 AND p2.user = :user1)))";
+        
+        Query query = session.createQuery(hql);
+        query.setParameter("user1", user1);
+        query.setParameter("user2", user2);
+        participants = query.getResultList();
+        
+        session.close();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return participants;
+}
 }
