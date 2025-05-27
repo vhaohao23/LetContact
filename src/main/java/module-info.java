@@ -22,4 +22,8 @@ module org.example.letcontact {
     opens application.dto to org.hibernate.orm.core;
     exports application.ChatInterface;
     exports application.client;
+    exports application.AdminPart;
+    exports application.model;
+    exports  application.dto;
+    exports  application.session_management;
 }

@@ -6,6 +6,7 @@ import application.model.User;
 import application.raven.swing.Button;
 import application.raven.swing.ImageAvatar;
 import application.session_management.SessionManagement;
+import com.mysql.cj.conf.PropertyDefinitions;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -399,10 +400,10 @@ public class Editing_Frame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jtemailActionPerformed
 
-    private void buttonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBackActionPerformed
+    private void buttonBackActionPormed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBackActionPerformed
         // TODO add your handling code here:
         setVisible(false);
-        new Setting_Frame(user).setVisible(true);
+        System.out.println("OUT");
     }//GEN-LAST:event_buttonBackActionPerformed
 
     private void buttonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSaveActionPerformed

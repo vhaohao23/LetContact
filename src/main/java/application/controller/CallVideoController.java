@@ -1,11 +1,21 @@
 package application.controller;
 
+import application.Main;
+import application.dto.CallAccept;
+import application.dto.MessageType;
 import application.dto.OtherInfomationCallVideo;
 import application.dto.SendToOther;
+import application.session_management.TCPSocketSession;
 import application.session_management.UDPSocketSession;
 import application.util.ImageUtil;
+import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
+import javafx.util.Duration;
 import org.opencv.core.Mat;
 import org.opencv.videoio.VideoCapture;
 
@@ -22,6 +32,9 @@ public class CallVideoController {
         String absolutePath = System.getProperty("user.dir") + System.getProperty("file.separator") + relativePath;
         System.load(absolutePath);
     }
+
+    @FXML
+    private ImageView endCallBtn;
 
     @FXML
     private ImageView yourCamera;
@@ -71,6 +84,17 @@ public class CallVideoController {
 
         // Initialize audio recording
         initAudioRecording();
+
+        Image originalImage = new Image(Main.class.getResource("img/rejectCall.png").toExternalForm());
+        Image clickImage = new Image(Main.class.getResource("img/endCallClicked.png").toExternalForm());
+        endCallBtn.setOnMouseClicked(e -> {
+            endCall(e);
+            endCallBtn.setImage(clickImage);
+            // Wait 100 milliseconds before reverting back to the original image
+            PauseTransition pause = new PauseTransition(Duration.millis(50));
+            pause.setOnFinished(event -> endCallBtn.setImage(originalImage));
+            pause.play();
+        });
     }
 
     private void initAudioRecording() {
@@ -250,5 +274,10 @@ public class CallVideoController {
             speaker.stop();
             speaker.close();
         }
+    }
+
+    public void endCall(MouseEvent e) {
+        Stage stage=(Stage)((Node)e.getSource()).getScene().getWindow();
+        stage.close();
     }
 }

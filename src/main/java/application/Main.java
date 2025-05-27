@@ -20,7 +20,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         try{
-            TCPSocketSession.getInstance().socket=new Socket("localhost", 5000);
+            TCPSocketSession.getInstance().socket=new Socket("34.201.147.74", 5000);
 
             ClientListenner clientListenner = new ClientListenner();
             new Thread(clientListenner).start();
@@ -33,7 +33,7 @@ public class Main extends Application {
             e.printStackTrace();
         }
 
-        FXMLLoader loader = new FXMLLoader(Main.class.getResource("view/Login.fxml"));
+        FXMLLoader loader = new FXMLLoader(Main.class.getResource("/application/view/Login.fxml"));
         Parent root = loader.load();
         Scene scene=new Scene(root);
         scene.getStylesheets().add(Main.class.getResource("/application/css/style.css").toExternalForm());
@@ -41,6 +41,5 @@ public class Main extends Application {
         stage.show();
 
         MainApplicationSession.getInstance().scene=scene;
-        MainApplicationSession.getInstance().stage=stage;
     }
 }

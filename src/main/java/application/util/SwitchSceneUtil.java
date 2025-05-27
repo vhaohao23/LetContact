@@ -27,5 +27,6 @@ public class SwitchSceneUtil {
         stage.show();
 
         MainApplicationSession.getInstance().scene=scene;
+        MainApplicationSession.getInstance().stage=stage;
     }
 }

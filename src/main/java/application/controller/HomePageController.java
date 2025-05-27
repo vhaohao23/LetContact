@@ -1,11 +1,13 @@
 package application.controller;
 
 import application.Main;
+import application.dao.LoginSessionDAO;
 import application.dao.UserDAO;
 import application.model.User;
 import application.session_management.SessionManagement;
 import application.util.AvatarDisplayUtil;
 import application.util.ImageUtil;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -13,9 +15,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TitledPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
@@ -39,7 +43,16 @@ public class HomePageController {
     @FXML
     private VBox friendList;
 
+    @FXML
+    private TilePane tilePane;
+
+    @FXML
+    private ImageView exitIcon;
+
     public void initialize() throws IOException, URISyntaxException {
+        tilePane.setHgap(20);
+        tilePane.setVgap(10);
+        tilePane.setPrefColumns(2);
 
         imageData= SessionManagement.getInstance().getLoginSession().getUser().getAvatar();
         image=ImageUtil.getImage(imageData);
@@ -49,6 +62,8 @@ public class HomePageController {
         UserDAO userDAO=new UserDAO();
         List<User> friends= userDAO.selectFriend(SessionManagement.getInstance().getLoginSession().getUser());
 
+        tilePane.getChildren().clear();
+
         for (User friend : friends) {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("view/FriendListCell.fxml"));
             Parent root = loader.load();
@@ -56,7 +71,13 @@ public class HomePageController {
             FriendListCellController controller = loader.getController();
             controller.setFriend(friend);
 
-            friendList.getChildren().add(root);
+            tilePane.getChildren().add(root);
         }
+    }
+
+    public void exitApplication(){
+        (new LoginSessionDAO()).delete(SessionManagement.getInstance().getLoginSession());
+        Platform.exit();
+        System.exit(0);
     }
 }
