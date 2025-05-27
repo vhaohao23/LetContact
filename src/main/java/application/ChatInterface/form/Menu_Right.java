@@ -3,6 +3,8 @@ package application.ChatInterface.form;
 
 import application.ChatInterface.event.EventMenuRight;
 import application.ChatInterface.event.PublicEvent;
+import application.model.Conversation;
+import application.model.Participant;
 import application.model.User;
 import application.raven.swing.ImageAvatar;
 
@@ -40,6 +42,10 @@ public class Menu_Right extends javax.swing.JPanel {
                 revalidate();
                 repaint();
                 setVisible(true);
+            }
+
+            @Override
+            public void selectConversation(Conversation conversation, Participant participant) {
             }
         });
     }

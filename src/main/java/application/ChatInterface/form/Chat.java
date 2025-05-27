@@ -10,6 +10,7 @@ import application.ChatInterface.event.PublicEvent;
 import application.dao.ParticipantDAO;
 import application.dto.MessageDTO;
 import application.dto.MessageType;
+import application.model.Conversation;
 import application.model.Message;
 import application.model.Participant;
 import application.model.User;
@@ -31,6 +32,7 @@ public class Chat extends javax.swing.JPanel {
     public Map<User, Chat_Body> chatBodyMap;
     private Map<User, Chat_Bottom> chatBottomMap;
     private User currentUser;
+    private Conversation currentConversation;
     private Chat_Body currentChatBody;
     private Chat_Bottom currentChatBottom;
     private EventChat eventChat;
@@ -46,19 +48,15 @@ public class Chat extends javax.swing.JPanel {
         chatTitle = new Chat_Title();
         chatBodyMap = new HashMap<>();
         chatBottomMap = new HashMap<>();
-        
-        // Don't create initial chat body and bottom - they'll be created when needed
+
         currentChatBody = null;
         currentChatBottom = null;
 
         setVisible(false);
 
-        // Add initial components
         add(chatTitle, "wrap");
-        // We'll add the chat body and bottom when a user is selected
 
         System.out.println("Setting up event system");
-        // Event for sending and receiving messages
         eventChat = new EventChat() {
             @Override
             public void sendMessage(String text) {
@@ -232,6 +230,65 @@ public class Chat extends javax.swing.JPanel {
                 
                 System.out.println("=== User Selection Complete ===\n");
                 PublicEvent.getInstance().getEventMenuRight().selectUser(user);
+            }
+
+            @Override
+            public void selectConversation(Conversation conversation, Participant participant) {
+                currentConversation = conversation;
+                if (participant != null && conversation.equals(participant.getConversation())) {
+                    currentUser = participant.getUser();
+                }
+                chatTitle.setName(conversation.getNameGroup());
+                if ("group".equalsIgnoreCase(conversation.getType())) {
+                    chatTitle.statusActive();
+                } else {
+                    chatTitle.setStatusText(conversation.getType());
+                }
+
+                if (currentChatBody != null) {
+                    remove(currentChatBody);
+                }
+                if (currentChatBottom != null) {
+                    remove(currentChatBottom);
+                }
+
+                Chat_Body chatBody = chatBodyMap.get(currentUser);
+                if (chatBody == null) {
+                    System.out.println("Creating new chat body for user: " + (currentUser != null ? currentUser.getUserName() : "null"));
+                    chatBody = new Chat_Body();
+                    chatBodyMap.put(currentUser, chatBody);
+                } else {
+                    System.out.println("Using existing chat body for user: " + (currentUser != null ? currentUser.getUserName() : "null"));
+                }
+
+                Chat_Bottom chatBottom = chatBottomMap.get(currentUser);
+                if (chatBottom == null) {
+                    System.out.println("Creating new chat bottom for user: " + (currentUser != null ? currentUser.getUserName() : "null"));
+                    chatBottom = new Chat_Bottom();
+                    chatBottomMap.put(currentUser, chatBottom);
+                } else {
+                    System.out.println("Using existing chat bottom for user: " + (currentUser != null ? currentUser.getUserName() : "null"));
+                }
+
+                currentChatBody = chatBody;
+                currentChatBottom = chatBottom;
+
+                add(currentChatBody, "wrap");
+                add(currentChatBottom, "h ::40%");
+
+                revalidate();
+                repaint();
+                setVisible(true);
+
+                System.out.println("=== Conversation Selection Complete ===\n");
+                PublicEvent.getInstance().getEventMenuRight().selectConversation(conversation, participant);
+                // Chuyển sang Menu_Right_Group
+                HomeChat homeChat = (HomeChat) SwingUtilities.getAncestorOfClass(HomeChat.class, Chat.this); // Sửa từ 'this' thành 'Chat.this'
+                if (homeChat != null) {
+                    homeChat.showRightMenu(new Menu_Right_Group());
+                } else {
+                    System.err.println("HomeChat ancestor not found!");
+                }
             }
 
             @Override

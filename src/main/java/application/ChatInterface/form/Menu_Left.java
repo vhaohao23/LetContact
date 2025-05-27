@@ -2,8 +2,14 @@
 package application.ChatInterface.form;
 
 import application.AdminPart.ScrollBar;
+import javax.swing.JLayeredPane;
+
+import application.dao.ConversationDAO;
+import application.dao.ParticipantDAO;
 import application.dao.RelationshipDAO;
 import application.dao.UserDAO;
+import application.model.Conversation;
+import application.model.Participant;
 import application.model.Relationship;
 import application.model.User;
 import application.session_management.SessionManagement;
@@ -16,8 +22,12 @@ public class Menu_Left extends javax.swing.JPanel {
 
     private UserDAO userDAO;
     private RelationshipDAO relationshipDAO;
+    private ConversationDAO conversationDAO = new ConversationDAO();
+    private ParticipantDAO participantDAO = new ParticipantDAO();
+    private HomeChat homeChat;
 
-    public Menu_Left() {
+    public Menu_Left(HomeChat homeChat) {
+        this.homeChat = homeChat;
         userDAO = new UserDAO();
         relationshipDAO = new RelationshipDAO();
         initComponents();
@@ -39,10 +49,8 @@ public class Menu_Left extends javax.swing.JPanel {
         }
 
         String currentUserName = currentUser.getUserName();
-        // Get all relationships for the current user
         List<Relationship> relationships = relationshipDAO.selectByUserName(currentUserName);
 
-        // Filter relationships where the current user is UserID1 and R_Status is "accepted"
         for (Relationship relationship : relationships) {
             if (relationship.getUser1().getUserName().equals(currentUserName) && "accepted".equals(relationship.getrStatus())) {
                 User otherUser = relationship.getUser2();
@@ -53,11 +61,21 @@ public class Menu_Left extends javax.swing.JPanel {
         }
         refreshMenuList();
     }
-    
+
     private void showGroup(){
         menuList.removeAll();
-        for (int i = 0; i<10; i++){
-            menuList.add(new Item_People(null), "wrap");
+        User currentUser = SessionManagement.getInstance().getLoginSession().getUser();
+        if (currentUser == null || currentUser.getUserID() == null) {
+            System.err.println("No logged-in user found. Cannot load groups.");
+            refreshMenuList();
+            return;
+        }
+        List<Participant> adminParticipants = participantDAO.selectByUserIDAndRole(currentUser.getUserID(), "admin");
+        for (Participant participant : adminParticipants) {
+            Conversation conversation = conversationDAO.selectById(participant.getConversation().getConversationID());
+            if (conversation != null) {
+                menuList.add(new Item_Group(conversation, participant), "wrap"); // Truyền participant vào Item_Group
+            }
         }
         refreshMenuList();
     }
@@ -165,7 +183,7 @@ public class Menu_Left extends javax.swing.JPanel {
 
     private void menuButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuButton1ActionPerformed
         // TODO add your handling code here:
-        setVisible(false);
+        homeChat.showMenu(new Menu_Left_Create_Group(homeChat));
     }//GEN-LAST:event_menuButton1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

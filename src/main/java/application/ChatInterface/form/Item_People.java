@@ -26,6 +26,10 @@ public class Item_People extends javax.swing.JPanel {
         init();
     }
 
+    public User getUser() {
+        return user;
+    }
+
     private void init() {
         addMouseListener(new MouseAdapter() {
             @Override
