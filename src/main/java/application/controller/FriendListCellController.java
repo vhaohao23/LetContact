@@ -47,6 +47,7 @@ public class FriendListCellController {
         callIcon.setOnMouseEntered(e -> callIcon.setImage(hoverImage));
         callIcon.setOnMouseExited(e -> callIcon.setImage(originalImage));
         callIcon.setOnMouseClicked(e -> {
+            letCall(e);
             callIcon.setImage(activeImage);
             // Wait 100 milliseconds before reverting back to the original image
             PauseTransition pause = new PauseTransition(Duration.millis(50));

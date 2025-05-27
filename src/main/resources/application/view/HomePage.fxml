@@ -9,11 +9,11 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="848.0" prefWidth="1408.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.HomePageController">
+<AnchorPane prefHeight="669.0" prefWidth="1340.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.HomePageController">
    <children>
-      <TilePane fx:id="tilePane" hgap="10" layoutX="99.0" layoutY="185.0" prefHeight="578.0" prefWidth="1265.0" vgap="10">
+      <TilePane fx:id="tilePane" hgap="10" layoutX="30.0" layoutY="140.0" prefHeight="484.0" prefWidth="1266.0" vgap="10">
       </TilePane>
-      <AnchorPane fx:id="userInfoContainer" layoutX="99.0" layoutY="28.0" prefHeight="89.0" prefWidth="432.0">
+      <AnchorPane fx:id="userInfoContainer" layoutX="30.0" layoutY="27.0" prefHeight="89.0" prefWidth="432.0">
          <children>
             <StackPane fx:id="yourAvatarContainer" layoutX="31.0" layoutY="14.0" prefHeight="60.0" prefWidth="58.0">
                <children>
@@ -23,22 +23,22 @@
             <Label fx:id="yourUsername" layoutX="127.0" layoutY="25.0" text="Label" />
          </children>
       </AnchorPane>
-      <Line endX="-73.0" layoutX="644.0" layoutY="73.0" startX="-100.0" stroke="#4fc3ff" strokeWidth="3.0" />
-      <Line endX="-73.0" layoutX="683.0" layoutY="73.0" startX="-100.0" stroke="#4fc3ff" strokeWidth="3.0" />
-      <Line endX="-73.0" layoutX="720.0" layoutY="73.0" startX="-100.0" stroke="#4fc3ff" strokeWidth="3.0" />
-      <Line endX="-73.0" layoutX="757.0" layoutY="73.0" startX="-100.0" stroke="#4fc3ff" strokeWidth="3.0" />
-      <Line endX="-73.0" layoutX="793.0" layoutY="73.0" startX="-100.0" stroke="#4fc3ff" strokeWidth="3.0" />
-      <Label layoutX="738.0" layoutY="49.0" style="-fx-text-fill: #4FC3FF;" text="LetContact Calling">
+      <Line endX="-73.0" layoutX="564.0" layoutY="74.0" startX="-100.0" stroke="#4fc3ff" strokeWidth="3.0" />
+      <Line endX="-73.0" layoutX="603.0" layoutY="74.0" startX="-100.0" stroke="#4fc3ff" strokeWidth="3.0" />
+      <Line endX="-73.0" layoutX="640.0" layoutY="74.0" startX="-100.0" stroke="#4fc3ff" strokeWidth="3.0" />
+      <Line endX="-73.0" layoutX="677.0" layoutY="74.0" startX="-100.0" stroke="#4fc3ff" strokeWidth="3.0" />
+      <Line endX="-73.0" layoutX="713.0" layoutY="74.0" startX="-100.0" stroke="#4fc3ff" strokeWidth="3.0" />
+      <Label layoutX="658.0" layoutY="50.0" style="-fx-text-fill: #4FC3FF;" text="LetContact Calling">
          <font>
             <Font name="Eras Demi ITC" size="40.0" />
          </font>
       </Label>
-      <Line endX="-73.0" layoutX="1203.0" layoutY="74.0" startX="-100.0" stroke="#4fc3ff" strokeWidth="3.0" />
-      <Line endX="-73.0" layoutX="1242.0" layoutY="74.0" startX="-100.0" stroke="#4fc3ff" strokeWidth="3.0" />
-      <Line endX="-73.0" layoutX="1279.0" layoutY="74.0" startX="-100.0" stroke="#4fc3ff" strokeWidth="3.0" />
-      <Line endX="-73.0" layoutX="1316.0" layoutY="74.0" startX="-100.0" stroke="#4fc3ff" strokeWidth="3.0" />
-      <Line endX="-73.0" layoutX="1352.0" layoutY="74.0" startX="-100.0" stroke="#4fc3ff" strokeWidth="3.0" />
-      <ImageView fx:id="exitIcon" fitHeight="89.0" fitWidth="82.0" layoutX="1295.0" layoutY="33.0" onMouseClicked="#exitApplication" pickOnBounds="true" preserveRatio="true">
+      <Line endX="-73.0" layoutX="1123.0" layoutY="75.0" startX="-100.0" stroke="#4fc3ff" strokeWidth="3.0" />
+      <Line endX="-73.0" layoutX="1162.0" layoutY="75.0" startX="-100.0" stroke="#4fc3ff" strokeWidth="3.0" />
+      <Line endX="-73.0" layoutX="1199.0" layoutY="75.0" startX="-100.0" stroke="#4fc3ff" strokeWidth="3.0" />
+      <Line endX="-73.0" layoutX="1236.0" layoutY="75.0" startX="-100.0" stroke="#4fc3ff" strokeWidth="3.0" />
+      <Line endX="-73.0" layoutX="1272.0" layoutY="75.0" startX="-100.0" stroke="#4fc3ff" strokeWidth="3.0" />
+      <ImageView fx:id="exitIcon" fitHeight="89.0" fitWidth="82.0" layoutX="1212.0" layoutY="31.0" onMouseClicked="#exitApplication" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../img/exit.png" />
          </image>
