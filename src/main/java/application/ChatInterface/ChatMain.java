@@ -1,4 +1,3 @@
-
 package application.ChatInterface;
 
 import application.AdminPart.EventMenuSelected;
@@ -102,8 +101,10 @@ public class ChatMain extends javax.swing.JFrame {
         menu.getMenu().addEventMenuSelected(new EventMenuSelected() {
             @Override
             public void selected(int index) {
-                if (index == 0){
-                    main.show(new ChatSection_Form());
+                if (index == 0) {
+                    ChatSection_Form chatSection = new ChatSection_Form();
+                    chatSection.resetAndRefresh(); // Gọi phương thức mới
+                    main.show(chatSection);
                 } else if (index == 1){
                     if (currentUser != null) {
                         main.show(new MessageWaiting_Form(currentUser));

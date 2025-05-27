@@ -1,6 +1,6 @@
-
 package application.ChatInterface.form;
 
+import application.ChatInterface.ChatSection_Form;
 import application.ChatInterface.event.EventMenuRight;
 import application.ChatInterface.event.PublicEvent;
 import application.dao.RelationshipDAO;
@@ -9,8 +9,12 @@ import application.model.Participant;
 import application.model.Relationship;
 import application.model.User;
 import application.session_management.SessionManagement;
+import java.awt.Container;
 
 import javax.swing.*;
+import java.awt.Component;
+import javax.swing.SwingUtilities;
+import application.ChatInterface.ChatMain;
 
 public class Menu_Right extends javax.swing.JPanel {
 
@@ -142,99 +146,131 @@ public class Menu_Right extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_button3ActionPerformed
 
-    private void button4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button4ActionPerformed
-        // TODO add your handling code here:
-        if (selectedUser != null) {
-            User currentUser = SessionManagement.getInstance().getLoginSession().getUser();
-            if (currentUser != null) {
-                try {
-                    Relationship relationship = new Relationship();
-                    relationship.setUser1(currentUser);
-                    relationship.setUser2(selectedUser);
+    private void hideUserComponents() {
+    // Ẩn Menu_Right
+    setVisible(false);
+    
+    // Tìm và ẩn Chat component
+    Container parent = getParent();
+    while (parent != null) {
+        if (parent instanceof HomeChat) {
+            HomeChat homeChat = (HomeChat) parent;
+            Component[] components = homeChat.getComponents();
+            for (Component comp : components) {
+                if (comp instanceof Chat) {
+                    comp.setVisible(false);
+                    break;
+                }
+            }
+            break;
+        }
+        parent = parent.getParent();
+    }
+}
 
-                    boolean success = relationshipDAO.update(relationship, "restricted");
+private void button4ActionPerformed(java.awt.event.ActionEvent evt) {
+    if (selectedUser != null) {
+        User currentUser = SessionManagement.getInstance().getLoginSession().getUser();
+        if (currentUser != null) {
+            try {
+                Relationship relationship1 = new Relationship();
+                relationship1.setUser1(currentUser);
+                relationship1.setUser2(selectedUser);
+                boolean success1 = relationshipDAO.updateSpecific(relationship1, "restricted");
 
-                    if (success) {
-                        JOptionPane.showMessageDialog(this,
-                                "Đã hạn chế người dùng " + selectedUser.getUserName(),
-                                "Thành công",
-                                JOptionPane.INFORMATION_MESSAGE);
-                    } else {
-                        JOptionPane.showMessageDialog(this,
-                                "Không thể hạn chế người dùng này",
-                                "Lỗi",
-                                JOptionPane.ERROR_MESSAGE);
+                Relationship relationship2 = new Relationship();
+                relationship2.setUser1(selectedUser);
+                relationship2.setUser2(currentUser);
+                boolean success2 = relationshipDAO.updateSpecific(relationship2, "accepted");
+
+                if (success1 && success2) {
+                    int option = JOptionPane.showConfirmDialog(this,
+                            "Đã hạn chế người dùng " + selectedUser.getUserName(),
+                            "Thành công",
+                            JOptionPane.DEFAULT_OPTION,
+                            JOptionPane.INFORMATION_MESSAGE);
+                            
+                    if (option == JOptionPane.OK_OPTION) {
+                        hideUserComponents();
                     }
-                } catch (Exception e) {
+                } else {
                     JOptionPane.showMessageDialog(this,
-                            "Đã xảy ra lỗi: " + e.getMessage(),
+                            "Không thể hạn chế người dùng này",
                             "Lỗi",
                             JOptionPane.ERROR_MESSAGE);
-                    e.printStackTrace();
                 }
-            } else {
+            } catch (Exception e) {
                 JOptionPane.showMessageDialog(this,
-                        "Vui lòng đăng nhập để thực hiện chức năng này",
+                        "Đã xảy ra lỗi: " + e.getMessage(),
                         "Lỗi",
-                        JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.ERROR_MESSAGE);
+                e.printStackTrace();
             }
         } else {
             JOptionPane.showMessageDialog(this,
-                    "Vui lòng chọn người dùng trước khi thực hiện hạn chế",
-                    "Thông báo",
+                    "Vui lòng đăng nhập để thực hiện chức năng này",
+                    "Lỗi",
                     JOptionPane.WARNING_MESSAGE);
         }
-    }//GEN-LAST:event_button4ActionPerformed
+    } else {
+        JOptionPane.showMessageDialog(this,
+                "Vui lòng chọn người dùng trước khi thực hiện hạn chế",
+                "Thông báo",
+                JOptionPane.WARNING_MESSAGE);
+    }
+}
 
-    private void button5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button5ActionPerformed
-        // TODO add your handling code here:
-        if (selectedUser != null) {
-            User currentUser = SessionManagement.getInstance().getLoginSession().getUser();
-            if (currentUser != null) {
-                try {
-                    Relationship relationship1 = new Relationship();
-                    relationship1.setUser1(currentUser);
-                    relationship1.setUser2(selectedUser);
+private void button5ActionPerformed(java.awt.event.ActionEvent evt) {
+    if (selectedUser != null) {
+        User currentUser = SessionManagement.getInstance().getLoginSession().getUser();
+        if (currentUser != null) {
+            try {
+                Relationship relationship1 = new Relationship();
+                relationship1.setUser1(currentUser);
+                relationship1.setUser2(selectedUser);
+                boolean success1 = relationshipDAO.update(relationship1, "blocked");
 
-                    boolean success1 = relationshipDAO.update(relationship1, "blocked");
+                Relationship relationship2 = new Relationship();
+                relationship2.setUser1(selectedUser);
+                relationship2.setUser2(currentUser);
+                boolean success2 = relationshipDAO.update(relationship2, "unaccepted");
 
-                    Relationship relationship2 = new Relationship();
-                    relationship2.setUser1(selectedUser);
-                    relationship2.setUser2(currentUser);
-
-                    boolean success2 = relationshipDAO.update(relationship2, "unaccepted");
-
-                    if (success1 && success2) {
-                        JOptionPane.showMessageDialog(this,
-                                "Đã chặn người dùng " + selectedUser.getUserName(),
-                                "Thành công",
-                                JOptionPane.INFORMATION_MESSAGE);
-                    } else {
-                        JOptionPane.showMessageDialog(this,
-                                "Không thể chặn người dùng này",
-                                "Lỗi",
-                                JOptionPane.ERROR_MESSAGE);
+                if (success1 && success2) {
+                    int option = JOptionPane.showConfirmDialog(this,
+                            "Đã chặn người dùng " + selectedUser.getUserName(),
+                            "Thành công",
+                            JOptionPane.DEFAULT_OPTION,
+                            JOptionPane.INFORMATION_MESSAGE);
+                            
+                    if (option == JOptionPane.OK_OPTION) {
+                        hideUserComponents();
                     }
-                } catch (Exception e) {
+                } else {
                     JOptionPane.showMessageDialog(this,
-                            "Đã xảy ra lỗi: " + e.getMessage(),
+                            "Không thể chặn người dùng này",
                             "Lỗi",
                             JOptionPane.ERROR_MESSAGE);
-                    e.printStackTrace();
                 }
-            } else {
+            } catch (Exception e) {
                 JOptionPane.showMessageDialog(this,
-                        "Vui lòng đăng nhập để thực hiện chức năng này",
+                        "Đã xảy ra lỗi: " + e.getMessage(),
                         "Lỗi",
-                        JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.ERROR_MESSAGE);
+                e.printStackTrace();
             }
         } else {
             JOptionPane.showMessageDialog(this,
-                    "Vui lòng chọn người dùng trước khi thực hiện chặn",
-                    "Thông báo",
+                    "Vui lòng đăng nhập để thực hiện chức năng này",
+                    "Lỗi",
                     JOptionPane.WARNING_MESSAGE);
         }
-    }//GEN-LAST:event_button5ActionPerformed
+    } else {
+        JOptionPane.showMessageDialog(this,
+                "Vui lòng chọn người dùng trước khi thực hiện chặn",
+                "Thông báo",
+                JOptionPane.WARNING_MESSAGE);
+    }
+}
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

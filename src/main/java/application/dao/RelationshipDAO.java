@@ -167,4 +167,37 @@ public class RelationshipDAO implements DAOInterface<Relationship> {
         }
         return rss;
     }
+    public boolean updateSpecific(Relationship relationship, String status) {
+        boolean rs = false;
+        try {
+            SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+            Session session = sessionFactory.openSession();
+            Transaction tx = session.beginTransaction();
+
+            // Tìm bản ghi dựa trên UserID1 và UserID2 cụ thể
+            String hql = "from Relationship r where r.user1 = :user1 and r.user2 = :user2";
+            Query query = session.createQuery(hql);
+            query.setParameter("user1", relationship.getUser1());
+            query.setParameter("user2", relationship.getUser2());
+            List<Relationship> results = query.getResultList();
+
+            if (!results.isEmpty()) {
+                Relationship r = results.get(0);
+                r.setrStatus(status);
+                session.update(r);
+                tx.commit();
+                rs = true;
+            } else {
+                // Nếu không tìm thấy mối quan hệ, tạo mới
+                relationship.setrStatus(status);
+                session.save(relationship);
+                tx.commit();
+                rs = true;
+            }
+            session.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rs;
+    }
 }
