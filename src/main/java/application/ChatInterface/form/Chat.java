@@ -59,28 +59,30 @@ public class Chat extends javax.swing.JPanel {
         System.out.println("Setting up event system");
         eventChat = new EventChat() {
             @Override
-            public void sendMessage(String text) {
-                System.out.println("sendMessage called with text: " + text);
+            public void sendMessage(Message message) {
                 if (currentUser != null) {
                     Chat_Body chatBody = chatBodyMap.get(currentUser);
                     if (chatBody != null) {
-                        // Hiển thị tin nhắn của mình ngay lập tức bên phải
-                        chatBody.addItemRight(text);
-
-                        Participant participant = (new ParticipantDAO()).selectParticipantOneByTwoUser(
-                                SessionManagement.getInstance().getLoginSession().getUser(),
-                                currentUser);
-
-                        Message message = new Message(participant, text.getBytes(),
-                                new Date(System.currentTimeMillis()), "text");
-
                         try {
+                            // Kiểm tra loại tin nhắn
+                            if ("image".equals(message.getType())) {
+                                // Hiển thị hình ảnh bên phải
+                                chatBody.addItemRight(message.getContent());
+                            } else {
+                                // Hiển thị text bên phải
+                                chatBody.addItemRight(new String(message.getContent(), StandardCharsets.UTF_8));
+                            }
+                            
                             // Gửi tin nhắn lên server
                             TCPSocketSession.getInstance().out.writeObject(
                                     new MessageDTO(MessageType.MESSAGE, message));
                             TCPSocketSession.getInstance().out.flush();
                         } catch (IOException e) {
-                            throw new RuntimeException(e);
+                            e.printStackTrace();
+                            JOptionPane.showMessageDialog(null, 
+                                "Lỗi khi gửi tin nhắn", 
+                                "Lỗi", 
+                                JOptionPane.ERROR_MESSAGE);
                         }
                     }
                 }
@@ -88,84 +90,34 @@ public class Chat extends javax.swing.JPanel {
 
             @Override
             public void receiveMessage(Message message) {
-                System.out.println("\n=== Message Received in Chat Event ===");
-                System.out.println("EventChat.receiveMessage called");
                 if (message != null && message.getParticipant() != null) {
                     User sender = message.getParticipant().getUser();
-                    User currentLoginUser = SessionManagement.getInstance().getLoginSession().getUser();
-                    System.out.println("Message details:");
-                    System.out.println("- From: " + sender.getUserName());
-                    System.out.println("- Current login user: " + currentLoginUser.getUserName());
-                    System.out.println("- Current chat user: " + (currentUser != null ? currentUser.getUserName() : "null"));
-                    System.out.println("- Chat windows in map: " + chatBodyMap.keySet().stream().map(User::getUserName).toList());
-
-                    // Get or create chat window for sender
                     Chat_Body chatBody = chatBodyMap.get(sender);
-                    if (chatBody == null) {
-                        System.out.println("\nCreating new chat window for: " + sender.getUserName());
-                        try {
-                            chatBody = new Chat_Body();
-                            chatBodyMap.put(sender, chatBody);
-                            System.out.println("Successfully created chat body");
-                            
-                            // Only create chat bottom if this is the current user
-                            if (currentUser != null && currentUser.equals(sender)) {
-                                Chat_Bottom chatBottom = new Chat_Bottom();
-                                chatBottomMap.put(sender, chatBottom);
-                                System.out.println("Successfully created chat bottom");
-                            }
-                        } catch (Exception e) {
-                            System.out.println("ERROR creating chat window: " + e.getMessage());
-                            e.printStackTrace();
-                            return;
-                        }
-                    }
-
-                    // Add message to chat window
+                    
                     if (chatBody != null) {
-                        System.out.println("Adding message to chat window");
                         try {
+                            // Xử lý tất cả loại tin nhắn trong một phương thức
                             chatBody.addItemLeft(message);
-                            System.out.println("Successfully added message to chat window");
                             
-                            // If this is the current chat window, make sure it's visible
+                            // Cập nhật UI nếu đang chat với người gửi
                             if (currentUser != null && currentUser.equals(sender)) {
                                 chatBody.revalidate();
                                 chatBody.repaint();
                             }
                         } catch (Exception e) {
-                            System.out.println("ERROR adding message to chat window: " + e.getMessage());
                             e.printStackTrace();
+                            JOptionPane.showMessageDialog(null,
+                                "Lỗi khi hiển thị tin nhắn",
+                                "Lỗi",
+                                JOptionPane.ERROR_MESSAGE);
                         }
-                    }
-
-                    // If message is from current login user (multi-device sync)
-                    if (sender.equals(currentLoginUser) && currentUser != null) {
-                        System.out.println("\nProcessing multi-device sync message");
-                        Chat_Body currentBody = chatBodyMap.get(currentUser);
-                        if (currentBody != null) {
-                            System.out.println("Adding sync message to chat window");
-                            try {
-                                currentBody.addItemRight(new String(message.getContent(), StandardCharsets.UTF_8));
-                                System.out.println("Successfully added sync message");
-                                currentBody.revalidate();
-                                currentBody.repaint();
-                            } catch (Exception e) {
-                                System.out.println("ERROR adding sync message: " + e.getMessage());
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                } else {
-                    System.out.println("ERROR: Message or participant is null");
-                    if (message == null) {
-                        System.out.println("Message is null");
-                    }
-                    if (message != null && message.getParticipant() == null) {
-                        System.out.println("Participant is null");
                     }
                 }
-                System.out.println("=== End Message Processing ===\n");
+            }
+
+            @Override
+            public User getCurrentUser() {
+                return currentUser;
             }
         };
         PublicEvent.getInstance().addEventChat(eventChat);
