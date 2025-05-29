@@ -1,7 +1,7 @@
-
 package application.ChatInterface.form;
 
 import application.ChatInterface.event.PublicEvent;
+import application.dao.ParticipantDAO;
 import application.model.Conversation;
 import application.model.Participant;
 
@@ -12,17 +12,23 @@ import java.awt.event.MouseEvent;
 
 
 public class Item_Group extends javax.swing.JPanel {
-
     private Conversation conversation;
     private Participant participant;
+    private ParticipantDAO participantDAO = new ParticipantDAO();
 
     public Item_Group(Conversation conversation, Participant participant) {
         this.conversation = conversation;
         this.participant = participant;
         initComponents();
+        
         if (conversation != null) {
             lb.setText(conversation.getNameGroup());
-            lbStatus.setText(conversation.getType());
+            
+            // Hiển thị số lượng thành viên
+            int memberCount = participantDAO.countParticipantsInConversation(conversation.getConversationID());
+            lbStatus.setText(memberCount + " thành viên");
+            
+            // Xử lý avatar theo theme
             String theme = conversation.getTheme();
             String avatarPath;
             switch (theme != null ? theme.toLowerCase() : "default") {
@@ -35,8 +41,6 @@ public class Item_Group extends javax.swing.JPanel {
                 case "family":
                     avatarPath = "/application/AdminImage/family.jpg";
                     break;
-//                case "default":
-//                    avatarPath = "/application/AdminImage/normal.jpg";
                 default:
                     avatarPath = "/application/AdminImage/normal.jpg";
                     break;
