@@ -13,6 +13,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TitledPane;
@@ -48,6 +49,31 @@ public class HomePageController {
 
     @FXML
     private ImageView exitIcon;
+
+    @FXML
+    private ImageView btnRefresh;
+
+    public void loadFriendList() {
+        UserDAO userDAO = new UserDAO();
+        List<User> friends = userDAO.selectFriend(SessionManagement.getInstance().getLoginSession().getUser());
+
+        tilePane.getChildren().clear();
+
+        for (User friend : friends) {
+            try {
+                FXMLLoader loader = new FXMLLoader(Main.class.getResource("view/FriendListCell.fxml"));
+                Parent root = loader.load();
+
+                FriendListCellController controller = loader.getController();
+                controller.setFriend(friend);
+
+                tilePane.getChildren().add(root);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 
     public void initialize() throws IOException, URISyntaxException {
         tilePane.setHgap(20);
