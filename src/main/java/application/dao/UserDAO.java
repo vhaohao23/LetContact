@@ -208,4 +208,29 @@ public class UserDAO implements DAOInterface<User> {
         }
         return users;
     }
+
+    public boolean isUsernameExisted(String username) {
+        User rs=null;
+
+        try{
+            SessionFactory sessionFactory= HibernateUtil.getSessionFactory();
+            Session session=sessionFactory.openSession();
+            Transaction tx=session.beginTransaction();
+
+            String hql="from User u where u.userName=:username";
+            Query query=session.createQuery(hql);
+            query.setParameter("username", username);
+            rs= (User) query.getSingleResult();
+
+            tx.commit();
+            session.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        if (rs != null) {
+            return true; // Username exists
+        } else {
+            return false; // Username does not exist
+        }
+    }
 }

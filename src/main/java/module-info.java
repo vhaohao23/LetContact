@@ -1,4 +1,4 @@
-module org.example.letcontact {
+module application {
     requires javafx.controls;
     requires javafx.fxml;
     requires jakarta.persistence;

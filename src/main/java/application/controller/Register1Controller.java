@@ -1,5 +1,6 @@
 package application.controller;
 
+import application.dao.UserDAO;
 import application.session_management.SessionManagement;
 import application.session_management.UserSession;
 import application.util.BcrypyUtil;
@@ -117,6 +118,16 @@ public class Register1Controller {
             alert.setTitle("Confirmation Error");
             alert.setHeaderText("Password and Confirm Password do not match");
             alert.setContentText("Please check your password and confirm password");
+            alert.showAndWait();
+            return;
+        }
+
+        UserDAO userDAO = new UserDAO();
+        if (userDAO.isUsernameExisted(tfUsername.getText())==true) {
+            Alert alert=new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Username existed");
+            alert.setHeaderText("This username is already taken");
+            alert.setContentText("Please choose a different username");
             alert.showAndWait();
             return;
         }
