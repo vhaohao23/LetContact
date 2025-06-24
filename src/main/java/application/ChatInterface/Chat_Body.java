@@ -14,6 +14,11 @@ import javax.swing.JScrollPane;
 import application.model.Message;
 import net.miginfocom.swing.MigLayout;
 import org.jdesktop.swingx.VerticalLayout;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 
 public class Chat_Body extends javax.swing.JPanel {
 
@@ -34,17 +39,89 @@ public class Chat_Body extends javax.swing.JPanel {
         body.repaint();
         body.revalidate();
     }
-
-    public void addItemLeft(Message message) {
-        Chat_Left_With_Profile item = new Chat_Left_With_Profile();
-        item.setText(new String(message.getContent(), StandardCharsets.UTF_8));
-        item.setUserProfile(message.getParticipant().getUser().getUserName());
-        item.setTime();
-        body.add(item, "wrap, w 100::80%, gapy 5");
-        body.revalidate();
-        body.repaint();
-        scrollToBottom();
+    
+    // ... các phần code khác giữ nguyên ...
+    
+    public void addItemRight(byte[] imageData) {
+        try {
+            Chat_Right item = new Chat_Right();
+            
+            // Chuyển đổi byte[] thành BufferedImage
+            ByteArrayInputStream bis = new ByteArrayInputStream(imageData);
+            BufferedImage bufferedImage = ImageIO.read(bis);
+            
+            if (bufferedImage != null) {
+                // Chuyển BufferedImage thành ImageIcon
+                ImageIcon imageIcon = new ImageIcon(bufferedImage);
+                
+                // Thêm ảnh vào item
+                item.setImage(imageIcon);
+                
+                // Thêm item vào body với căn lề bên phải
+                body.add(item, "wrap, al right, w 100::80%, gapy 5");
+                body.revalidate();
+                body.repaint();
+                item.setTime();
+                scrollToBottom();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this,
+                "Lỗi khi hiển thị ảnh",
+                "Lỗi",
+                JOptionPane.ERROR_MESSAGE);
+        }
     }
+    
+    public void addItemLeft(Message message) {
+        if (message != null && message.getParticipant() != null) {
+            Chat_Left_With_Profile item = new Chat_Left_With_Profile();
+            
+            // Xử lý tin nhắn dựa vào type
+            if ("image".equals(message.getType())) {
+                try {
+                    // Chuyển đổi byte[] thành BufferedImage
+                    ByteArrayInputStream bis = new ByteArrayInputStream(message.getContent());
+                    BufferedImage bufferedImage = ImageIO.read(bis);
+                    if (bufferedImage != null) {
+                        item.setImage(new ImageIcon(bufferedImage));
+                        // Không set text khi là ảnh
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                // Xử lý tin nhắn text
+                item.setText(new String(message.getContent(), StandardCharsets.UTF_8));
+            }
+            
+            // Thiết lập thông tin người gửi
+            item.setUserProfile(message.getParticipant().getUser().getUserName());
+            
+            // Thêm avatar nếu có
+            if (message.getParticipant().getUser().getAvatar() != null) {
+                try {
+                    ByteArrayInputStream bis = new ByteArrayInputStream(
+                        message.getParticipant().getUser().getAvatar());
+                    BufferedImage bImage = ImageIO.read(bis);
+                    if (bImage != null) {
+                        item.setImageProfile(new ImageIcon(bImage));
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            
+            item.setTime();
+            body.add(item, "wrap, w 100::80%, gapy 5");
+            body.revalidate();
+            body.repaint();
+            scrollToBottom();
+        }
+    }
+
+    // Xóa phương thức addItemLeft(byte[] imageData, String userName) vì không cần thiết nữa
+    // Tất cả xử lý ảnh sẽ được thực hiện trong addItemLeft(Message message)
     
 //    public void addItemLeft(String text, String user, String[] image){
 //        Chat_Left_With_Profile item = new Chat_Left_With_Profile();

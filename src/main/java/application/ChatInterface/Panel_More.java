@@ -1,26 +1,34 @@
-
 package application.ChatInterface;
 
 import application.AdminPart.ScrollBar;
 import application.ChatInterface.ChatMain;
 import application.ChatInterface.OptionButton;
+import application.ChatInterface.event.PublicEvent;
+import application.dao.ParticipantDAO;
+import application.dto.MessageDTO;
+import application.dto.MessageType;
+import application.model.Message;
+import application.model.Participant;
 import application.raven.swing.Emoji;
 import application.raven.swing.Model_Emoji;
 import application.raven.swing.WrapLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Cursor;
-import java.awt.Image;
+
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JPanel;
-import javax.swing.JScrollBar;
-import javax.swing.JScrollPane;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.sql.Date;
+import javax.imageio.ImageIO;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+import application.session_management.SessionManagement;
+import application.session_management.TCPSocketSession;
 import net.miginfocom.swing.MigLayout;
 
 public class Panel_More extends javax.swing.JPanel {
@@ -51,19 +59,44 @@ public class Panel_More extends javax.swing.JPanel {
         add(ch, "w 100%, h 100%");
     }
     
-    private JButton getButtonFile(){
-        application.ChatInterface.OptionButton cmd = new application.ChatInterface.OptionButton();
-        cmd.setIcon(new ImageIcon(getClass().getResource("/application/AdminImage/link.png")));
-        cmd.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser ch = new JFileChooser();
-                ch.showOpenDialog(ChatMain.getFrames()[0]);
-                //Update next
+private JButton getButtonFile() {
+    OptionButton cmd = new OptionButton();
+    cmd.setIcon(new ImageIcon(getClass().getResource("/application/AdminImage/link.png")));
+    cmd.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            JFileChooser ch = new JFileChooser();
+            FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                "Image Files", "jpg", "png", "gif", "jpeg");
+            ch.setFileFilter(filter);
+            
+            int returnVal = ch.showOpenDialog(SwingUtilities.getWindowAncestor(cmd));
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                try {
+                    File file = ch.getSelectedFile();
+                    byte[] imageData = Files.readAllBytes(file.toPath());
+
+                    Participant participant = new ParticipantDAO().selectParticipantOneByTwoUser(
+                        SessionManagement.getInstance().getLoginSession().getUser(),
+                        PublicEvent.getInstance().getEventChat().getCurrentUser());
+
+                    Message message = new Message(participant, imageData,
+                        new Date(System.currentTimeMillis()), "image");
+
+                    PublicEvent.getInstance().getEventChat().sendMessage(message);
+                    
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(null,
+                        "Có lỗi xảy ra khi gửi ảnh", 
+                        "Lỗi", 
+                        JOptionPane.ERROR_MESSAGE);
+                }
             }
-        });
-        return cmd;
-    }
+        }
+    });
+    return cmd;
+}
     
     private JButton getEmojiStyle1(){
         application.ChatInterface.OptionButton cmd = new application.ChatInterface.OptionButton();
@@ -80,6 +113,12 @@ public class Panel_More extends javax.swing.JPanel {
                     c.setBorder(new EmptyBorder(3,3,3,3));
                     c.setCursor(new Cursor(Cursor.HAND_CURSOR));
                     c.setContentAreaFilled(false);
+                    c.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            sendEmojiAsImage(d);
+                        }
+                    });
                     panelDetail.add(c);
                 }
                 panelDetail.repaint();
@@ -104,6 +143,12 @@ public class Panel_More extends javax.swing.JPanel {
                     c.setBorder(new EmptyBorder(3,3,3,3));
                     c.setCursor(new Cursor(Cursor.HAND_CURSOR));
                     c.setContentAreaFilled(false);
+                    c.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            sendEmojiAsImage(d);
+                        }
+                    });
                     panelDetail.add(c);
                 }
                 panelDetail.repaint();
@@ -128,6 +173,12 @@ public class Panel_More extends javax.swing.JPanel {
                     c.setBorder(new EmptyBorder(3,3,3,3));
                     c.setCursor(new Cursor(Cursor.HAND_CURSOR));
                     c.setContentAreaFilled(false);
+                    c.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            sendEmojiAsImage(d);
+                        }
+                    });
                     panelDetail.add(c);
                 }
                 panelDetail.repaint();
@@ -160,6 +211,37 @@ public class Panel_More extends javax.swing.JPanel {
             if (c instanceof OptionButton){
                 ((OptionButton)c).setSelected(false);
             }
+        }
+    }
+
+    private void sendEmojiAsImage(Model_Emoji emoji) {
+        try {
+            ImageIcon icon = (ImageIcon) emoji.getIcon();
+            Image image = icon.getImage();
+            BufferedImage bufferedImage = new BufferedImage(
+                    image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g2 = bufferedImage.createGraphics();
+            g2.drawImage(image, 0, 0, null);
+            g2.dispose();
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(bufferedImage, "png", baos);
+            byte[] imageData = baos.toByteArray();
+
+            Participant participant = new ParticipantDAO().selectParticipantOneByTwoUser(
+                    SessionManagement.getInstance().getLoginSession().getUser(),
+                    PublicEvent.getInstance().getEventChat().getCurrentUser());
+
+            Message message = new Message(participant, imageData,
+                    new Date(System.currentTimeMillis()), "image");
+
+            PublicEvent.getInstance().getEventChat().sendMessage(message);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null,
+                    "Có lỗi xảy ra khi gửi emoji",
+                    "Lỗi",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
     

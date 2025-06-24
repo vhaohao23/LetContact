@@ -3,6 +3,9 @@ package application.ChatInterface;
 
 import application.AdminPart.ScrollBar;
 import application.ChatInterface.event.PublicEvent;
+import application.dao.ParticipantDAO;
+import application.model.Message;
+import application.model.Participant;
 import application.model.User;
 import application.raven.swing.JIMSendTextPane;
 import java.awt.Color;
@@ -12,10 +15,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import java.nio.charset.StandardCharsets;
+import java.sql.Date;
+import javax.swing.*;
+
+import application.session_management.SessionManagement;
 import net.miginfocom.swing.MigLayout;
 
 public class Chat_Bottom extends javax.swing.JPanel {
@@ -80,6 +84,7 @@ public class Chat_Bottom extends javax.swing.JPanel {
                     panelMore.setVisible(true);
                     mig.setComponentConstraints(panelMore, "dock south, h 170!");
                 }
+                refresh();
             }
         });
         panel.add(cmd);
@@ -96,14 +101,35 @@ public class Chat_Bottom extends javax.swing.JPanel {
     
     private void eventSend(JIMSendTextPane txt){
         String text = txt.getText().trim();
-                if (!text.equals("")) {
-                    PublicEvent.getInstance().getEventChat().sendMessage(text);
+        if (!text.equals("")) {
+            try {
+                Participant participant = new ParticipantDAO().selectParticipantOneByTwoUser(
+                        SessionManagement.getInstance().getLoginSession().getUser(),
+                        PublicEvent.getInstance().getEventChat().getCurrentUser());
+                if (participant != null) {
+                    Message message = new Message(
+                            participant,
+                            text.getBytes(StandardCharsets.UTF_8),
+                            new Date(System.currentTimeMillis()),
+                            "text"
+                    );
+
+                    PublicEvent.getInstance().getEventChat().sendMessage(message);
+
                     txt.setText("");
                     txt.grabFocus();
                     refresh();
-                } else {
-                    txt.grabFocus();
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this,
+                        "Có lỗi xảy ra khi gửi tin nhắn",
+                        "Lỗi",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        txt.grabFocus();
+
     }
     private MigLayout mig;
     private Panel_More panelMore;

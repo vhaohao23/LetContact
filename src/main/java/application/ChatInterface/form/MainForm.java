@@ -1,4 +1,3 @@
-
 package application.ChatInterface.form;
 
 import application.ChatInterface.ChatSection_Form;
@@ -54,6 +53,16 @@ public class MainForm extends javax.swing.JPanel {
         body.add(com);
         body.repaint();
         body.revalidate();
+    }
+    
+    public void refreshChatSection() {
+        Component[] components = getComponents();
+        for (Component comp : components) {
+            if (comp instanceof ChatSection_Form) {
+                ((ChatSection_Form) comp).resetAndRefresh();
+                break;
+            }
+        }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel body;

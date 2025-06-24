@@ -1,14 +1,16 @@
-
 package application.ChatInterface;
 
 import application.ChatInterface.event.EventImageView;
 import application.ChatInterface.event.PublicEvent;
+import application.ChatInterface.form.Chat;
+import application.ChatInterface.form.Menu_Right;
 import application.dao.UserDAO;
 import application.model.User;
 import application.session_management.SessionManagement;
 
 import javax.swing.Icon;
 import java.util.List;
+import java.awt.Component;
 
 public class ChatSection_Form extends javax.swing.JPanel {
 
@@ -86,4 +88,25 @@ public class ChatSection_Form extends javax.swing.JPanel {
     private application.ChatInterface.form.HomeChat home;
     private application.ChatInterface.form.View_Image view_Image;
     // End of variables declaration//GEN-END:variables
+
+    public void resetAndRefresh() {
+        // Ẩn chat và menu_right nếu đang hiển thị
+        if (home != null) {
+            Component[] components = home.getComponents();
+            for (Component comp : components) {
+                if (comp instanceof Chat) {
+                    ((Chat) comp).setVisible(false);
+                } else if (comp instanceof Menu_Right) {
+                    ((Menu_Right) comp).setVisible(false);
+                }
+            }
+        }
+
+        // Cập nhật lại danh sách bạn bè
+        initializeFriendsList();
+
+        // Refresh giao diện
+        revalidate();
+        repaint();
+    }
 }

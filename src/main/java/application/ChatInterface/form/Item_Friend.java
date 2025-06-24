@@ -1,21 +1,71 @@
 
 package application.ChatInterface.form;
 
-
+import application.ChatInterface.ChatSection_Form;
+import application.ChatInterface.ListFriends_Form;
+import application.ChatInterface.ReportAccount_Form;
+import application.dao.ConversationDAO;
+import application.dao.MessageDAO;
+import application.dao.ParticipantDAO;
+import application.dao.RelationshipDAO;
+import application.model.Conversation;
+import application.model.Message;
+import application.model.Participant;
+import application.model.Relationship;
+import application.model.User;
 import application.raven.swing.Button;
 import application.raven.swing.ImageAvatar;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import javax.imageio.ImageIO;
+
 public class Item_Friend extends javax.swing.JPanel {
 
-    
-    public Item_Friend(String name, String dob, String gender, String status) {
+    private User friend;
+    private User loggedInUser;
+    private JFrame parentFrame;
+    private RelationshipDAO relationshipDAO;
+    private ConversationDAO conversationDAO;
+    private ParticipantDAO participantDAO;
+    private MessageDAO messageDAO;
+
+    public Item_Friend(User friend, User loggedInUser, JFrame parentFrame) {
+        this.friend = friend;
+        this.loggedInUser = loggedInUser;
+        this.parentFrame = parentFrame;
         initComponents();
-        lbuserName.setText(name);
-        lbdob.setText(dob);
-        lbgender.setText(gender);
-        lbstatus.setText(status);
+        populateUserDetails();
+        this.relationshipDAO = new RelationshipDAO();
+        this.conversationDAO = new ConversationDAO();
+        this.participantDAO = new ParticipantDAO();
+        this.messageDAO = new MessageDAO();
     }
 
+    private void populateUserDetails() {
+        lbuserName.setText(friend.getUserName());
+        lbdob.setText(friend.getDob() != null ? new SimpleDateFormat("dd/MM/yyyy").format(friend.getDob()) : "N/A");
+        lbgender.setText(friend.getGender() != null ? friend.getGender() : "N/A");
+        lbstatus.setText(friend.getStatus() != null ? friend.getStatus() : "N/A");
+
+        // Set avatar
+        if (friend.getAvatar() != null) {
+            try {
+                BufferedImage img = ImageIO.read(new ByteArrayInputStream(friend.getAvatar()));
+                ImageIcon icon = new ImageIcon(img.getScaledInstance(100, 100, Image.SCALE_SMOOTH));
+                imageAvatar.setIcon(icon);
+            } catch (Exception e) {
+                e.printStackTrace();
+                imageAvatar.setIcon(new ImageIcon(getClass().getResource("/application/AdminImage/AccountIcon.png")));
+            }
+        } else {
+            imageAvatar.setIcon(new ImageIcon(getClass().getResource("/application/AdminImage/AccountIcon.png")));
+        }
+    }
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -110,7 +160,55 @@ public class Item_Friend extends javax.swing.JPanel {
 
     private void button2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button2ActionPerformed
         // TODO add your handling code here:
+        try {
+            // Xóa messages
+            java.util.List<Message> messages = messageDAO.selectMessagesBetweenUsers(loggedInUser, friend);
+            for (Message message : messages) {
+                messageDAO.delete(message);
+            }
+            // Xóa participants và conversation
+            Conversation conversation = participantDAO.getCommonConversation(loggedInUser, friend);
+            if (conversation != null) {
+                // Xóa participants
+                Participant participant1 = participantDAO.selectParticipantOneByTwoUser(loggedInUser, friend);
+                Participant participant2 = participantDAO.selectParticipantOneByTwoUser(friend, loggedInUser);
+
+                if (participant1 != null) participantDAO.delete(participant1);
+                if (participant2 != null) participantDAO.delete(participant2);
+
+                // Xóa conversation
+                conversationDAO.delete(conversation);
+            }
+
+            // Xóa relationships
+            List<Relationship> relationships = relationshipDAO.selectRelationshipsByUsers(loggedInUser, friend);
+            for (Relationship relationship : relationships) {
+                relationshipDAO.delete(relationship);
+            }
+
+            JOptionPane.showMessageDialog(this,
+                    "Đã xóa tất cả dữ liệu liên quan đến " + friend.getUserName(),
+                    "Thành công",
+                    JOptionPane.INFORMATION_MESSAGE);
+
+            refreshParentForm();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    "Đã xảy ra lỗi: " + e.getMessage(),
+                    "Lỗi",
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_button2ActionPerformed
+    private void refreshParentForm() {
+        Container parent = getParent();
+        while (parent != null && !(parent instanceof ReportAccount_Form)) {
+            parent = parent.getParent();
+        }
+        if (parent != null) {
+            ((ReportAccount_Form) parent).showPeople();
+        }
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
